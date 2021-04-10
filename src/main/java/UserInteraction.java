@@ -1,7 +1,19 @@
 import java.util.Scanner;
 
 public class UserInteraction {
+
     private final Scanner sc;
+
+    private final String[] emogyList = {
+            ":)" ,
+            ":(" ,
+            ":D" ,
+            ":P" ,
+            ":S",
+            "¬¬",
+            "o.O",
+            "C.c"
+    };
 
     UserInteraction(){
        sc = new Scanner(System.in);
@@ -20,6 +32,7 @@ public class UserInteraction {
     }
 
     public void print(String message){
-        System.out.println(message);
+        String line = filterLine(message);
+        System.out.println(line);
     }
 }
