@@ -9,16 +9,17 @@ public class UserInteraction {
 
     public String getInput(){
         String line = sc.nextLine();
+        System.out.println();
         return filterLine(line);
     }
 
     private String filterLine(String line) {
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
-        return null;
+        return line;
     }
 
-    public void ask(String message){
+    public void print(String message){
         System.out.println(message);
     }
 }
