@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInteraction {
@@ -16,6 +17,7 @@ public class UserInteraction {
     private String filterLine(String line) {
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
+        line = line.toLowerCase(Locale.ROOT);
         return line;
     }
 

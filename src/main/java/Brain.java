@@ -32,6 +32,9 @@ public class Brain {
 
     public static void main(String[] args) {
 
+        NLP nlp = NLP.getInstance();
+        nlp.process("How do you describe ironman?");
+
         try {
             TheMovieDbApi a = new TheMovieDbApi("08e795429cbf9b280d0790fcd324aa40");
             var x = a.searchMovie("Hollywood", 0, "en-US", false, 0, 0, SearchType.PHRASE);

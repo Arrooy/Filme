@@ -1,16 +1,12 @@
-hello,hi,welcome,hey,howdy,ciao
-goodbye,bye,chao,have a good day
+Objects:movie
+Synonyms:movie--film--motion picture
 
-a b c d
+Actions:recommend--popular--trending--rating--describe
+Synonyms:recommend--advise--suggest--propose--counsel--advocate--prescribe
+Synonyms:popular--trendy--hot--vogue--in demand--favourite--well-received
+Synonyms:trending
+Synonyms:rating--rated--grade--rank--evaluation--level
+Synonyms:describe--description--explain--report--recount--chronicle--portray
 
+Precedents:from--of--at--for--describe
 
-Que puc respondre?
-
-
-
-
--> Synon _> a b c d -> b b a d
-
-
-U: Hello! i want to know my fav. film!
-R:

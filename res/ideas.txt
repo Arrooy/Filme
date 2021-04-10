@@ -1,0 +1,16 @@
+hello,hi,welcome,hey,howdy,ciao
+goodbye,bye,chao,have a good day
+
+a b c d
+
+
+Que puc respondre?
+
+
+
+
+-> Synon _> a b c d -> b b a d
+
+
+U: Hello! i want to know my fav. film!
+R:
