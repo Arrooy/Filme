@@ -2,11 +2,14 @@ import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.TheMovieDbApi;
 import com.omertron.themoviedbapi.enumeration.SearchType;
 import com.omertron.themoviedbapi.enumeration.SortBy;
+import com.omertron.themoviedbapi.model.credits.MediaCreditCast;
 import com.omertron.themoviedbapi.model.discover.Discover;
 import com.omertron.themoviedbapi.model.movie.MovieBasic;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.model.review.Review;
 import com.omertron.themoviedbapi.results.ResultList;
+
+import java.util.List;
 
 public class DB {
 
@@ -110,9 +113,18 @@ public class DB {
         return switch (res.getTotalResults()) {
             case 0 -> fallback.noResult(filmName);
             case 1 -> dbApi.getMovieCredits(res.getResults().get(0).getId()).getCast();
-            default ->  dbApi.getMovieCredits((fallback.tooManyResults(filmName, res).getId())).getCast();
+            default ->  getTheTop5ActorNames(filmName, dbApi.getMovieCredits((fallback.tooManyResults(filmName, res).getId())).getCast());
         };
     }
+
+    private String getTheTop5ActorNames(String movie, List<MediaCreditCast> cast) {
+        String names = "";
+        for(int i = 0; i < 5; i++) {
+            names += cast.get(i).getName() + ((i == 3) ? " and " : ((i == 4) ? "" : ", "));
+        }
+        return "Some of the actors that appear on " + movie + " are: " + names;
+    }
+
     public String getMovieReview(String filmName, Fallback<MovieInfo> fallback) throws  MovieDbException{
         ResultList<MovieInfo> res = dbApi.searchMovie(filmName,0,"en-US",false,0,0, SearchType.NGRAM);
         return switch (res.getTotalResults()) {

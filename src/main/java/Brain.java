@@ -9,7 +9,6 @@ public class Brain {
     public static final long APPEAL_TIME = 10 * 1000;
     public static final long VIBRATE_SCREEN_TIME = 15 * 1000;
 
-
     private UserInteraction ui;
     private Finestra f;
 
@@ -27,7 +26,7 @@ public class Brain {
             switch (action) {
                 case "describe" -> response = computeDescribe(di);
                 case "popular" -> response = computeTrending(di);
-                case "actor" -> response = "Not yet bro!"; //TODO
+                case "actor" -> response = computeActor(di);
                 case "think" -> response = "Not yet bro!"; //TODO
                 case "release" -> response = computeYear(di);
                 case "similar" -> response = "Not yet bro!"; //TODO
@@ -47,6 +46,21 @@ public class Brain {
 
     private String computeYear(DigestedInput di) throws MovieDbException {
         return DB.getInstance().getFilmDate(di.getMovieName(), new Fallback<MovieInfo>() {
+            @Override
+            public String noResult(String queryUsed) {
+                return "Movie " + queryUsed + " not found!";
+            }
+
+            @Override
+            public MovieInfo tooManyResults(String queryUsed, ResultList<MovieInfo> results) {
+                return results.getResults().get(0);
+            }
+        });
+    }
+
+    private String computeActor(DigestedInput di) throws MovieDbException {
+        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        return (String) DB.getInstance().getFilmActors(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
                 return "Movie " + queryUsed + " not found!";
