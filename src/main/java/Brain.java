@@ -6,7 +6,7 @@ import javax.management.MBeanServerInvocationHandler;
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, good bye!
-    public static final long APPEAL_TIME = 10 * 1000;
+    public static final long APPEAL_TIME = 20 * 1000;
     public static final long VIBRATE_SCREEN_TIME = 15 * 1000;
 
     private UserInteraction ui;
