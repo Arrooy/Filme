@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Random;
+
 public enum Behaviour {
     WELCOME_MSG(new String[]{
             "Welcome to Filme. I can answer whatever you need! (Films)",
@@ -33,7 +36,7 @@ public enum Behaviour {
             "I miss u... :(",
             "Why you dont type with me anymore?",
             "Where are you? Why you dont type with me like before?",
-            "There is another one right? Does it have a better NLP than me? ¬¬"
+            "There is another one right? Does it have a better NLP than me?"
     });
 
 
@@ -41,8 +44,22 @@ public enum Behaviour {
     private int lastMessage;
 
     Behaviour(String[] msgs){
-        this.possible_msgs = msgs;
+        this.possible_msgs = Shuffle(msgs);
         lastMessage = 0;
+    }
+
+    public String[] Shuffle(String[] arr)
+    {
+        Random r = new Random();
+        for (var i = arr.length - 1; i > 0; i--)
+        {
+            var j = r.nextInt(i + 1);
+
+            String temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+        return arr;
     }
 
     public String getRandom(){

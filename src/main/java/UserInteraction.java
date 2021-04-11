@@ -8,7 +8,9 @@ public class UserInteraction implements KeyListener {
 
     private final Brain brain;
     private long lastInteraction;
+    private long timeToLeaveAloneToRead;
     private String userName;
+
     private Queue<String> messagesToProcess;
 
     private final String[] emogyList = {
@@ -31,6 +33,7 @@ public class UserInteraction implements KeyListener {
         messagesToProcess = new PriorityBlockingQueue<>();
         lastInteraction = System.currentTimeMillis();
         lastZoombido = System.currentTimeMillis();
+        timeToLeaveAloneToRead = 0;
     }
 
     // Nota: la func no retorna fins que l'usauri no fa return.
@@ -98,19 +101,31 @@ public class UserInteraction implements KeyListener {
             default:
         }
     }
+    public void updateTimeToRead(String textToRead){
+        if(textToRead == null || textToRead.isEmpty())return;
+
+        String[] words = textToRead.split("\\s+");
+        timeToLeaveAloneToRead = words.length * 250L;
+    }
+
+    public long currentTime (){
+        return System.currentTimeMillis() - timeToLeaveAloneToRead;
+    }
 
     public long timeSinceLastInteraction(){
-        return System.currentTimeMillis() - lastInteraction;
+        return currentTime() - lastInteraction;
     }
 
     public long timeSinceLastZoombido() {
-        return System.currentTimeMillis() - lastZoombido;
+        return currentTime() - lastZoombido;
     }
 
     public void interacted() {
         lastInteraction = System.currentTimeMillis();
+        timeToLeaveAloneToRead = 0;
     }
     public void interactedZoombido() {
         lastZoombido = System.currentTimeMillis();
+        timeToLeaveAloneToRead = 0;
     }
 }

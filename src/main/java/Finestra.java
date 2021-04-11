@@ -21,8 +21,6 @@ public class Finestra extends JFrame {
         jepchat.setForeground(Color.GREEN);
         jepchat.setAutoscrolls(true);
         jepchat.setPreferredSize(new Dimension(600,600));
-
-
         jepchat.setBorder(BorderFactory.createEmptyBorder());
 
         JScrollPane editorScrollPane = new JScrollPane(jepchat);
@@ -43,6 +41,10 @@ public class Finestra extends JFrame {
         getContentPane().add(jtfmessage,BorderLayout.SOUTH);
 
         pack();
+    }
+
+    public void disableTextbox(){
+        this.jtfmessage.setEnabled(false);
     }
 
     public String getMessage(){

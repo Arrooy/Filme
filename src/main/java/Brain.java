@@ -142,6 +142,7 @@ public class Brain {
                     break;
                 }
                 String response = computeResponse(di);
+                ui.updateTimeToRead(response);
                 f.addToChat("Filme",response);
             } else {
 
@@ -158,9 +159,15 @@ public class Brain {
                 }
 
             }
-            //System.out.println(ui.timeSinceLastInteraction());
 
+            System.out.println(ui.timeSinceLastInteraction());
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } while (true);
+        f.disableTextbox();
     }
 
     public static void main(String[] args) {
