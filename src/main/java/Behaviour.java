@@ -81,7 +81,7 @@ public enum Behaviour {
     }),
     RESPONSE_N_RESULTS_DESCRIPTION(new String[]{
             "About %s: %s",
-            "My description for %s"
+            "My description for %s is: %s"
     }),
     RESPONSE_NO_RESULTS_ACTORS(new String[]{
             "I cannot find any actors for the movie you asked...",
