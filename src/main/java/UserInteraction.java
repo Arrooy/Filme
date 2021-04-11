@@ -66,12 +66,6 @@ public class UserInteraction implements KeyListener {
         this.userName = userName;
     }
 
-    public void print(String message){
-        String line = filterLine(message);
-
-        brain.getWindow().addToChat(userName, line);
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {}
     @Override
@@ -94,7 +88,7 @@ public class UserInteraction implements KeyListener {
             case KeyEvent.VK_ENTER:
                 String message = brain.getWindow().getMessage();
                 messagesToProcess.add(message);
-                print(message);
+                brain.getWindow().addToChat(userName, message);
                 break;
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);
