@@ -17,6 +17,8 @@ public class UserInteraction {
             ":S",
             "¬¬",
             "o.O",
+            "XD",
+            "UwU",
             "C.c"
     };
 

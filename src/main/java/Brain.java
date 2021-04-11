@@ -1,12 +1,8 @@
-import com.omertron.themoviedbapi.MovieDbException;
-import com.omertron.themoviedbapi.TheMovieDbApi;
-import com.omertron.themoviedbapi.enumeration.SearchType;
-
 public class Brain {
 
     private boolean exit = false;
     private String input;
-    private String answer;
+    private DigestedInput answer;
 
     public Brain() {
 
@@ -25,11 +21,10 @@ public class Brain {
 
     private String computeResponse() {
         // De momento printamos lo que nos viene del NLP tal cual, sin nada mas
-        return answer;
+        return answer.getAction() + " - " + answer.getObject();
     }
 
     public static void main(String[] args) {
-
         NLP nlp = NLP.getInstance();
         nlp.process("How do you describe ironman?");
 

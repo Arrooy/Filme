@@ -1,12 +1,15 @@
 Objects:movie
 Synonyms:movie--film--motion picture
 
-Actions:recommend--popular--trending--rating--describe
-Synonyms:recommend--advise--suggest--propose--counsel--advocate--prescribe
-Synonyms:popular--trendy--hot--vogue--in demand--favourite--well-received
-Synonyms:trending
-Synonyms:rating--rated--grade--rank--evaluation--level
+Actions:popular--describe--actor--think
+Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received
 Synonyms:describe--description--explain--report--recount--chronicle--portray
+Synonyms:actor--cast--appear--participates--performer--player--movie star--film star--actress--protagonist
+Synonyms:think--thought--review--reflect--analyse--analyze--use your loaf--apprise
 
-Precedents:from--of--at--for--describe
+Special actions:release
+Synonyms:appeared on a cinema--appeared--released--came out--published--release year--on the big screen--year--time
 
+Precedents:from--of--on--in--at--for--the--describe--movie--was--when
+
+Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close
