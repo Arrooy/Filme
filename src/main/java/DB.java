@@ -40,7 +40,7 @@ public class DB {
         return switch (res.getTotalResults()) {
             case 0 -> fallback.noResult(filmName);
             case 1 -> res.getResults().get(0).getOverview();
-            default -> fallback.tooManyResults(filmName, res).getOverview();
+            default -> Behaviour.RESPONSE_N_RESULTS_DESCRIPTION.getRandom().formatted(filmName, fallback.tooManyResults(filmName, res).getOverview());
         };
     }
 
