@@ -59,7 +59,6 @@ public class Finestra extends JFrame {
 
     public void addToChat(String name, String newText){
         jepchat.setText(jepchat.getText() + name + ": " + newText + "\n");
-
     }
 
     public void attach(UserInteraction ui){

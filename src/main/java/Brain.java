@@ -2,14 +2,12 @@ import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;
 
-import javax.management.MBeanServerInvocationHandler;
-
 public class Brain {
-    // Si pasen 10 segons i no hi ha resposta, good bye!
+    // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
     public static final long VIBRATE_SCREEN_TIME = 15 * 1000;
 
-    private UserInteraction ui;
+    private final UserInteraction ui;
     private Finestra f;
 
     public Brain() {
@@ -64,6 +62,7 @@ public class Brain {
     private String computeReview(DigestedInput di) throws MovieDbException {
         if (di.getMovieName() == null || di.getMovieName().isBlank())
             return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
+
         return DB.getInstance().getMovieReview(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -80,8 +79,8 @@ public class Brain {
     private String computeSimilar(DigestedInput di) throws MovieDbException {
         if (di.getMovieName() == null || di.getMovieName().isBlank())
             return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
-        return "Not yet!"; //TODO
-        /*return DB.getInstance().get(di.getMovieName(), new Fallback<MovieInfo>() {
+
+        return DB.getInstance().getSimilarMovie(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
                 return "I'm afraid i didn't watch that film...";
@@ -91,7 +90,7 @@ public class Brain {
             public MovieInfo tooManyResults(String queryUsed, ResultList<MovieInfo> results) {
                 return results.getResults().get(0);
             }
-        });*/
+        });
     }
 
     private String computeActor(DigestedInput di) throws MovieDbException {

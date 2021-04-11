@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public enum Behaviour {
@@ -107,8 +106,6 @@ public enum Behaviour {
             "%s is blowing up rn.",
             "%s is pretty popular at the moment."
     });
-
-
 
     private final String[] possible_msgs;
     private int lastMessage;
