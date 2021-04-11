@@ -69,7 +69,6 @@ public class Brain {
         });
     }
 
-    //TODO: carregar-se els tags HTML
     private String computeReview(DigestedInput di) throws MovieDbException {
         if (di.getMovieName() == null || di.getMovieName().isBlank())
             return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
@@ -84,7 +83,7 @@ public class Brain {
             public MovieInfo tooManyResults(String queryUsed, ResultList<MovieInfo> results) {
                 return results.getResults().get(0);
             }
-        });
+        }).replaceAll("<.*?>","");
     }
 
     private String computeSimilar(DigestedInput di) throws MovieDbException {
@@ -166,13 +165,11 @@ public class Brain {
                     ui.interacted();
                 }
 
-
                 if (ui.timeSinceLastZoombido() > VIBRATE_SCREEN_TIME) {
                     f.addToChat("Filme", Behaviour.UI_APPEAL_SAD.getRandom());
                     f.zumbido();
                     ui.interactedZoombido();
                 }
-
             }
 
             System.out.println(ui.timeSinceLastInteraction());
