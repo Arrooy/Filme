@@ -62,26 +62,27 @@ public enum Behaviour {
             "Oops! I don't think I know the release date for %s."
     }),
     RESPONSE_N_RESULTS_RELEASE(new String[]{
-            "%s was released in %s",
-            "If I'm not mistaken, %s released in %s",
-            "The film %s released in %s"
+            "%s was released in %s.",
+            "If I'm not mistaken, %s released in %s.",
+            "The film %s released in %s."
     }),
     RESPONSE_NO_RESULTS_SIMILAR(new String[]{
-            "Oops! I couldn't find movies similar to %s. Maybe try with another one",
+            "Oops! I couldn't find movies similar to %s. Maybe try with another one.",
             "Sorry, I didn't find any movie similar to %s.",
             "Hmmm... I don't think I know any movie related to %s. Try with another film."
     }),
     RESPONSE_N_RESULTS_SIMILAR(new String[]{
-            "Sure. Some movies similar to %s include %s",
-            "Movies similar to %s? %s",
-            "Here are movies related to %s: %s"
+            "Sure. Some movies similar to %s include %s.",
+            "Movies similar to %s? %s.",
+            "Here are movies related to %s: %s."
     }),
     RESPONSE_NO_RESULTS_DESCRIPTION(new String[]{
-            "Oops! Looks like I don't have a desciption for %s",
-            "Yeah... I don't know how to describe %s"
+            "Oops! Looks like I don't have a desciption for %s.",
+            "Yeah... I don't know how to describe %s."
     }),
     RESPONSE_N_RESULTS_DESCRIPTION(new String[]{
-            ""
+            "About %s: %s",
+            "My description for %s"
     }),
     RESPONSE_NO_RESULTS_ACTORS(new String[]{
             "I cannot find any actors for the movie you asked...",
@@ -92,8 +93,22 @@ public enum Behaviour {
     RESPONSE_N_RESULTS_ACTORS(new String[]{
             "Some of the actors that appear on %s are: %s",
             "The movie %s has the actors %s in it",
-            "Interestingly enough, the movie %s starred %s"
+            "Interestingly enough, the movie %s starred %s",
+            "About %s: %s",
+            "My description for %s is: %s."
+    }),
+    RESPONSE_NO_RESULTS_TRENDING(new String[]{
+            "I didn't find any trending movie right now. Try asking later.",
+            "Can't find any trending film at the moment."
+    }),
+    RESPONSE_N_RESULTS_TRENDING(new String[]{
+            "Sure. %s it's whats hot right now.",
+            "I've heard %s is trending right now.",
+            "%s is blowing up rn.",
+            "%s is pretty popular at the moment."
     });
+
+
 
     private final String[] possible_msgs;
     private int lastMessage;
