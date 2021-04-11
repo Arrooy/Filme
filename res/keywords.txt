@@ -1,12 +1,13 @@
 Objects:movie
 Synonyms:movie--film--motion picture
 
-Actions:popular--think--describe--released--actor--similar--you're useless--my name is
+Actions:popular--think--describe--released--actor--similar--you're useless--fuck--my name is
 Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received
 Synonyms:describe--about--description--explain--report--recount--chronicle--portray
 Synonyms:actor--acted--cast--appeared on a cinema--appear--participates--performer--player--movie star--film star--actress--protagonist
 Synonyms:think--thought--opinion--review--reflect--have to say--analyse--analyze--use your loaf--apprise
-Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--cunt--silly
+Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--silly--twat--fool
+Synonyms:fuck--fuck you--fuck off--fuck your mom--cunt--idiot--dickhead--asshole--bitch--bastard--son of a bitch--wanker
 Synonyms:my name is--i'm
 Synonyms:released--aired--on cinemas--appeared on a cinema--appeared--release year--release--came out--come out--published--on the big screen--year--time
 Synonyms:similar--related--alike--resemblant--like
