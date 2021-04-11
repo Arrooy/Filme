@@ -45,11 +45,12 @@ public class Brain {
     }
 
     private String computeYear(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        if (di.getMovieName() == null || di.getMovieName().isBlank())
+            return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
         return DB.getInstance().getFilmDate(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
-                return "Movie " + queryUsed + " not found!";
+                return Behaviour.RESPONSE_NO_RESULTS_RELEASE.getRandom().formatted(queryUsed);
             }
 
             @Override
@@ -61,7 +62,8 @@ public class Brain {
 
     //TODO: carregar-se els tags HTML
     private String computeReview(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        if (di.getMovieName() == null || di.getMovieName().isBlank())
+            return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
         return DB.getInstance().getMovieReview(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -76,7 +78,8 @@ public class Brain {
     }
 
     private String computeSimilar(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        if (di.getMovieName() == null || di.getMovieName().isBlank())
+            return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
         return "Not yet!"; //TODO
         /*return DB.getInstance().get(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
@@ -92,11 +95,12 @@ public class Brain {
     }
 
     private String computeActor(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        if (di.getMovieName() == null || di.getMovieName().isBlank())
+            return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
         return (String) DB.getInstance().getFilmActors(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
-                return "Movie " + queryUsed + " not found!";
+                return Behaviour.RESPONSE_NO_RESULTS_ACTORS.getRandom();
             }
 
             @Override
@@ -111,11 +115,12 @@ public class Brain {
     }
 
     private String computeDescribe(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom(); //TODO: Algo més específic?
+        if (di.getMovieName() == null || di.getMovieName().isBlank())
+            return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
         return DB.getInstance().getFilmDescription(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
-                return "Description not found!";
+                return Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION.getRandom().formatted(queryUsed);
             }
 
             @Override

@@ -101,7 +101,7 @@ public class DB {
         return switch (res.getTotalResults()) {
             case 0 -> fallback.noResult(filmName);
             case 1 -> res.getResults().get(0).getReleaseDate();
-            default -> fallback.tooManyResults(filmName, res).getReleaseDate();
+            default -> Behaviour.RESPONSE_N_RESULTS_RELEASE.getRandom().formatted(filmName, fallback.tooManyResults(filmName, res).getReleaseDate());
         };
     }
 
@@ -113,7 +113,7 @@ public class DB {
         return switch (res.getTotalResults()) {
             case 0 -> fallback.noResult(filmName);
             case 1 -> dbApi.getMovieCredits(res.getResults().get(0).getId()).getCast();
-            default ->  getTheTop5ActorNames(filmName, dbApi.getMovieCredits((fallback.tooManyResults(filmName, res).getId())).getCast());
+            default -> getTheTop5ActorNames(filmName, dbApi.getMovieCredits((fallback.tooManyResults(filmName, res).getId())).getCast());
         };
     }
 
@@ -122,7 +122,7 @@ public class DB {
         for(int i = 0; i < 5; i++) {
             names += cast.get(i).getName() + ((i == 3) ? " and " : ((i == 4) ? "" : ", "));
         }
-        return "Some of the actors that appear on " + movie + " are: " + names;
+        return Behaviour.RESPONSE_N_RESULTS_ACTORS.getRandom().formatted(movie, names);
     }
 
     public String getMovieReview(String filmName, Fallback<MovieInfo> fallback) throws  MovieDbException{

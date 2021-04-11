@@ -20,12 +20,21 @@ public enum Behaviour {
             "See you around!",
             "See you later!"
     }),
-    NLP_FAULT(new String[]
-            {"Sorry I didn't get that, can you rephrase that please?",
-             "This is VERY VERY rare. I didnt catch that. Please say it again in other words.",
-             "Yeah... I don't know what you meant by that. Mind asking in a clearer way?"
-            }),
-
+    NLP_FAULT(new String[] {
+            "Sorry I didn't get that, can you rephrase that please?",
+            "This is VERY VERY rare. I didnt catch that. Please say it again in other words.",
+            "Yeah... I don't know what you meant by that. Mind asking in a clearer way?"
+    }),
+    DB_MOVIE_NOT_FOUND(new String[] {
+            "Sorry, but I don't know anything about %s",
+            "I'm afraid to say that i cannot answer anything about %s...",
+            "Hmm... I think I don't know this movie %s"
+    }),
+    NLP_MOVIE_NOT_DETECTED(new String[] {
+            "Sorry, but I don't know which movie are you talking about",
+            "I don't know which movie you are referring to",
+            "I think that you assembled the message incorrectly"
+    }),
     UI_APPEAL(new String[]{
             "Are you there?",
             "Hello? Do you need anything?",
@@ -64,19 +73,27 @@ public enum Behaviour {
     }),
     RESPONSE_N_RESULTS_SIMILAR(new String[]{
             "Sure. Some movies similar to %s include %s",
-            "Movies similar to %s? %s"
+            "Movies similar to %s? %s",
+            "Here are movies related to %s: %s"
     }),
     RESPONSE_NO_RESULTS_DESCRIPTION(new String[]{
             "Oops! Looks like I don't have a desciption for %s",
             "Yeah... I don't know how to describe %s"
     }),
     RESPONSE_N_RESULTS_DESCRIPTION(new String[]{
-            "Sure. Some movies similar to %s include %s",
-            "Movies similar to %s? %s",
-            "Here are movies related to %s: %s"
+            ""
+    }),
+    RESPONSE_NO_RESULTS_ACTORS(new String[]{
+            "I cannot find any actors for the movie you asked...",
+            "The movie you're asking for is quite interesting, but the weather today is far more interesting than that",
+            "I don't know if there are any actors for the movie you are asking for",
+            "Hmmm... no."
+    }),
+    RESPONSE_N_RESULTS_ACTORS(new String[]{
+            "Some of the actors that appear on %s are: %s",
+            "The movie %s has the actors %s in it",
+            "Interestingly enough, the movie %s starred %s"
     });
-
-
 
     private final String[] possible_msgs;
     private int lastMessage;
