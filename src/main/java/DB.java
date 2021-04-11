@@ -89,10 +89,9 @@ public class DB {
 
         ResultList<MovieBasic> res  = dbApi.getDiscoverMovies(dis);
         if(res.getTotalResults() == 0){
-            //TODO: Transofrmar a behaviour
-            return "Trending movie is not available.";
-        }{
-            return res.getResults().get(0).getTitle();
+            return Behaviour.RESPONSE_NO_RESULTS_TRENDING.getRandom();
+        } else {
+            return Behaviour.RESPONSE_N_RESULTS_TRENDING.getRandom().formatted(res.getResults().get(0).getTitle());
         }
     }
 
@@ -107,8 +106,7 @@ public class DB {
                 if(resultList.getTotalResults() == 0)
                     yield fallback.noResult(movieName);
                 else{
-
-                    yield generateListOfSimilarMovies(resultList);
+                    yield generateListOfSimilarMovies(movieName, resultList);
                 }
             }
             default ->{
@@ -116,7 +114,7 @@ public class DB {
                 if(resultList.getTotalResults() == 0)
                     yield fallback.noResult(movieName);
                 else
-                    yield generateListOfSimilarMovies(resultList);
+                    yield generateListOfSimilarMovies(movieName, resultList);
             }
         };
     }
@@ -134,7 +132,7 @@ public class DB {
         return Behaviour.RESPONSE_N_RESULTS_ACTORS.getRandom().formatted(movie, names);
     }
 
-    private String generateListOfSimilarMovies(ResultList<MovieInfo> resultList){
+    private String generateListOfSimilarMovies(String filmName, ResultList<MovieInfo> resultList){
         StringBuilder result = new StringBuilder();
         int num = 0;
         int lastName = Math.min(NUMBER_OF_SIMILAR_MOVIES, resultList.getResults().size() - 1);
@@ -145,7 +143,6 @@ public class DB {
             num++;
         }
 
-        //TODO: Transformar aixo e behaviour
-        return "Some similar movies -> " + result;
+        return Behaviour.RESPONSE_N_RESULTS_SIMILAR.getRandom().formatted(filmName, result);
     }
 }

@@ -28,6 +28,7 @@ public class NLP {
         boolean isExit = isInGroup(keywords.getExitExpressions());
         boolean isAffirmative = isInGroup(keywords.getAffirmations());
         boolean isNegative = isInGroup(keywords.getNegations());
+        boolean isHello = isInGroup(keywords.getHelloExpressions());
 
         System.out.println("Detected object: " + object);
         System.out.println("Detected action: " + action);
@@ -35,8 +36,9 @@ public class NLP {
         System.out.println("Is exit: " + isExit);
         System.out.println("Is affirmative: " + isAffirmative);
         System.out.println("Is negative: " + isNegative);
+        System.out.println("Is hello: " + isHello);
 
-        return new DigestedInput(object, action, movieName, isAffirmative, isNegative, isExit);
+        return new DigestedInput(object, action, movieName, isAffirmative, isNegative, isExit, isHello);
     }
 
     private String getObject() {

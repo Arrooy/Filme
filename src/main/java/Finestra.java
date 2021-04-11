@@ -45,7 +45,7 @@ public class Finestra extends JFrame {
         StyleConstants.setForeground(style, Color.GREEN);
 
         style2 = doc.addStyle("HUMAN",null);
-        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setForeground(style2, Color.WHITE);
 
         jtfmessage = new JTextField();
 

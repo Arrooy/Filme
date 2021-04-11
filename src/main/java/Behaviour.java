@@ -12,6 +12,17 @@ public enum Behaviour {
             "Yay! You're back! Tell me lots of things! Ask ask ask!",
             "I was crying until I noticed you're typing :) Ask me anything!"
     }),
+    HELLO_MSG(new String[]{
+            "Oh hey!",
+            "Hello"
+    }),
+    MEH_MSG(new String[]{
+            "Ok.",
+            "Oh",
+            "...",
+            "Great",
+            "I'm proud of you"
+    }),
     DISMISS(new String[]{
            "Have a great day! Bye!",
             "Good Bye!",

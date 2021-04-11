@@ -31,6 +31,17 @@ public class Brain {
                 case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
                 case "my name is" -> response = updateUserName(di);
             }
+
+            if (response.isBlank()) {
+                if (di.isExit()) {
+                    //TODO exit
+                    response = Behaviour.WELCOME_MSG.getRandom();
+                } else if (di.isHello()) {
+                    response = Behaviour.HELLO_MSG.getRandom();
+                } else if (di.isAffirmative() || di.isNegative()) {
+                    response = Behaviour.MEH_MSG.getRandom();
+                }
+            }
         } catch (MovieDbException e) {
             e.printStackTrace();
         }

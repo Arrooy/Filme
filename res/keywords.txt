@@ -17,4 +17,4 @@ Affirmations:yes--sure--affirmative
 Negations:no--negative--not
 
 Hello:hello--hi--good morning--good evening--good night--hey--hiya--salutations--greetings--hi there--hello there--howdy
-Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close
+Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit
