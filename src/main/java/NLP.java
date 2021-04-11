@@ -30,7 +30,7 @@ public class NLP {
         System.out.println("Detected action: " + action);
         System.out.println("Detected movie name: " + movieName);
 
-        return new DigestedInput(object, action);
+        return new DigestedInput(object, action, movieName);
     }
 
     private String getObject() {

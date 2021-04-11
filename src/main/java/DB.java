@@ -1,22 +1,12 @@
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.TheMovieDbApi;
 import com.omertron.themoviedbapi.enumeration.SearchType;
-import com.omertron.themoviedbapi.methods.TmdbDiscover;
-import com.omertron.themoviedbapi.model.credits.MediaCreditCast;
+import com.omertron.themoviedbapi.enumeration.SortBy;
 import com.omertron.themoviedbapi.model.discover.Discover;
+import com.omertron.themoviedbapi.model.movie.MovieBasic;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
-import com.omertron.themoviedbapi.model.person.PersonFind;
-import com.omertron.themoviedbapi.model.person.PersonInfo;
 import com.omertron.themoviedbapi.model.review.Review;
 import com.omertron.themoviedbapi.results.ResultList;
-import com.omertron.themoviedbapi.results.WrapperGenericList;
-import com.omertron.themoviedbapi.tools.*;
-import org.apache.http.client.HttpClient;
-import org.yamj.api.common.exception.ApiExceptionType;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class DB {
 
@@ -142,5 +132,16 @@ public class DB {
                     yield resultList.getResults().get(0).getContent();
             }
         };
+    }
+    public String getTrendingMovie() throws MovieDbException {
+        Discover dis = new Discover();
+        dis.sortBy(SortBy.POPULARITY_DESC);
+
+        ResultList<MovieBasic> res  = dbApi.getDiscoverMovies(dis);
+        if(res.getTotalResults() == 0){
+            return "Trending movie is not available.";
+        }{
+            return res.getResults().get(0).getTitle();
+        }
     }
 }

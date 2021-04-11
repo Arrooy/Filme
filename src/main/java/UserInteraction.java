@@ -1,14 +1,16 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.Buffer;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Locale;
-import java.util.Scanner;
+import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
 
-public class UserInteraction {
+public class UserInteraction implements KeyListener {
 
-    private final Scanner sc;
-    private final NonblockingBufferedReader nbbr;
+    private final Brain brain;
+    private long lastInteraction;
+    private String userName;
+    private Queue<String> messagesToProcess;
+
     private final String[] emogyList = {
             ":)" ,
             ":(" ,
@@ -22,36 +24,58 @@ public class UserInteraction {
             "C.c"
     };
 
-    UserInteraction(){
-        sc = new Scanner(System.in);
-        nbbr = new NonblockingBufferedReader(new BufferedReader(new InputStreamReader(System.in)));
-    }
-
-    public String getInputNonBlocking(){
-        try {
-            return nbbr.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    UserInteraction( Brain brain){
+        this.brain = brain;
+        userName = "User";
+        messagesToProcess = new PriorityBlockingQueue<>();
     }
 
     // Nota: la func no retorna fins que l'usauri no fa return.
     public String getInput(){
-        String line = sc.nextLine();
-        System.out.println();
-        return filterLine(line);
+        String line = messagesToProcess.poll();
+        return filterLine(line).toLowerCase(Locale.ROOT);
+    }
+
+    public boolean hasInput(){
+        return !messagesToProcess.isEmpty();
     }
 
     private String filterLine(String line) {
+
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
-        line = line.toLowerCase(Locale.ROOT);
+        line = line.trim().replaceAll("( )+"," ");
+        line = line.replaceAll("(\n)+","\n");
         return line;
     }
 
     public void print(String message){
         String line = filterLine(message);
         System.out.println(line);
+    }
+
+    public long timeSinceLastInteraction(){
+        return System.currentTimeMillis() - lastInteraction;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        this.lastInteraction = System.currentTimeMillis();
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                String message = brain.getWindow().getMessage();
+                messagesToProcess.add(message);
+                brain.getWindow().addToChat(userName, message);
+                break;
+            default:
+        }
     }
 }

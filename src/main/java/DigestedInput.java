@@ -1,10 +1,12 @@
 public class DigestedInput {
     private String object;
     private String action;
+    private String movieName;
 
-    public DigestedInput(String object, String action) {
+    public DigestedInput(String object, String action, String movieName) {
         this.object = object;
         this.action = action;
+        this.movieName = movieName;
     }
 
     public String getObject() {
@@ -13,5 +15,9 @@ public class DigestedInput {
 
     public String getAction() {
         return action;
+    }
+
+    public String getMovieName() {
+        return movieName;
     }
 }
