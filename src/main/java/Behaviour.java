@@ -63,12 +63,19 @@ public enum Behaviour {
     NLP_HARD_INSULT(new String[]{
             "Yo mama",
             "EYOW! Why you talk like that tho?",
-            "You better chill ... ugly ass",
-            "you play league of legends right?",
-            "say no more, you play league of legends for sure",
-            "Why you're so salty?",
+            "You better chill ...Ugly ass",
+            "You play League of Legends, right?",
+            "Say no more! You must play League of Legends for sure",
+            "Why are you so salty?",
             "Thats what she said...",
-            "Dont mess with big popa"
+            "Dont mess with big popa",
+            "Damn why are you so mad?",
+            "Are you like... Seriously insulting a bot? So sad",
+            "You're insulting a bot. Your life must be so sad...",
+            "Beep boop beep... Idiot detected!",
+            "Beep. Boop. My bot sensors detect an idiot nearby!",
+            "You might actually need professional help",
+            "Have you considered going to therapy?"
     }),
     UI_APPEAL_SAD(new String[]{
             "I miss u... :(",
