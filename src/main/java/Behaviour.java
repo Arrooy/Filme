@@ -92,9 +92,7 @@ public enum Behaviour {
     RESPONSE_N_RESULTS_ACTORS(new String[]{
             "Some of the actors that appear on %s are: %s",
             "The movie %s has the actors %s in it",
-            "Interestingly enough, the movie %s starred %s",
-            "About %s: %s",
-            "My description for %s is: %s."
+            "Interestingly enough, the movie %s starred %s"
     }),
     RESPONSE_NO_RESULTS_TRENDING(new String[]{
             "I didn't find any trending movie right now. Try asking later.",
