@@ -15,7 +15,7 @@ public class NLP {
         return singleton;
     }
 
-    public String process(String input) {
+    public DigestedInput process(String input) {
         if (input.endsWith("?")) input = input.substring(0, input.length()-1);
 
         String object = getObject(input);
@@ -26,7 +26,7 @@ public class NLP {
         System.out.println("Detected action: " + action);
         System.out.println("Detected movie name: " + movieName);
 
-        return input;
+        return new DigestedInput(object, action);
     }
 
     private String getObject(String input) {

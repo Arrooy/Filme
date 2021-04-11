@@ -1,8 +1,8 @@
-public class ProcessedInput {
+public class DigestedInput {
     private String object;
     private String action;
 
-    public ProcessedInput(String object, String action) {
+    public DigestedInput(String object, String action) {
         this.object = object;
         this.action = action;
     }

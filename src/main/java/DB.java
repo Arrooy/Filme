@@ -65,6 +65,7 @@ public class DB {
 //        } catch (MovieDbException e) {
 //            e.printStackTrace();
 //        }
+
         System.out.println(DB.getInstance().getMovieReview("Cars", new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -121,7 +122,6 @@ public class DB {
             default ->  dbApi.getMovieCredits((fallback.tooManyResults(filmName, res).getId())).getCast();
         };
     }
-
     public String getMovieReview(String filmName, Fallback<MovieInfo> fallback) throws  MovieDbException{
         ResultList<MovieInfo> res = dbApi.searchMovie(filmName,0,"en-US",false,0,0, SearchType.NGRAM);
         return switch (res.getTotalResults()) {
