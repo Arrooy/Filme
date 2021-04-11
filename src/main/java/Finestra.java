@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Finestra extends JFrame {
-
     JTextField jtfmessage;
     JTextPane jepchat;
 

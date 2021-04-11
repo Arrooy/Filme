@@ -3,15 +3,16 @@ public class DigestedInput {
     private String action;
     private String movieName;
 
+    private boolean isAffirmative;
+    private boolean isNegative;
     private boolean exit;
 
-    public DigestedInput(String object, String action, String movieName) {
+    public DigestedInput(String object, String action, String movieName, boolean isAffirmative, boolean isNegative, boolean exit) {
         this.object = object;
         this.action = action;
         this.movieName = movieName;
-    }
-
-    public DigestedInput(boolean exit) {
+        this.isAffirmative = isAffirmative;
+        this.isNegative = isNegative;
         this.exit = exit;
     }
 

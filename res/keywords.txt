@@ -1,15 +1,19 @@
 Objects:movie
 Synonyms:movie--film--motion picture
 
-Actions:popular--describe--actor--think
+Actions:popular--describe--actor--think--release--you're useless--my name is
 Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received
-Synonyms:describe--description--explain--report--recount--chronicle--portray
-Synonyms:actor--cast--appear--participates--performer--player--movie star--film star--actress--protagonist
-Synonyms:think--thought--review--reflect--analyse--analyze--use your loaf--apprise
+Synonyms:describe--about--description--explain--report--recount--chronicle--portray
+Synonyms:actor--cast--appeared on a cinema--appear--participates--performer--player--movie star--film star--actress--protagonist
+Synonyms:think--thought--opinion--review--reflect--analyse--analyze--use your loaf--apprise
+Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--cunt--silly
+Synonyms:my name is--i'm
+Synonyms:release--on cinemas--appeared on a cinema--appeared--released--came out--published--release year--on the big screen--year--time
 
-Special actions:release
-Synonyms:appeared on a cinema--appeared--released--came out--published--release year--on the big screen--year--time
+Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when
 
-Precedents:from--of--on--in--at--for--the--describe--movie--was--when
+Affirmations:yes--sure--affirmative
+Negations:no--negative--not
 
+Hello:hello--hi--good morning--good evening--good night--hey--hiya--salutations--greetings--hi there--hello there--howdy
 Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close

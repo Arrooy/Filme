@@ -1,16 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Keywords {
     private String[] objects;
     private String[] actions;
-    private String[] specialActions;
     private String[] precedents;
+    private String[] affirmations;
+    private String[] negations;
     private String[] exitExpressions;
-    private HashMap<String, String[]> synonyms;
+    private final HashMap<String, String[]> synonyms;
 
     public Keywords(String fileName) {
         synonyms = new HashMap<>();
@@ -30,15 +30,20 @@ public class Keywords {
         switch (line.split(":")[0]) {
             case "Objects" -> objects = values;
             case "Actions" -> actions = values;
-            case "Special actions" -> specialActions = values;
             case "Precedents" -> precedents = values;
+            case "Affirmations" -> affirmations = values;
+            case "Negations" -> negations = values;
             case "Exit" -> exitExpressions = values;
             case "Synonyms" -> synonyms.put(values[0], values);
         }
     }
 
-    public String[] getSpecialActions() {
-        return specialActions;
+    public String[] getAffirmations() {
+        return affirmations;
+    }
+
+    public String[] getNegations() {
+        return negations;
     }
 
     public String[] getObjects() {

@@ -24,12 +24,18 @@ public enum Behaviour {
             "I dont have all day... what do you need?",
             "Im a bit in a hurry, can you please ask fast?"
     }),
+    NLP_INSULT(new String[]{
+            "That was mean...",
+            "Hey!",
+            "I don't think it is necessary to say anything"
+    }),
     UI_APPEAL_SAD(new String[]{
             "I miss u... :(",
             "Why you dont type with me anymore?",
             "Where are you? Why you dont type with me like before?",
             "There is another one right? Does it have a better NLP than me? ¬¬"
     });
+
 
     private final String[] possible_msgs;
     private int lastMessage;

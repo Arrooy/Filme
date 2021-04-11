@@ -25,7 +25,7 @@ public class UserInteraction implements KeyListener {
     };
     private long lastZoombido;
 
-    UserInteraction( Brain brain){
+    UserInteraction(Brain brain){
         this.brain = brain;
         userName = "User";
         messagesToProcess = new PriorityBlockingQueue<>();
@@ -39,12 +39,19 @@ public class UserInteraction implements KeyListener {
         return filterLine(line).toLowerCase(Locale.ROOT);
     }
 
+    //private boolean shown = false;
     public boolean hasInput(){
-        return !messagesToProcess.isEmpty();
+        /*if (System.currentTimeMillis() - lastInteraction > 1000 && !shown) {
+            System.out.println("1s");
+            shown = true;
+        } else {
+            shown = false;
+        }
+        if (messagesToProcess.size() != 0) System.out.println(messagesToProcess.size());
+        */return !messagesToProcess.isEmpty();
     }
 
     private String filterLine(String line) {
-
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
         line = line.trim().replaceAll("( )+"," ");

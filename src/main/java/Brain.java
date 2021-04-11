@@ -20,15 +20,19 @@ public class Brain {
     private String computeResponse(DigestedInput di) {
         String response = "";
         String action = di.getAction();
-        try {
-            if (action.equals("describe")) {
-                response = computeDescribe(di);
-            } else if (action.equals("trending")) {
-                response = computeTrending(di);
-            } else if (action.equals("year")) {
-                response = computeYear(di);
-            }
 
+        if (action == null) return Behaviour.NLP_FAULT.getRandom();
+
+        try {
+            switch (action) {
+                case "describe" -> response = computeDescribe(di);
+                case "popular" -> response = computeTrending(di);
+                case "actor" -> response = "Not yet bro!"; //TODO
+                case "think" -> response = "Not yet bro!"; //TODO
+                case "release" -> response = computeYear(di);
+                case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
+                case "my name is" -> response = "Not yet bro!"; //TODO
+            }
         } catch (MovieDbException e) {
             e.printStackTrace();
         }
@@ -54,6 +58,7 @@ public class Brain {
     }
 
     private String computeDescribe(DigestedInput di) throws MovieDbException {
+        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom(); //TODO: Algo més específic?
         return DB.getInstance().getFilmDescription(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -68,8 +73,7 @@ public class Brain {
 
     }
 
-    public void think() {
-
+    public void think(){
         f = new Finestra();
         f.attach(ui);
         f.setVisible(true);
@@ -101,7 +105,7 @@ public class Brain {
                 }
 
             }
-            System.out.println(ui.timeSinceLastInteraction());
+            //System.out.println(ui.timeSinceLastInteraction());
 
         } while (true);
     }
