@@ -15,14 +15,14 @@ public class Finestra extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);
         jepchat = new JTextPane();
-
+        jepchat.setFont(new Font("Arial", Font.PLAIN, 16));
         jepchat.setFocusable(false);
         jepchat.setEditable(false);
 
         jepchat.setBackground(Color.BLACK);
         jepchat.setForeground(Color.GREEN);
         jepchat.setAutoscrolls(true);
-        jepchat.setPreferredSize(new Dimension(400,600));
+        jepchat.setPreferredSize(new Dimension(600,600));
 
 
         jepchat.setBorder(BorderFactory.createEmptyBorder());
@@ -36,12 +36,10 @@ public class Finestra extends JFrame {
         jtfmessage = new JTextField();
 
 //        JLabel title = new JLabel("Filme");
-//
 //        title.setFont(new Font("Arial", Font.PLAIN, 23));
 //        title.setHorizontalAlignment(JLabel.CENTER);
 //        title.setVerticalAlignment(JLabel.CENTER);
 //        title.setForeground(Color.WHITE);
-//
 //        getContentPane().add(title,BorderLayout.NORTH);
 
         getContentPane().add(jtfmessage,BorderLayout.SOUTH);
@@ -81,9 +79,14 @@ public class Finestra extends JFrame {
 
     public void zumbido(){
         Point initPos = new Point(getLocation().x,getLocation().y);
-        Long actualTime = System.nanoTime();
-        while(System.nanoTime() - actualTime < 100000000) {
-            setLocation(getLocation().x + Math.round((float) Math.random() * zumbidoSpeed - zumbidoSpeed/2), getLocation().y + Math.round((float) Math.random() * zumbidoSpeed - zumbidoSpeed/2));
+        long actualTime = System.currentTimeMillis();
+        while(System.currentTimeMillis() - actualTime <= 2000) {
+            try {
+                setLocation((int) (getLocation().x + Math.round((float) Math.random() * zumbidoSpeed - (float)zumbidoSpeed/2.0)), getLocation().y + Math.round((float) Math.random() * zumbidoSpeed - zumbidoSpeed/2));
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         setLocation(initPos);
     }

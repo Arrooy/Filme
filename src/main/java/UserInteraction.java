@@ -23,11 +23,14 @@ public class UserInteraction implements KeyListener {
             "UwU",
             "C.c"
     };
+    private long lastZoombido;
 
     UserInteraction( Brain brain){
         this.brain = brain;
         userName = "User";
         messagesToProcess = new PriorityBlockingQueue<>();
+        lastInteraction = System.currentTimeMillis();
+        lastZoombido = System.currentTimeMillis();
     }
 
     // Nota: la func no retorna fins que l'usauri no fa return.
@@ -51,31 +54,52 @@ public class UserInteraction implements KeyListener {
 
     public void print(String message){
         String line = filterLine(message);
-        System.out.println(line);
+
+        brain.getWindow().addToChat(userName, line);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+        // Comeback message
+        if (timeSinceLastInteraction() > Brain.APPEAL_TIME || timeSinceLastZoombido() > Brain.VIBRATE_SCREEN_TIME){
+            brain.getWindow().addToChat("Filme",Behaviour.USER_TYPES_AFTER_BEING_AWAY.getRandom());
+        }
+
+        // Restart message timers
+        this.lastInteraction = System.currentTimeMillis();
+        this.lastZoombido = System.currentTimeMillis();
+
+        // Process enter.
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                String message = brain.getWindow().getMessage();
+                messagesToProcess.add(message);
+                print(message);
+                break;
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+            default:
+        }
     }
 
     public long timeSinceLastInteraction(){
         return System.currentTimeMillis() - lastInteraction;
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {}
-    @Override
-    public void keyPressed(KeyEvent e) {
-
+    public long timeSinceLastZoombido() {
+        return System.currentTimeMillis() - lastZoombido;
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        this.lastInteraction = System.currentTimeMillis();
-
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_ENTER:
-                String message = brain.getWindow().getMessage();
-                messagesToProcess.add(message);
-                brain.getWindow().addToChat(userName, message);
-                break;
-            default:
-        }
+    public void interacted() {
+        lastInteraction = System.currentTimeMillis();
+    }
+    public void interactedZoombido() {
+        lastZoombido = System.currentTimeMillis();
     }
 }

@@ -2,9 +2,14 @@ import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;
 
+import javax.management.MBeanServerInvocationHandler;
+
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, good bye!
-    private static final long TIME_EQUALS_DISCONNECT = 10 * 1000;
+    public static final long APPEAL_TIME = 10 * 1000;
+    public static final long VIBRATE_SCREEN_TIME = 15 * 1000;
+
+
     private UserInteraction ui;
     private Finestra f;
 
@@ -12,24 +17,15 @@ public class Brain {
         ui = new UserInteraction(this);
     }
 
-    private DigestedInput processInput (String input) {
-        NLP nlp = NLP.getInstance();
-        return nlp.process(input);
-    }
-
-    private boolean isUserActive() {
-        return ui.timeSinceLastInteraction() > TIME_EQUALS_DISCONNECT;
-    }
-
     private String computeResponse(DigestedInput di) {
         String response = "";
         String action = di.getAction();
         try {
-            if(action.equals("describe")) {
+            if (action.equals("describe")) {
                 response = computeDescribe(di);
-            }else if(action.equals("trending")){
+            } else if (action.equals("trending")) {
                 response = computeTrending(di);
-            }else if(action.equals("year")){
+            } else if (action.equals("year")) {
                 response = computeYear(di);
             }
 
@@ -72,22 +68,42 @@ public class Brain {
 
     }
 
-    public void think(){
+    public void think() {
 
         f = new Finestra();
         f.attach(ui);
         f.setVisible(true);
         f.requestWrite();
+        f.addToChat("Filme", Behaviour.WELCOME_MSG.getRandom());
 
         do {
-            if(ui.hasInput()){
+            if (ui.hasInput()) {
                 String input = ui.getInput();
-                System.out.println(input);
+                DigestedInput di = NLP.getInstance().process(input);
+                if(di.userWantsToLeave()){
+                    f.addToChat("Filme", Behaviour.DISMISS.getRandom());
+                    break;
+                }
+                String response = computeResponse(di);
+                f.addToChat("Filme",response);
+            } else {
+
+                if (ui.timeSinceLastInteraction() > APPEAL_TIME) {
+                    f.addToChat("Filme", Behaviour.UI_APPEAL.getRandom());
+                    ui.interacted();
+                }
+
+
+                if (ui.timeSinceLastZoombido() > VIBRATE_SCREEN_TIME) {
+                    f.addToChat("Filme", Behaviour.UI_APPEAL_SAD.getRandom());
+                    f.zumbido();
+                    ui.interactedZoombido();
+                }
+
             }
-//            DigestedInput pi = processInput(input);
-//            String response = computeResponse(pi);
-//            ui.print(response);
-        } while (isUserActive());
+            System.out.println(ui.timeSinceLastInteraction());
+
+        } while (true);
     }
 
     public static void main(String[] args) {

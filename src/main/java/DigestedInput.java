@@ -3,10 +3,16 @@ public class DigestedInput {
     private String action;
     private String movieName;
 
+    private boolean exit;
+
     public DigestedInput(String object, String action, String movieName) {
         this.object = object;
         this.action = action;
         this.movieName = movieName;
+    }
+
+    public DigestedInput(boolean exit) {
+        this.exit = exit;
     }
 
     public String getObject() {
@@ -19,5 +25,9 @@ public class DigestedInput {
 
     public String getMovieName() {
         return movieName;
+    }
+
+    public boolean userWantsToLeave() {
+        return exit;
     }
 }
