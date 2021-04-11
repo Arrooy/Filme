@@ -1,11 +1,21 @@
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.util.Locale;
 
 public class Finestra extends JFrame {
-    JTextField jtfmessage;
-    JTextPane jepchat;
+
+    private JTextField jtfmessage;
+    private JTextPane jepchat;
+
+    private Style style;
+    private Style style2;
 
     private final static int zumbidoSpeed = 10;
+
     public Finestra(){
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setTitle("Filme");
@@ -23,11 +33,19 @@ public class Finestra extends JFrame {
         jepchat.setPreferredSize(new Dimension(600,600));
         jepchat.setBorder(BorderFactory.createEmptyBorder());
 
+        StyledDocument doc = jepchat.getStyledDocument();
+
         JScrollPane editorScrollPane = new JScrollPane(jepchat);
         editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         editorScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         editorScrollPane.setBorder(null);
         getContentPane().add(editorScrollPane,BorderLayout.CENTER);
+
+        style = doc.addStyle("BOT",null);
+        StyleConstants.setForeground(style, Color.GREEN);
+
+        style2 = doc.addStyle("HUMAN",null);
+        StyleConstants.setForeground(style, Color.WHITE);
 
         jtfmessage = new JTextField();
 
@@ -58,7 +76,16 @@ public class Finestra extends JFrame {
     }
 
     public void addToChat(String name, String newText){
-        jepchat.setText(jepchat.getText() + name + ": " + newText + "\n");
+
+        StyledDocument doc = jepchat.getStyledDocument();
+        String text = name + ": " + newText + "\n";
+        if(name.toLowerCase(Locale.ROOT).contains("filme")){
+            try { doc.insertString(doc.getLength(),text, style); }
+            catch (BadLocationException e){}
+        }else{
+            try { doc.insertString(doc.getLength(),  text, style2); }
+            catch (BadLocationException e){}
+        }
     }
 
     public void attach(UserInteraction ui){
@@ -81,7 +108,7 @@ public class Finestra extends JFrame {
         long actualTime = System.currentTimeMillis();
         while(System.currentTimeMillis() - actualTime <= 2000) {
             try {
-                setLocation((int) (getLocation().x + Math.round((float) Math.random() * zumbidoSpeed - (float)zumbidoSpeed/2.0)), getLocation().y + Math.round((float) Math.random() * zumbidoSpeed - zumbidoSpeed/2));
+                setLocation((int) (getLocation().x + Math.round((float) Math.random() * zumbidoSpeed - (float)zumbidoSpeed/2.0)), getLocation().y + Math.round((float) Math.random() * zumbidoSpeed - (float)zumbidoSpeed/2));
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
