@@ -27,11 +27,11 @@ public class Brain {
                 case "describe" -> response = computeDescribe(di);
                 case "popular" -> response = computeTrending(di);
                 case "actor" -> response = computeActor(di);
-                case "think" -> response = "Not yet bro!"; //TODO
-                case "release" -> response = computeYear(di);
-                case "similar" -> response = "Not yet bro!"; //TODO
+                case "think" -> response = computeReview(di);
+                case "released" -> response = computeYear(di);
+                case "similar" -> response = computeSimilar(di);
                 case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
-                case "my name is" -> response = updateUserName(di); //TODO
+                case "my name is" -> response = updateUserName(di);
             }
         } catch (MovieDbException e) {
             e.printStackTrace();
@@ -45,6 +45,7 @@ public class Brain {
     }
 
     private String computeYear(DigestedInput di) throws MovieDbException {
+        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
         return DB.getInstance().getFilmDate(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -56,6 +57,38 @@ public class Brain {
                 return results.getResults().get(0);
             }
         });
+    }
+
+    //TODO: carregar-se els tags HTML
+    private String computeReview(DigestedInput di) throws MovieDbException {
+        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        return DB.getInstance().getMovieReview(di.getMovieName(), new Fallback<MovieInfo>() {
+            @Override
+            public String noResult(String queryUsed) {
+                return "I'm afraid i didn't watch that film...";
+            }
+
+            @Override
+            public MovieInfo tooManyResults(String queryUsed, ResultList<MovieInfo> results) {
+                return results.getResults().get(0);
+            }
+        });
+    }
+
+    private String computeSimilar(DigestedInput di) throws MovieDbException {
+        if (di.getMovieName() == null) return Behaviour.NLP_FAULT.getRandom();
+        return "Not yet!"; //TODO
+        /*return DB.getInstance().get(di.getMovieName(), new Fallback<MovieInfo>() {
+            @Override
+            public String noResult(String queryUsed) {
+                return "I'm afraid i didn't watch that film...";
+            }
+
+            @Override
+            public MovieInfo tooManyResults(String queryUsed, ResultList<MovieInfo> results) {
+                return results.getResults().get(0);
+            }
+        });*/
     }
 
     private String computeActor(DigestedInput di) throws MovieDbException {
