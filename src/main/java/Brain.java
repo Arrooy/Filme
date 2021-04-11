@@ -29,14 +29,12 @@ public class Brain {
                 case "released" -> response = computeYear(di);
                 case "similar" -> response = computeSimilar(di);
                 case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
+                case "fuck" -> response = Behaviour.NLP_HARD_INSULT.getRandom();
                 case "my name is" -> response = updateUserName(di);
             }
 
             if (response.isBlank()) {
-                if (di.isExit()) {
-                    //TODO exit
-                    response = Behaviour.WELCOME_MSG.getRandom();
-                } else if (di.isHello()) {
+                if (di.isHello()) {
                     response = Behaviour.HELLO_MSG.getRandom();
                 } else if (di.isAffirmative() || di.isNegative()) {
                     response = Behaviour.MEH_MSG.getRandom();

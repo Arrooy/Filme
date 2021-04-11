@@ -11,7 +11,7 @@ public class UserInteraction implements KeyListener {
     private long timeToLeaveAloneToRead;
     private String userName;
 
-    private Queue<String> messagesToProcess;
+    private final Queue<String> messagesToProcess;
 
     private final String[] emogyList = {
             ":)" ,
@@ -25,6 +25,7 @@ public class UserInteraction implements KeyListener {
             "UwU",
             "C.c"
     };
+
     private long lastZoombido;
 
     UserInteraction(Brain brain){
@@ -42,21 +43,18 @@ public class UserInteraction implements KeyListener {
         return filterLine(line).toLowerCase(Locale.ROOT);
     }
 
-    //private boolean shown = false;
     public boolean hasInput(){
-        /*if (System.currentTimeMillis() - lastInteraction > 1000 && !shown) {
-            System.out.println("1s");
-            shown = true;
-        } else {
-            shown = false;
-        }
-        if (messagesToProcess.size() != 0) System.out.println(messagesToProcess.size());
-        */return !messagesToProcess.isEmpty();
+        return !messagesToProcess.isEmpty();
     }
 
     private String filterLine(String line) {
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
+
+        //Eliminem simbols ascii que no son d'interes.
+        line = line.replaceAll("/[$-/:-?{-~!\"^_`\\[\\]]/","");
+
+        // Eliminem espais i salts de linia multiples.
         line = line.trim().replaceAll("( )+"," ");
         line = line.replaceAll("(\n)+","\n");
         return line;

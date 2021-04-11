@@ -60,6 +60,16 @@ public enum Behaviour {
             "...",
             "That was pretty unnecessary..."
     }),
+    NLP_HARD_INSULT(new String[]{
+            "Yo mama",
+            "EYOW! Why you talk like that tho?",
+            "You better chill ... ugly ass",
+            "you play league of legends right?",
+            "say no more, you play league of legends for sure",
+            "Why you're so salty?",
+            "Thats what she said...",
+            "Dont mess with big popa"
+    }),
     UI_APPEAL_SAD(new String[]{
             "I miss u... :(",
             "Why you dont type with me anymore?",
