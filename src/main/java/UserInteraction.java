@@ -59,6 +59,10 @@ public class UserInteraction implements KeyListener {
         return line;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public void print(String message){
         String line = filterLine(message);
 

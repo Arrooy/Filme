@@ -30,13 +30,19 @@ public class Brain {
                 case "actor" -> response = "Not yet bro!"; //TODO
                 case "think" -> response = "Not yet bro!"; //TODO
                 case "release" -> response = computeYear(di);
+                case "similar" -> response = "Not yet bro!"; //TODO
                 case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
-                case "my name is" -> response = "Not yet bro!"; //TODO
+                case "my name is" -> response = updateUserName(di); //TODO
             }
         } catch (MovieDbException e) {
             e.printStackTrace();
         }
         return response;
+    }
+
+    private String updateUserName(DigestedInput di) {
+        ui.setUserName(di.getMovieName());
+        return "Nice to meet you " + di.getMovieName() + "!";
     }
 
     private String computeYear(DigestedInput di) throws MovieDbException {
