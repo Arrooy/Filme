@@ -11,6 +11,7 @@ public class Keywords {
     private String[] negations;
     private String[] exitExpressions;
     private String[] helloExpressions;
+    private String[] helpExpressions;
     private final HashMap<String, String[]> synonyms;
 
     public Keywords(String fileName) {
@@ -36,6 +37,7 @@ public class Keywords {
             case "Negations" -> negations = values;
             case "Exit" -> exitExpressions = values;
             case "Hello" -> helloExpressions = values;
+            case "Help" -> helpExpressions = values;
             case "Synonyms" -> synonyms.put(values[0], values);
         }
     }
@@ -71,4 +73,9 @@ public class Keywords {
     public String[] getHelloExpressions() {
         return helloExpressions;
     }
+    
+    public String[] getHelpExpressions() {
+        return helpExpressions;
+    }
+
 }

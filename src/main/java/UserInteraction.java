@@ -27,6 +27,7 @@ public class UserInteraction implements KeyListener {
     };
 
     private long lastZoombido;
+    private boolean missingUser;
 
     UserInteraction(Brain brain){
         this.brain = brain;
@@ -35,6 +36,7 @@ public class UserInteraction implements KeyListener {
         lastInteraction = System.currentTimeMillis();
         lastZoombido = System.currentTimeMillis();
         timeToLeaveAloneToRead = 0;
+        missingUser = false;
     }
 
     // Nota: la func no retorna fins que l'usauri no fa return.
@@ -73,8 +75,9 @@ public class UserInteraction implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
         // Comeback message
-        if (timeSinceLastInteraction() > Brain.APPEAL_TIME || timeSinceLastZoombido() > Brain.VIBRATE_SCREEN_TIME){
-            brain.getWindow().addToChat("Filme",Behaviour.USER_TYPES_AFTER_BEING_AWAY.getRandom());
+        if (timeSinceLastInteraction() > Brain.APPEAL_TIME || missingUser){
+            brain.getWindow().addToChat("Filme", Behaviour.USER_TYPES_AFTER_BEING_AWAY.getRandom());
+            missingUser = false;
         }
 
         // Restart message timers
@@ -108,16 +111,9 @@ public class UserInteraction implements KeyListener {
         return currentTime() - lastInteraction;
     }
 
-    public long timeSinceLastZoombido() {
-        return currentTime() - lastZoombido;
-    }
-
     public void interacted() {
         lastInteraction = System.currentTimeMillis();
         timeToLeaveAloneToRead = 0;
-    }
-    public void interactedZoombido() {
-        lastZoombido = System.currentTimeMillis();
-        timeToLeaveAloneToRead = 0;
+        missingUser = true;
     }
 }

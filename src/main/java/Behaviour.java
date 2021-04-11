@@ -16,6 +16,9 @@ public enum Behaviour {
             "Oh hey!",
             "Hello"
     }),
+    HELP(new String[]{
+            "Currently I can do the following actions:\n\t- Describe a movie\n\t- Review a movie\n\t- Provide the release date of a film\n\t- Find similar films to a particular film\n\t- Show the trending film right now globally\n\t- List the actors from a film."
+    }),
     MEH_MSG(new String[]{
             "Ok.",
             "Oh",
@@ -34,11 +37,6 @@ public enum Behaviour {
             "Sorry I didn't get that, can you rephrase that please?",
             "This is VERY VERY rare. I didnt catch that. Please say it again in other words.",
             "Yeah... I don't know what you meant by that. Mind asking in a clearer way?"
-    }),
-    DB_MOVIE_NOT_FOUND(new String[] {
-            "Sorry, but I don't know anything about %s",
-            "I'm afraid to say that i cannot answer anything about %s...",
-            "Hmm... I think I don't know this movie %s"
     }),
     NLP_MOVIE_NOT_DETECTED(new String[] {
             "Sorry, but I don't know which movie are you talking about",

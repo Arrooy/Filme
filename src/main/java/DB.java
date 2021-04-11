@@ -95,7 +95,6 @@ public class DB {
         }
     }
 
-
     public String getSimilarMovie(String movieName, Fallback<MovieInfo> fallback) throws MovieDbException {
         ResultList<MovieInfo> res = dbApi.searchMovie(movieName,0,"en-US",false,0,0, SearchType.NGRAM);
         return switch (res.getTotalResults()) {

@@ -5,40 +5,43 @@ import com.omertron.themoviedbapi.results.ResultList;
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
-    public static final long VIBRATE_SCREEN_TIME = 15 * 1000;
 
     private final UserInteraction ui;
     private Finestra f;
+    private boolean vibrateNextTime;
 
     public Brain() {
         ui = new UserInteraction(this);
+        vibrateNextTime = false;
     }
 
     private String computeResponse(DigestedInput di) {
         String response = "";
         String action = di.getAction();
 
-        if (action == null) return Behaviour.NLP_FAULT.getRandom();
-
         try {
-            switch (action) {
-                case "describe" -> response = computeDescribe(di);
-                case "popular" -> response = computeTrending(di);
-                case "actor" -> response = computeActor(di);
-                case "think" -> response = computeReview(di);
-                case "released" -> response = computeYear(di);
-                case "similar" -> response = computeSimilar(di);
-                case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
-                case "fuck" -> response = Behaviour.NLP_HARD_INSULT.getRandom();
-                case "my name is" -> response = updateUserName(di);
-            }
+            if(action != null){
+                switch (action) {
+                    case "describe" -> response = computeDescribe(di);
+                    case "popular" -> response = computeTrending(di);
+                    case "actor" -> response = computeActor(di);
+                    case "think" -> response = computeReview(di);
+                    case "released" -> response = computeYear(di);
+                    case "similar" -> response = computeSimilar(di);
+                    case "you're useless" -> response = Behaviour.NLP_INSULT.getRandom();
+                    case "fuck" -> response = Behaviour.NLP_HARD_INSULT.getRandom();
+                    case "my name is" -> response = updateUserName(di);
+                }
 
-            if (response.isBlank()) {
+            }else{
                 if (di.isHello()) {
                     response = Behaviour.HELLO_MSG.getRandom();
-                } else if (di.isAffirmative() || di.isNegative()) {
+                } else if (di.isHelp()) {
+                    response = Behaviour.HELP.getRandom();
+                }else if (di.isAffirmative() || di.isNegative()) {
                     response = Behaviour.MEH_MSG.getRandom();
                 }
+                if(response.isBlank()) return Behaviour.NLP_FAULT.getRandom();
             }
         } catch (MovieDbException e) {
             e.printStackTrace();
@@ -149,7 +152,7 @@ public class Brain {
             if (ui.hasInput()) {
                 String input = ui.getInput();
                 DigestedInput di = NLP.getInstance().process(input);
-                if(di.userWantsToLeave()){
+                if(di.isExit()){
                     f.addToChat("Filme", Behaviour.DISMISS.getRandom());
                     break;
                 }
@@ -159,14 +162,14 @@ public class Brain {
             } else {
 
                 if (ui.timeSinceLastInteraction() > APPEAL_TIME) {
-                    f.addToChat("Filme", Behaviour.UI_APPEAL.getRandom());
-                    ui.interacted();
-                }
+                    String message = !vibrateNextTime ? Behaviour.UI_APPEAL.getRandom() : Behaviour.UI_APPEAL_SAD.getRandom();
 
-                if (ui.timeSinceLastZoombido() > VIBRATE_SCREEN_TIME) {
-                    f.addToChat("Filme", Behaviour.UI_APPEAL_SAD.getRandom());
-                    f.zumbido();
-                    ui.interactedZoombido();
+                    f.addToChat("Filme", message);
+                    ui.interacted();
+
+                    if(vibrateNextTime) f.zumbido();
+
+                    vibrateNextTime = !vibrateNextTime;
                 }
             }
 
@@ -178,6 +181,14 @@ public class Brain {
             }
         } while (true);
         f.disableTextbox();
+        /*
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        f.dispose();
+        System.exit(0);*/
     }
 
     public static void main(String[] args) {

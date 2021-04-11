@@ -86,6 +86,7 @@ public class Finestra extends JFrame {
             try { doc.insertString(doc.getLength(),  text, style2); }
             catch (BadLocationException e){}
         }
+        jepchat.setCaretPosition(jepchat.getDocument().getLength());
     }
 
     public void attach(UserInteraction ui){
