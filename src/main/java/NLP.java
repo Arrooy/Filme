@@ -122,7 +122,7 @@ public class NLP {
 
     public boolean isInGroup(String[] group) {
         for (String s: group)
-            if (currentSentence.equals(s)) return true;
+            if (currentSentence.contains(s)) return true;
         return false;
     }
 }

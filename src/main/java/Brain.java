@@ -20,7 +20,7 @@ public class Brain {
         String action = di.getAction();
 
         try {
-            if(action != null){
+            if (action != null) {
                 switch (action) {
                     case "describe" -> response = computeDescribe(di);
                     case "popular" -> response = computeTrending(di);
@@ -32,13 +32,12 @@ public class Brain {
                     case "fuck" -> response = Behaviour.NLP_HARD_INSULT.getRandom();
                     case "my name is" -> response = updateUserName(di);
                 }
-
-            }else{
-                if (di.isHello()) {
-                    response = Behaviour.HELLO_MSG.getRandom();
-                } else if (di.isHelp()) {
+            } else {
+                if (di.isHelp()) {
                     response = Behaviour.HELP.getRandom();
-                }else if (di.isAffirmative() || di.isNegative()) {
+                } else if (di.isHello()) {
+                    response = Behaviour.HELLO_MSG.getRandom();
+                } else if (di.isAffirmative() || di.isNegative()) {
                     response = Behaviour.MEH_MSG.getRandom();
                 }
                 if(response.isBlank()) return Behaviour.NLP_FAULT.getRandom();
@@ -181,14 +180,6 @@ public class Brain {
             }
         } while (true);
         f.disableTextbox();
-        /*
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        f.dispose();
-        System.exit(0);*/
     }
 
     public static void main(String[] args) {
