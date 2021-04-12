@@ -25,6 +25,7 @@ public class NLP {
         String action = getAction();
         String object = getObject();
         String movieName = getMovieName();
+        if(movieName != null) movieName = movieName.trim();
         boolean isExit = isInGroup(keywords.getExitExpressions());
         boolean isAffirmative = isInGroup(keywords.getAffirmations());
         boolean isNegative = isInGroup(keywords.getNegations());
