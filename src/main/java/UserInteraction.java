@@ -63,7 +63,7 @@ public class UserInteraction implements KeyListener {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName.substring(0, 1).toUpperCase() + userName.substring(1);
     }
 
     @Override

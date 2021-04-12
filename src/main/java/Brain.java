@@ -53,6 +53,11 @@ public class Brain {
     private String updateUserName(DigestedInput di) {
         ui.setUserName(di.getMovieName());
         return "Nice to meet you " + di.getMovieName() + "!";
+//        String name = di.getMovieName();
+//        name = name.trim();
+//        ui.setUserName(name);
+//        return "Nice to meet you " + name + "!";
+
     }
 
     private String computeYear(DigestedInput di) throws MovieDbException {
