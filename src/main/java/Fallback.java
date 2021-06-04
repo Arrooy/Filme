@@ -1,4 +1,3 @@
-import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;
 
 public interface Fallback <T> {

@@ -1,8 +1,10 @@
-import java.util.Arrays;
+package NLP;
+
+import Common.DigestedInput;
 
 public class NLP {
 
-    private Keywords keywords;
+    private final Keywords keywords;
     private String currentSentence;
 
     private static NLP singleton;
@@ -65,7 +67,7 @@ public class NLP {
                 }
             if (result != null) return result;
         }
-        return result;
+        return null;
     }
 
     private void deleteIfNecessary(String s) {
@@ -78,14 +80,16 @@ public class NLP {
     //Si no est troba un precedent, es podria buscar el nom de la película a partir del nom de l'action o l'object
     private String getMovieName() {
         int lastIndex = -1;
-        int newLastIndex = -1;
+        int newLastIndex;
         for (String precedent: keywords.getPrecedents()) {
             int index = currentSentence.lastIndexOf(precedent);
             newLastIndex = index + precedent.length();
             if (index != -1 && lastIndex < newLastIndex)
                 lastIndex = newLastIndex;
         }
-        /*if (lastIndex != -1) return currentSentence.substring(lastIndex);
+        /*
+
+        if (lastIndex != -1) return currentSentence.substring(lastIndex);
 
         lastIndex = searchLastIndex(keywords.getActions());
         if (lastIndex != -1) return currentSentence.substring(lastIndex);

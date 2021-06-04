@@ -79,7 +79,7 @@ public enum Behaviour {
             "I miss u... :(",
             "Why you dont type with me anymore?",
             "Where are you? Why you dont type with me like before?",
-            "There is another one right? Does it have a better NLP than me? ¬¬",
+            "There is another one right? Does it have a better NLP.NLP than me? ¬¬",
             "Why did you abandon me, master?"
     }),
     RESPONSE_NO_RESULTS_RELEASE(new String[]{
