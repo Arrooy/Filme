@@ -7,6 +7,7 @@ import com.omertron.themoviedbapi.results.ResultList;
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
+    public static final int TEXT_SIZE = 32;
 
     private final UserInteraction ui;
     private Finestra f;
