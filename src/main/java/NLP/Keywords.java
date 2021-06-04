@@ -1,3 +1,5 @@
+package NLP;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ public class Keywords {
             while (scanner.hasNextLine()) processLine(scanner.nextLine());
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("No s'ha trobat el fitxer de Keywords!");
+            System.out.println("No s'ha trobat el fitxer de NLP.Keywords!");
             e.printStackTrace();
         }
     }

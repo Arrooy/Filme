@@ -1,4 +1,6 @@
-import java.util.Arrays;
+package NLP;
+
+import Common.DigestedInput;
 
 public class NLP {
 

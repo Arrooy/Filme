@@ -1,3 +1,5 @@
+import Common.DigestedInput;
+import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;

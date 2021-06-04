@@ -1,3 +1,5 @@
+package Common;
+
 public class DigestedInput {
     private String object;
     private String action;
