@@ -8,11 +8,11 @@ import java.util.Locale;
 
 public class Finestra extends JFrame {
 
-    private JTextField jtfmessage;
-    private JTextPane jepchat;
+    private final JTextField jtfmessage;
+    private final JTextPane jepchat;
 
-    private Style style;
-    private Style style2;
+    private final Style style;
+    private final Style style2;
 
     private final static int zumbidoSpeed = 10;
 
@@ -23,7 +23,7 @@ public class Finestra extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);
         jepchat = new JTextPane();
-        jepchat.setFont(new Font("Arial", Font.PLAIN, 16));
+        jepchat.setFont(new Font("Arial", Font.PLAIN, Brain.TEXT_SIZE));
         jepchat.setFocusable(false);
         jepchat.setEditable(false);
 

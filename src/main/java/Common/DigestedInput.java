@@ -1,15 +1,15 @@
 package Common;
 
 public class DigestedInput {
-    private String object;
-    private String action;
-    private String movieName;
+    private final String object;
+    private final String action;
+    private final String movieName;
 
-    private boolean isAffirmative;
-    private boolean isNegative;
-    private boolean exit;
-    private boolean hello;
-    private boolean help;
+    private final boolean isAffirmative;
+    private final boolean isNegative;
+    private final boolean exit;
+    private final boolean hello;
+    private final boolean help;
 
     public DigestedInput(String object, String action, String movieName, boolean isAffirmative, boolean isNegative, boolean exit, boolean hello, boolean isHelp) {
         this.object = object;

@@ -1,16 +1,27 @@
-hello,hi,welcome,hey,howdy,ciao
-goodbye,bye,chao,have a good day
+TODO:
 
-a b c d
-
-
-Que puc respondre?
-
-
-
-
--> Synon _> a b c d -> b b a d
+    - What time is it?
+    - How are you?
+    - Who are you?
+    - Have Brad Pitt and Edward Norton ever been in a movie together?
+    - Has David Fincher ever worked with Rooney Mara?
+    - What are the best drama's?
+    - What is are the best movies from 2010?
+    - Give me five actors from cars.
 
 
-U: Hello! i want to know my fav. film!
-R:
+Trie guarda keywords categoritzades.
+Genera un conjunt de categories a partir d'una frase d'entrada.
+Aquest conjunt de categories té assignat un comportament en un fitxer de configuració.
+Hi ha un fitxer on es defineix quina accio correspon per cada configuracio de keywords.
+
+BBDD -> Actor names
+BBDD -> Movie names
+
+BBDD -> Numbers -> 1,2,3,4,5 & one, two
+
+
+
+
+Now:
+    Generar trie amb bbdd.
