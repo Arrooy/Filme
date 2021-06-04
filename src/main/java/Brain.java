@@ -86,7 +86,7 @@ public class Brain {
         return DB.getInstance().getMovieReview(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
-                return "I'm afraid i didn't watch that film...";
+                return Behaviour.RESPONSE_REVIEW_NOT_FOUND.getRandom();
             }
 
             @Override
@@ -103,7 +103,7 @@ public class Brain {
         return DB.getInstance().getSimilarMovie(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
-                return "I'm afraid i didn't watch that film...";
+                return Behaviour.RESPONSE_REVIEW_NOT_FOUND.getRandom();
             }
 
             @Override

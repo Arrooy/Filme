@@ -41,7 +41,7 @@ public class NLP {
         System.out.println("Is affirmative: " + isAffirmative);
         System.out.println("Is negative: " + isNegative);
         System.out.println("Is hello: " + isHello);
-        System.out.println("Is hellp: " + isHelp);
+        System.out.println("Is help: " + isHelp);
 
         return new DigestedInput(object, action, movieName, isAffirmative, isNegative, isExit, isHello, isHelp);
     }

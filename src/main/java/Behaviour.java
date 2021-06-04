@@ -14,7 +14,8 @@ public enum Behaviour {
     }),
     HELLO_MSG(new String[]{
             "Oh hey!",
-            "Hello"
+            "Hello",
+            "Hey there!"
     }),
     HELP(new String[]{
             "Currently I can do the following actions:\n\t- Describe a movie\n\t- Review a movie\n\t- Provide the release date of a film\n\t- Find similar films to a particular film\n\t- Show the trending film right now globally\n\t- List the actors from a film."
@@ -52,10 +53,12 @@ public enum Behaviour {
     }),
     NLP_INSULT(new String[]{
             "That was mean...",
-            "Hey!",
-            "I don't think it is necessary to say anything",
+            "Hey :(",
+            "I don't think it's necessary to say anything",
             "Is that how your mother taught you to treat Chatbots?",
             "...",
+            "Okay... :'(",
+            "Bots also have feelings you know?",
             "That was pretty unnecessary..."
     }),
     NLP_HARD_INSULT(new String[]{
@@ -129,6 +132,10 @@ public enum Behaviour {
             "I've heard %s is trending right now.",
             "%s is blowing up rn.",
             "%s is pretty popular at the moment."
+    }),
+    RESPONSE_REVIEW_NOT_FOUND(new String[]{
+            "I'm afraid i didn't watch that film...",
+            "I don't have an opinion on this particular film."
     });
 
     private final String[] possible_msgs;

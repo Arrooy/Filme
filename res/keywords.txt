@@ -14,9 +14,12 @@ Synonyms:similar--related--alike--resemblant--like--based
 
 Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when -- did
 
-Affirmations:yes--sure--affirmative--approval
-Negations:no--negative--not--deny
+Affirmations:yes--sure--okay--ok--affirmative--approval
+Negations:no--nah--nope--negative--not--deny
 
-Hello:hello--hi--good morning--good evening--good night--hey--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
+Hello:hello--hello!--hi--hi!--good morning--good evening--good night--hey--hey!--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
 Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
-Help:help--what can you do--able to--what can you say
+Help:help--help me--help me please--help me pls--please help me--what are you capable of--what can you do--able to--what can you say
+Time:time is it--time right now--what time is it--tell the time
+How:how are you--how you doin--how ya doin--poppin--what's up--wassup--how's everything--how's it goin--how is it going--is everything good--things going
+Who:who are you--what is filme--who is filme--filme?
