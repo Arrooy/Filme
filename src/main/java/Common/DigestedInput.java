@@ -10,8 +10,9 @@ public class DigestedInput {
     private final boolean exit;
     private final boolean hello;
     private final boolean help;
+    private final boolean time;
 
-    public DigestedInput(String object, String action, String movieName, boolean isAffirmative, boolean isNegative, boolean exit, boolean hello, boolean isHelp) {
+    public DigestedInput(String object, String action, String movieName, boolean isAffirmative, boolean isNegative, boolean exit, boolean hello, boolean isHelp, boolean isTime) {
         this.object = object;
         this.action = action;
         this.movieName = movieName;
@@ -20,6 +21,7 @@ public class DigestedInput {
         this.exit = exit;
         this.hello = hello;
         this.help = isHelp;
+        this.time = isTime;
     }
 
     public String getObject() {
@@ -52,5 +54,9 @@ public class DigestedInput {
 
     public boolean isHelp() {
         return help;
+    }
+
+    public boolean isTime() {
+        return time;
     }
 }

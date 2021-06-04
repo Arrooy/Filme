@@ -44,6 +44,8 @@ public class Brain {
                     response = Behaviour.HELLO_MSG.getRandom();
                 } else if (di.isAffirmative() || di.isNegative()) {
                     response = Behaviour.MEH_MSG.getRandom();
+                } else if (di.isTime()) {
+                    response = Behaviour.TIME.getRandom().formatted("JAJAJAJA");
                 }
                 if(response.isBlank()) return Behaviour.NLP_FAULT.getRandom();
             }

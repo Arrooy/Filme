@@ -136,6 +136,10 @@ public enum Behaviour {
     RESPONSE_REVIEW_NOT_FOUND(new String[]{
             "I'm afraid i didn't watch that film...",
             "I don't have an opinion on this particular film."
+    }),
+    TIME(new String[]{
+            "It's %s",
+            "The time is %s"
     });
 
     private final String[] possible_msgs;
