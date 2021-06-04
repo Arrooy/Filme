@@ -1,10 +1,14 @@
 import Common.DigestedInput;
+import Common.InputType;
 import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 //TODO: Afegir respostes a thanks
 
@@ -39,14 +43,17 @@ public class Brain {
                     case "fuck" -> response = Behaviour.NLP_HARD_INSULT.getRandom();
                     case "my name is" -> response = updateUserName(di);
                 }
+
             } else {
-                if (di.isHelp()) {
+                LinkedList<InputType> inputType = di.getInputType().decompose();
+
+                if (inputType.contains(InputType.HELP)) {
                     response = Behaviour.HELP.getRandom();
-                } else if (di.isHello()) {
+                } else if (inputType.contains(InputType.HELLO)) {
                     response = Behaviour.HELLO_MSG.getRandom();
-                } else if (di.isAffirmative() || di.isNegative()) {
+                } else if (inputType.contains(InputType.AFFIRMATIVE) || inputType.contains(InputType.NEGATIVE)) {
                     response = Behaviour.MEH_MSG.getRandom();
-                } else if (di.isTime()) {
+                } else if (inputType.contains(InputType.TIME)) {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                     response = Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()));
                 }
@@ -60,17 +67,13 @@ public class Brain {
 
     private String updateUserName(DigestedInput di) {
         ui.setUserName(di.getMovieName());
-        return "Nice to meet you " + di.getMovieName() + "!";
-//        String name = di.getMovieName();
-//        name = name.trim();
-//        ui.setUserName(name);
-//        return "Nice to meet you " + name + "!";
-
+        return Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName());
     }
 
     private String computeYear(DigestedInput di) throws MovieDbException {
         if (di.getMovieName() == null || di.getMovieName().isBlank())
             return Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom();
+
         return DB.getInstance().getFilmDate(di.getMovieName(), new Fallback<MovieInfo>() {
             @Override
             public String noResult(String queryUsed) {
@@ -162,14 +165,18 @@ public class Brain {
         f.requestWrite();
         f.addToChat("Filme", Behaviour.WELCOME_MSG.getRandom());
 
+        f.addImageToChat("Filme","Hello, this is a gerat image","bkAWEx5g5tvRPjtDQyvIZ7LRxQm");
+
         do {
             if (ui.hasInput()) {
                 String input = ui.getInput();
                 DigestedInput di = NLP.getInstance().process(input);
-                if(di.isExit()){
+
+                if(di.getInputType().decompose().contains(InputType.EXIT)){
                     f.addToChat("Filme", Behaviour.DISMISS.getRandom());
                     break;
                 }
+
                 String response = computeResponse(di);
                 ui.updateTimeToRead(response);
                 f.addToChat("Filme",response);

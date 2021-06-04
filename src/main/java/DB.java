@@ -35,6 +35,10 @@ public class DB {
         return db;
     }
 
+
+    // TODO: Afegir getFilmImage
+
+
     public String getFilmDescription(String filmName, Fallback<MovieInfo> fallback) throws MovieDbException {
         ResultList<MovieInfo> res = dbApi.searchMovie(filmName,0,"en-US",false,0,0, SearchType.NGRAM);
         return switch (res.getTotalResults()) {

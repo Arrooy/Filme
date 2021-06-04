@@ -1,6 +1,7 @@
 package NLP;
 
 import Common.DigestedInput;
+import Common.InputType;
 
 public class NLP {
 
@@ -28,24 +29,21 @@ public class NLP {
         String object = getObject();
         String movieName = getMovieName();
         if(movieName != null) movieName = movieName.trim();
-        boolean isExit = isInGroup(keywords.getExitExpressions());
-        boolean isAffirmative = isInGroup(keywords.getAffirmations());
-        boolean isNegative = isInGroup(keywords.getNegations());
-        boolean isHello = isInGroup(keywords.getHelloExpressions());
-        boolean isHelp = isInGroup(keywords.getHelpExpressions());
-        boolean isTime = isInGroup(keywords.getTimeExpressions());
 
-        /*
+        InputType inputType = InputType.BASE;
+
+        if(isInGroup(keywords.getExitExpressions())) inputType = inputType.add(InputType.EXIT);
+        if(isInGroup(keywords.getAffirmations())) inputType = inputType.add(InputType.AFFIRMATIVE);
+        if(isInGroup(keywords.getNegations())) inputType = inputType.add(InputType.NEGATIVE);
+        if(isInGroup(keywords.getHelloExpressions())) inputType = inputType.add(InputType.HELLO);
+        if(isInGroup(keywords.getHelpExpressions())) inputType = inputType.add(InputType.HELP);
+        if(isInGroup(keywords.getTimeExpressions())) inputType = inputType.add(InputType.TIME);
+
         System.out.println("Detected object: " + object);
         System.out.println("Detected action: " + action);
         System.out.println("Detected movie name: " + movieName);
-        System.out.println("Is exit: " + isExit);
-        System.out.println("Is affirmative: " + isAffirmative);
-        System.out.println("Is negative: " + isNegative);
-        System.out.println("Is hello: " + isHello);
-        System.out.println("Is help: " + isHelp);
-         */
-        return new DigestedInput(object, action, movieName, isAffirmative, isNegative, isExit, isHello, isHelp, isTime);
+
+        return new DigestedInput(object, action, movieName, inputType);
     }
 
     private String getObject() {

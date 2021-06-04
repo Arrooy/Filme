@@ -12,7 +12,7 @@ public class ACGenerator {
     public static void main(String[] args) {
         AhoCorasick ahoCorasick = AhoCorasick.getInstance();
 
-        try (CSVReader reader = new CSVReader(new FileReader("res/IMDb_movies.csv"))) {
+        try (CSVReader reader = new CSVReader(new FileReader("res/IMDb movies.csv"))) {
             System.out.println("Exporting CSV...");
             List<String[]> data = reader.readAll();
             System.out.println("Creating trie...");

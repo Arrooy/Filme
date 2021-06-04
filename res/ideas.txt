@@ -28,5 +28,7 @@ com a sinonim de la funcionalitat "my name is", i per tant, mai detectava funcio
 
 
 
-Now:
+Now: Mateix estat actual però amb trie.
+
     Generar trie amb bbdd.
+    Integracio trie amb sistema actual

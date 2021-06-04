@@ -6,6 +6,11 @@ public enum Behaviour {
             "Welcome to FIlme. Ask me anything about films!",
             "Welcome to Filme. Ask any question about any movie you want!"
     }),
+    RESPONSE_FIRST_MEETING(new String[]{
+            "Nice to meet you %s !",
+            "Pleased to meet you %s",
+            "Lovely to meet you $s"
+    }),
     USER_TYPES_AFTER_BEING_AWAY(new String[]{
             "Hello again. Got any more questions?",
             "Oh! Thank god you're typing again!",
@@ -142,6 +147,7 @@ public enum Behaviour {
             "The time is %s",
             "Sure, it's %s"
     });
+
 
     private final String[] possible_msgs;
     private int lastMessage;
