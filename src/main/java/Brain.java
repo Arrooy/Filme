@@ -3,13 +3,15 @@ import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.results.ResultList;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 //TODO: Afegir respostes a thanks
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
-    public static final int TEXT_SIZE = 32;
+    public static final int TEXT_SIZE = 16;
 
     private final UserInteraction ui;
     private Finestra f;
@@ -45,7 +47,8 @@ public class Brain {
                 } else if (di.isAffirmative() || di.isNegative()) {
                     response = Behaviour.MEH_MSG.getRandom();
                 } else if (di.isTime()) {
-                    response = Behaviour.TIME.getRandom().formatted("JAJAJAJA");
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    response = Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()));
                 }
                 if(response.isBlank()) return Behaviour.NLP_FAULT.getRandom();
             }

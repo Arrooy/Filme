@@ -8,7 +8,7 @@ Synonyms:actor--acted--cast--appeared on a cinema--appear--participates--perform
 Synonyms:think--thought--opinion--review--reflect--have to say--analyse--analyze--use your loaf--apprise
 Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--silly--twat--fool
 Synonyms:fuck--fucker--fuck you--fuck off--fuck your mom--fucking idiot--fucking bot--fucking robot--cunt--idiot--dickhead--asshole--bitch--bastard--son of a bitch--wanker--stupid--stupid bot--motherfucker--dumb ass motherfucker
-Synonyms:my name is--i'm--im
+Synonyms:my name is--i'm--i am
 Synonyms:released--aired--filmed--on cinemas--appeared on a cinema--appeared--release year--release--came out--come out--published--on the big screen--year
 Synonyms:similar--related--alike--resemblant--like--based
 
@@ -20,6 +20,6 @@ Negations:no--nah--nope--negative--not--deny
 Hello:hello--hello!--hi--hi!--good morning--good evening--good night--hey--hey!--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
 Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
 Help:help--help me--help me please--help me pls--please help me--what are you capable of--what can you do--able to--what can you say
-Time:time is it--time right now--what time is it--tell the time
+Time:time--hour--time is it--time right now--what time is it--tell the time
 How:how are you--how you doin--how ya doin--poppin--what's up--wassup--how's everything--how's it goin--how is it going--is everything good--things going
 Who:who are you--what is filme--who is filme--filme?

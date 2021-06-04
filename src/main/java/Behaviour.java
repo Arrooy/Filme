@@ -139,7 +139,8 @@ public enum Behaviour {
     }),
     TIME(new String[]{
             "It's %s",
-            "The time is %s"
+            "The time is %s",
+            "Sure, it's %s"
     });
 
     private final String[] possible_msgs;

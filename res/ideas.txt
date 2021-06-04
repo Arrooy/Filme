@@ -21,6 +21,11 @@ BBDD -> Movie names
 BBDD -> Numbers -> 1,2,3,4,5 & one, two
 
 
+IMPORTANT ERRORS : Be careful when introducing keywords in keywords.txt. Abans, "im" apareixia
+com a sinonim de la funcionalitat "my name is", i per tant, mai detectava funcionalitats com
+"what time is it" ja que la paraula "time" conte "im". Ojo al afegir keywords.
+"What time is it right NOw" fa colisio amb el "no" d'Affirmations
+
 
 
 Now:
