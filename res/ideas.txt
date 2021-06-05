@@ -32,3 +32,8 @@ Now: Mateix estat actual però amb trie.
 
     Generar trie amb bbdd.
     Integracio trie amb sistema actual
+
+
+
+
+Fer servir el keyword ANOTHER per fer trigger de contextual actions

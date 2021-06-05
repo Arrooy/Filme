@@ -3,6 +3,14 @@ package NLP;
 import Common.DigestedInput;
 import Common.InputType;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+//TODO: Adria->  He modificat el contains x containsAsWord. Aquesta nova funció només fa
+// match si es troba la producció com a paraula. Evita aixi -> time = "time" i "im"
+
+
+//TODO: PROblema-> no es controla plurals!"
 public class NLP {
 
     private final Keywords keywords;
@@ -49,7 +57,7 @@ public class NLP {
     private String getObject() {
         for (String object: keywords.getObjects())
             for (String synonym: keywords.getSynonyms().get(object))
-                if (currentSentence.contains(synonym)) {
+                if (containsAsWord(currentSentence, synonym)) {
                     deleteIfNecessary(synonym);
                     return object;
                 }
@@ -60,7 +68,7 @@ public class NLP {
         String result = null;
         for (String action: keywords.getActions()) {
             for (String synonym : keywords.getSynonyms().get(action))
-                if (currentSentence.contains(synonym)) {
+                if (containsAsWord(currentSentence, synonym)) {
                     result = action;
                     deleteIfNecessary(synonym);
                     break;
@@ -116,7 +124,7 @@ public class NLP {
         int lastIndex = -1;
         for (String spAction: options)
             for (String synonym: keywords.getSynonyms().get(spAction))
-                if (currentSentence.contains(synonym)) {
+                if (containsAsWord(currentSentence, synonym)) {
                     int index = currentSentence.lastIndexOf(synonym);
                     int newLastIndex = index + synonym.length();
                     if (index != -1 && lastIndex < newLastIndex)
@@ -127,7 +135,14 @@ public class NLP {
 
     public boolean isInGroup(String[] group) {
         for (String s: group)
-            if (currentSentence.contains(s)) return true;
+            if (containsAsWord(currentSentence,s)) return true;
         return false;
+    }
+
+    private boolean containsAsWord(String source,String subItem){
+        String pattern = "\\b"+subItem+"\\b";
+        Pattern p=Pattern.compile(pattern);
+        Matcher m=p.matcher(source);
+        return m.find();
     }
 }

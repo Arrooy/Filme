@@ -24,6 +24,11 @@
            <artifactId>opencsv</artifactId>
            <version>5.2</version>
        </dependency>
+       <dependency>
+           <groupId>io.gitlab.rxp90</groupId>
+           <artifactId>jsymspell</artifactId>
+           <version>1.0</version>
+       </dependency>
     </dependencies>
 
 

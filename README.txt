@@ -19,7 +19,7 @@ S'ha fet servir un repositori de GitHub per a portar el control de
 versions entre els diferents membres del projecte.
 
 
-Per tal de fer servir el Chatbot només caldrà executar l'arxiu Brain.java,
+Per tal de fer servir el Chatbot només caldrà executar l'arxiu Common.Brain.java,
 el cervell de l'aplicació. Automàticament, s'obrirà una finestra gràfica
 on poder xatejar amb Filme. A partir d'aquí comença la conversació.
 
