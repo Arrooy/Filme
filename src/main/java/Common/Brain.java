@@ -1,5 +1,7 @@
 package Common;
 
+import NLP.AhoCorasick.ACLoader;
+import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
@@ -56,6 +58,10 @@ public class Brain {
                 } else if (inputType.contains(InputType.TIME)) {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                     response = new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now())));
+                } else if (inputType.contains(InputType.HOW)) {
+                    response =  new DBR(Behaviour.HOW.getRandom());
+                } else if (inputType.contains(InputType.WHO)) {
+                    response =  new DBR(Behaviour.WHO.getRandom());
                 }
             }
         } catch (MovieDbException e) {
@@ -165,6 +171,12 @@ public class Brain {
     }
 
     public static void main(String[] args) {
+
+        ACLoader.loadMovies();
+        ACLoader.loadPeople();
+        NLP.getInstance();
+        AhoCorasick.getInstance().init();
+        
         Brain brain = new Brain();
         brain.think();
     }
