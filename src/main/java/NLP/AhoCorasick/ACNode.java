@@ -1,4 +1,4 @@
-package NLP.Aho_Corasick;
+package NLP.AhoCorasick;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +9,9 @@ public class ACNode {
     private final HashMap<Character, ACNode> children;
     private ArrayList<ACNode> dictLinks;
     private ACNode failureLink;
-    private boolean isResult;
+    private ACNodeType type;
     private final boolean isRoot;
-    private ACNode father;
+    private final ACNode father;
 
     public ACNode(char value, ACNode father, boolean isResult) {
         this.value = value;
@@ -19,7 +19,8 @@ public class ACNode {
         this.father = father;
         children = new HashMap<>();
         isRoot = false;
-        this.isResult = isResult;
+        if (isResult) type = AhoCorasick.getInstance().getCurrentType();
+        else type = null;
     }
 
     public ACNode(char value, boolean isRoot) {
@@ -27,7 +28,7 @@ public class ACNode {
 
         children = new HashMap<>();
         this.isRoot = isRoot;
-        isResult = false;
+        type = null;
         father = null;
     }
 
@@ -42,7 +43,7 @@ public class ACNode {
             children.put(firstChar, newNode);
             newNode.insert(s.substring(1));
         } else {
-            if (s.length() == 1) next.isResult = true;
+            if (s.length() == 1) next.type = AhoCorasick.getInstance().getCurrentType();
             next.insert(s.substring(1));
         }
     }
@@ -78,7 +79,7 @@ public class ACNode {
         if (node.isRoot) dictLinks.add(node);
 
         while (!node.isRoot) {
-            if (node.isResult) dictLinks.add(node);
+            if (node.type != null) dictLinks.add(node);
             node = node.failureLink;
         }
     }
@@ -113,7 +114,7 @@ public class ACNode {
         else return father.getFullValue() + value;
     }
 
-    public boolean isResult() {
-        return isResult;
+    public ACNodeType getType() {
+        return type;
     }
 }

@@ -1,5 +1,7 @@
 import Common.DigestedInput;
 import Common.InputType;
+import NLP.AhoCorasick.ACLoader;
+import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
@@ -209,6 +211,11 @@ public class Brain {
     }
 
     public static void main(String[] args) {
+        ACLoader.loadMovies();
+        ACLoader.loadPeople();
+        NLP.getInstance();
+        AhoCorasick.getInstance().init();
+
         Brain brain = new Brain();
         brain.think();
     }

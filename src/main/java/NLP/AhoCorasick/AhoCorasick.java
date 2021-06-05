@@ -1,6 +1,7 @@
-package NLP.Aho_Corasick;
+package NLP.AhoCorasick;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Classe que implementa l'algoritme d'Aho-Corasick. Aquest està basat en l'estructura
@@ -14,6 +15,8 @@ public class AhoCorasick {
     // Node del que deriva l'estructura Trie
     private final ACNode root;
 
+    private ACNodeType currentType;
+
     // Accés singleton a la instància de la classe
     private static AhoCorasick singleton;
     public static AhoCorasick getInstance() {
@@ -24,6 +27,7 @@ public class AhoCorasick {
     // Constructor
     public AhoCorasick() {
         root = new ACNode('\0', true);
+        currentType = null;
     }
 
     /**
@@ -77,7 +81,8 @@ public class AhoCorasick {
      * @param value Cadena a analitzar
      * @return Llista de paraules del diccionari que s'ha trobat a la cadena d'entrada
      */
-    public ArrayList<String> analyzeString(String value) {
+    public ArrayList<ACResult> analyzeString(String value) {
+        value = value.toLowerCase(Locale.ROOT);
         ArrayList<ACNode> resultsRaw = new ArrayList<>();
         ACNode current = root;
 
@@ -86,14 +91,8 @@ public class AhoCorasick {
 
             if (next != null) {
                 current = next;
-                if (current.getValue() == c && current.isResult()) {
-                    String name = current.getFullValue();
-                    resultsRaw.add(current);
-                }
-                for (ACNode n: current.getDictLinks()) if (n.getValue() == c) {
-                    String name = n.getFullValue();
-                    resultsRaw.add(n);
-                }
+                if (current.getValue() == c && current.getType() != null) resultsRaw.add(current);
+                for (ACNode n: current.getDictLinks()) if (n.getValue() == c) resultsRaw.add(n);
             } else {
                 while (!current.isRoot()) {
                     current = current.getFailureLink();
@@ -106,8 +105,66 @@ public class AhoCorasick {
             }
         }
 
-        ArrayList<String> results = new ArrayList<>();
-        for (ACNode n: resultsRaw) results.add(n.getFullValue());
+        ArrayList<ACResult> results = new ArrayList<>();
+        for (ACNode n: resultsRaw) {
+            results.add(new ACResult(n.getType(), n.getFullValue()));
+        }
         return results;
+    }
+
+    public ACNodeType getCurrentType() {
+        return currentType;
+    }
+
+    public void setCurrentType(ACNodeType currentType) {
+        this.currentType = currentType;
+    }
+
+    public static String getLongestFromType(ArrayList<ACResult> values, ACNodeType type) {
+        String longestName = null;
+        int longestLength = -1;
+        for (ACResult r: values) {
+            if (r.getType() == type && longestLength <= r.getValue().length()) {
+                longestLength = r.getValue().length();
+                longestName = r.getValue();
+            }
+        }
+        return longestName;
+    }
+
+    public static ArrayList<String> getAllFromType(ArrayList<ACResult> values, ACNodeType type) {
+        ArrayList<String> results = new ArrayList<>();
+        for (ACResult r: values) {
+            if (r.getType() == type) {
+                results.add(r.getValue());
+            }
+        }
+        return results;
+    }
+
+    public static void processResults(ArrayList<ACResult> values) {
+        for (int i = values.size()-1; i >= 0; i--) {
+            ACResult r = values.get(i);
+
+            boolean isSubstring = false;
+            for (ACResult c: values) {
+                if (r != c && c.getValue().contains(r.getValue())) {
+                    isSubstring = true;
+                    break;
+                }
+            }
+
+            if (isSubstring) values.remove(i);
+        }
+    }
+
+    public static boolean existsType(ArrayList<ACResult> values, ACNodeType type) {
+        boolean ok = false;
+        for (ACResult r: values)
+            if (r.getType() == type) {
+                ok = true;
+                break;
+            }
+        return ok;
     }
 }
