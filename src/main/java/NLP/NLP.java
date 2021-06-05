@@ -9,9 +9,6 @@ import NLP.AhoCorasick.AhoCorasick;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 //TODO: Adria->  He modificat el contains x containsAsWord. Aquesta nova funció només fa
 // match si es troba la producció com a paraula. Evita aixi -> time = "time" i "im"
 
@@ -21,7 +18,7 @@ public class NLP {
     private ArrayList<ACResult> currentSentence;
 
     public NLP() {
-        new Keywords("res/keywords.txt");
+        Keywords.getInstance();
     }
 
     private static NLP singleton;
@@ -39,8 +36,8 @@ public class NLP {
 
         for (ACResult r: currentSentence) System.out.println(r);
 
-        String action = getAction();
-        String object = getObject();
+        String action = Keywords.getInstance().getGenericName(getAction());
+        String object = Keywords.getInstance().getGenericName(getObject());
         String movieName = getMovieName();
         ArrayList<String> peopleNames = getPersonNames();
         if(movieName != null) movieName = movieName.trim();

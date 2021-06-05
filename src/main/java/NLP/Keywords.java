@@ -5,8 +5,6 @@ import NLP.AhoCorasick.AhoCorasick;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -23,9 +21,17 @@ public class Keywords {
     private String[] howExpressions;
     private String[] whoExpressions;
     private final HashMap<String, String[]> synonyms;
+    private final HashMap<String, String> realNames;
+
+    private static Keywords singleton;
+    public static Keywords getInstance() {
+        if (singleton == null) singleton = new Keywords("res/keywords.txt");
+        return singleton;
+    }
 
     public Keywords(String fileName) {
         synonyms = new HashMap<>();
+        realNames = new HashMap<>();
         try {
             Scanner scanner = new Scanner(new File(fileName));
             while (scanner.hasNextLine()) processLine(scanner.nextLine());
@@ -88,7 +94,10 @@ public class Keywords {
             case "Time" -> timeExpressions = values;
             case "How" -> howExpressions = values;
             case "Who" -> whoExpressions = values;
-            case "Synonyms" -> synonyms.put(values[0], values);
+            case "Synonyms" -> {
+                for (String n: values) realNames.put(n, values[0]);
+                synonyms.put(values[0], values);
+            }
             //default -> throw new IllegalStateException("Unexpected value: " + line.split(":")[0]);
         }
     }
@@ -141,4 +150,7 @@ public class Keywords {
         return whoExpressions;
     }
 
+    public String getGenericName(String s) {
+        return realNames.get(s);
+    }
 }
