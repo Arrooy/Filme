@@ -56,7 +56,7 @@ public class ACNode {
             return;
         }
 
-        String suffix = getSuffix().substring(1);
+        String suffix = getFullValue().substring(1);
         ACNode link = null;
 
         while (link == null && !suffix.isEmpty()) {
@@ -82,11 +82,6 @@ public class ACNode {
             if (node.type != null) dictLinks.add(node);
             node = node.failureLink;
         }
-    }
-
-    public String getSuffix() {
-        if (father.isRoot) return "";
-        else return father.getSuffix() + value;
     }
 
     public ACNode getChildren(Character c) {

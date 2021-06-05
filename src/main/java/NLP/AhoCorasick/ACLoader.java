@@ -1,5 +1,6 @@
 package NLP.AhoCorasick;
 
+import NLP.Keywords;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
@@ -14,10 +15,11 @@ public class ACLoader {
     public static void main(String[] args) {
         ACLoader.loadMovies();
         ACLoader.loadPeople();
+        new Keywords("res/keywords.txt");
         AhoCorasick.getInstance().init();
 
-        ArrayList<ACResult> results = AhoCorasick.getInstance().analyzeString("Hey filme, does johnny depp and scarlett johansson appear in movie 43 please");
-        AhoCorasick.getInstance().processResults(results);
+        ArrayList<ACResult> results = AhoCorasick.getInstance().analyzeString("Can you describe me the avengers?");
+        AhoCorasick.processResults(results);
 
         for (ACResult r: results) System.out.println(r);
 

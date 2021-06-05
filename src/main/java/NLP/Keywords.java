@@ -37,10 +37,8 @@ public class Keywords {
 
             AhoCorasick.getInstance().setCurrentType(ACNodeType.ACTION);
             for (String a: actions)
-                for (String as: synonyms.get(a)) {
-                    System.out.println("inserting word " + as);
+                for (String as: synonyms.get(a))
                     AhoCorasick.getInstance().insert(as);
-                }
 
             AhoCorasick.getInstance().setCurrentType(ACNodeType.PRECEDENT);
             for (String p: precedents) AhoCorasick.getInstance().insert(p);
