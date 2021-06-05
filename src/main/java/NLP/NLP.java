@@ -38,6 +38,9 @@ public class NLP {
         if(isInGroup(keywords.getHelloExpressions())) inputType = inputType.add(InputType.HELLO);
         if(isInGroup(keywords.getHelpExpressions())) inputType = inputType.add(InputType.HELP);
         if(isInGroup(keywords.getTimeExpressions())) inputType = inputType.add(InputType.TIME);
+        if(isInGroup(keywords.getHowExpressions())) inputType = inputType.add(InputType.HOW);
+        if(isInGroup(keywords.getWhoExpressions())) inputType = inputType.add(InputType.WHO);
+
 
         System.out.println("Detected object: " + object);
         System.out.println("Detected action: " + action);

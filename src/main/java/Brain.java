@@ -56,6 +56,10 @@ public class Brain {
                 } else if (inputType.contains(InputType.TIME)) {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                     response = Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()));
+                } else if (inputType.contains(InputType.HOW)) {
+                    response = Behaviour.HOW.getRandom();
+                } else if (inputType.contains(InputType.WHO)) {
+                    response = Behaviour.WHO.getRandom();
                 }
                 if(response.isBlank()) return Behaviour.NLP_FAULT.getRandom();
             }

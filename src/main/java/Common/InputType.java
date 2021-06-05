@@ -11,7 +11,10 @@ public enum InputType {
     EXIT(8),
     HELLO(16),
     HELP(32),
-    TIME(64);
+    TIME(64),
+    HOW(128),
+    WHO(255);
+
 
     static Map<Integer, InputType> map = new HashMap<>();
 

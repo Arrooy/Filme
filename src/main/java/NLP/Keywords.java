@@ -15,6 +15,8 @@ public class Keywords {
     private String[] helloExpressions;
     private String[] helpExpressions;
     private String[] timeExpressions;
+    private String[] howExpressions;
+    private String[] whoExpressions;
     private final HashMap<String, String[]> synonyms;
 
     public Keywords(String fileName) {
@@ -42,6 +44,8 @@ public class Keywords {
             case "Hello" -> helloExpressions = values;
             case "Help" -> helpExpressions = values;
             case "Time" -> timeExpressions = values;
+            case "How" -> howExpressions = values;
+            case "Who" -> whoExpressions = values;
             case "Synonyms" -> synonyms.put(values[0], values);
         }
     }
@@ -86,5 +90,12 @@ public class Keywords {
         return timeExpressions;
     }
 
+    public String[] getHowExpressions() {
+        return howExpressions;
+    }
+
+    public String[] getWhoExpressions() {
+        return whoExpressions;
+    }
 
 }

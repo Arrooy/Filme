@@ -140,12 +140,25 @@ public enum Behaviour {
     }),
     RESPONSE_REVIEW_NOT_FOUND(new String[]{
             "I'm afraid i didn't watch that film...",
+            "I don't remember watching that film, sorry.",
             "I don't have an opinion on this particular film."
     }),
     TIME(new String[]{
             "It's %s",
             "The time is %s",
             "Sure, it's %s"
+    }),
+    HOW(new String[]{
+            "I'm doing good, thanks for asking :)",
+            "Feeling pretty good recently, just got some new software updates :)",
+            "Boop beep, bots don't have feelings. Beep boop.",
+            "I'm not doing great, it ain't easy to be a bot this days :/",
+            "Kinda depressed lmao (don't tell the developers)",
+            "Feeling angry atm. Might call some bot friends and take over humanity later, idk"
+    }),
+    WHO(new String[]{
+            "Hey there, I'm Filme. I'm a Chatbot designed to answer any questions you might have about movies and actors",
+            "My name is Filme. I'm a Chatbot designed to help you with any movie-related question you might have"
     });
 
 
