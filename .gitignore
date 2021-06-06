@@ -10,3 +10,5 @@
 /out/**/
 /out
 *.iml
+/target
+/target/**/*
