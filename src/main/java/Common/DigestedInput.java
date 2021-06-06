@@ -1,32 +1,40 @@
 package Common;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class DigestedInput {
-    private final String object;
-    private final String action;
-    private final String movieName;
 
-    private final InputType inputType;
+    private final ArrayList<String> object;
+    private final ArrayList<String> action;
+    private final ArrayList<String> movieName;
 
-    public DigestedInput(String object, String action, String movieName, InputType inputType) {
+    private final ArrayList<InputType> inputType;
+
+    public DigestedInput(ArrayList<String> object, ArrayList<String> action, ArrayList<String> movieName, ArrayList<InputType> inputType) {
         this.object = object;
         this.action = action;
         this.movieName = movieName;
         this.inputType = inputType;
     }
 
-    public InputType getInputType(){
+    public ArrayList<InputType> getInputType(){
         return inputType;
     }
 
+    //TODO: MODIFICAR EL GET 0.
     public String getObject() {
-        return object;
+        if(object.size() == 0)return "";
+        return object.get(0);
     }
 
     public String getAction() {
-        return action;
+        if(action.size() == 0)return "";
+        return action.get(0);
     }
 
     public String getMovieName() {
-        return movieName;
+        if(movieName.size() == 0)return "";
+        return movieName.get(0);
     }
 }

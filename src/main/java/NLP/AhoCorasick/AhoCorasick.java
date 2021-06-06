@@ -1,7 +1,10 @@
 package NLP.AhoCorasick;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Classe que implementa l'algoritme d'Aho-Corasick. Aquest està basat en l'estructura
@@ -93,6 +96,7 @@ public class AhoCorasick {
                 current = next;
                 if (current.getValue() == c && current.getType() != null) resultsRaw.add(current);
                 for (ACNode n: current.getDictLinks()) if (n.getValue() == c) resultsRaw.add(n);
+
             } else {
                 while (!current.isRoot()) {
                     current = current.getFailureLink();
@@ -135,17 +139,19 @@ public class AhoCorasick {
     public static ArrayList<String> getAllFromType(ArrayList<ACResult> values, ACNodeType type) {
         ArrayList<String> results = new ArrayList<>();
         for (ACResult r: values) {
-            if (r.getType() == type) {
+            System.out.println("Getting from type " + type + " val is " + r);
+            if (r.getType().getType() == type.getType()) {
                 results.add(r.getValue());
             }
         }
         return results;
     }
 
-    public static void processResults(ArrayList<ACResult> values) {
+    public void processResults(String input, ArrayList<ACResult> values) {
         for (int i = values.size()-1; i >= 0; i--) {
             ACResult r = values.get(i);
 
+            // Eliminació de substrings.
             boolean isSubstring = false;
             for (ACResult c: values) {
                 if (r != c && c.getValue().contains(r.getValue())) {
@@ -154,7 +160,22 @@ public class AhoCorasick {
                 }
             }
 
-            if (isSubstring) values.remove(i);
+            if (isSubstring) {
+//                System.out.println("Removing " + r.getValue());
+                values.remove(i);
+                continue;
+            }
+
+            // Eliminaciío de matches que no son paraules.
+            String[] words = input.split("\\P{L}+");
+            String[] resultWords = r.getValue().split("\\P{L}+");
+
+
+            boolean isAWord = Arrays.asList(words).containsAll(Arrays.asList(resultWords));
+
+
+//            System.out.println("Checked that " + r.getValue() + (isAWord ? " is a word." : " not a word"));
+            if(!isAWord) values.remove(i);
         }
     }
 

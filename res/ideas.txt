@@ -1,5 +1,67 @@
 TODO:
 
+Multiples actors + nom pelicula -> yes, no
+Multiples actors -> yes, no i quina pelicula han aparescut.
+
+
+https://developers.themoviedb.org/3/movies/get-upcoming
+What are the upcoming films?
+Tell me the upcoming films please
+What new films will be up next week?
+What are the new films
+
+
+https://developers.themoviedb.org/3/movies/get-now-playing
+What are the current films in the theather?
+What are the current films in the cinema?
+Cite the films in the cinema.
+Current films in cinema
+Actual films in the cinema
+
+
+
+What genre is Cars?
+
+Best drama films.
+
+Worst drama films
+
+Best drama and Funny films
+
+https://developers.themoviedb.org/3/movies/get-movie-watch-providers
+Where can i watch Cars?
+Watch cars
+Visualize cars
+What are the providers for cars?
+where to watch cars?
+view cars online
+
+
+https://developers.themoviedb.org/3/movies/get-movie-watch-providers
+Is Cars on Netflix? Yes, no
+Is x on Y ?
+Can i watch x on y?
+Is Cars stored in Netflix?
+Netflix has Cars?
+Netflix has the film Cars?
+
+
+https://developers.themoviedb.org/3/people/get-popular-people
+Get popular people right now
+Popular actor
+Give me all the new popular actors
+Most famus actors
+
+
+
+
+
+
+Potser guardar un registre de les respostes fetes. Si es torna a repetir, intentar donar unaltre?
+
+
+
+
     - What time is it?
     - How are you?
     - Who are you?
@@ -37,3 +99,4 @@ Now: Mateix estat actual però amb trie.
 
 
 Fer servir el keyword ANOTHER per fer trigger de contextual actions
+

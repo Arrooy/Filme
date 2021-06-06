@@ -1,22 +1,24 @@
 package Common;
 
+import Corrector.Symspell;
 import NLP.AhoCorasick.ACLoader;
 import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
-import com.omertron.themoviedbapi.model.movie.MovieInfo;
-import com.omertron.themoviedbapi.results.ResultList;
+import io.github.mightguy.spellcheck.symspell.exception.SpellCheckException;
+
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
-
-//TODO: Afegir respostes a thanks
-//TODO: Afegir regex replaceAll("<.*?>",""); al reviews! (Elimina html)
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
     public static final int TEXT_SIZE = 16;
+
+    private static final boolean TEST_SUITE = true;
 
     private final UserInteraction ui;
     private Finestra f;
@@ -27,8 +29,10 @@ public class Brain {
         vibrateNextTime = false;
     }
 
+    // Donat un digested input -> genera una resposta (DBR)
     private DBR computeResponse(DigestedInput di) {
         DBR response = new DBR(Behaviour.NLP_FAULT.getRandom());
+
         String action = di.getAction();
 
         try {
@@ -47,7 +51,7 @@ public class Brain {
                 }
 
             } else {
-                LinkedList<InputType> inputType = di.getInputType().decompose();
+                ArrayList<InputType> inputType = di.getInputType();
 
                 if (inputType.contains(InputType.HELP)) {
                     response = new DBR(Behaviour.HELP.getRandom());
@@ -59,9 +63,9 @@ public class Brain {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                     response = new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now())));
                 } else if (inputType.contains(InputType.HOW)) {
-                    response =  new DBR(Behaviour.HOW.getRandom());
+                    response = new DBR(Behaviour.HOW.getRandom());
                 } else if (inputType.contains(InputType.WHO)) {
-                    response =  new DBR(Behaviour.WHO.getRandom());
+                    response = new DBR(Behaviour.WHO.getRandom());
                 }
             }
         } catch (MovieDbException e) {
@@ -111,7 +115,7 @@ public class Brain {
     }
 
     private DBR computeTrending(DigestedInput di) throws MovieDbException {
-        return new DBR(DB.getInstance().getTrendingMovie());
+        return DB.getInstance().getTrendingMovie();
     }
 
     private DBR computeDescribe(DigestedInput di) throws MovieDbException {
@@ -121,7 +125,7 @@ public class Brain {
         return DB.getInstance().getFilmDescription(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION));
     }
 
-    public void think(){
+    public void think() {
         f = new Finestra();
         f.attach(ui);
         f.setVisible(true);
@@ -133,7 +137,7 @@ public class Brain {
                 String input = ui.getInput();
                 DigestedInput di = NLP.getInstance().process(input);
 
-                if(di.getInputType().decompose().contains(InputType.EXIT)){
+                if ( di.getInputType().contains(InputType.EXIT)) {
                     f.addToChat("Filme", Behaviour.DISMISS.getRandom());
                     break;
                 }
@@ -141,10 +145,10 @@ public class Brain {
                 DBR response = computeResponse(di);
                 ui.updateTimeToRead(response.getResponseText());
 
-                if(response.isImage() && !response.isError()){
+                if (response.isImage() && !response.isError()) {
                     f.addImageToChat("Filme", response.getResponseText(), response.getImgUrl());
-                }else{
-                    f.addToChat("Filme",response.getResponseText());
+                } else {
+                    f.addToChat("Filme", response.getResponseText());
                 }
             } else {
 
@@ -154,7 +158,7 @@ public class Brain {
                     f.addToChat("Filme", message);
                     ui.interacted();
 
-                    if(vibrateNextTime) f.zumbido();
+                    if (vibrateNextTime) f.zumbido();
 
                     vibrateNextTime = !vibrateNextTime;
                 }
@@ -169,18 +173,67 @@ public class Brain {
         } while (true);
         f.disableTextbox();
     }
-
+//
     public static void main(String[] args) {
 
-        ACLoader.loadMovies();
-        ACLoader.loadPeople();
+        ACLoader.loadData();
+
         NLP.getInstance();
         AhoCorasick.getInstance().init();
-        
+
         Brain brain = new Brain();
-        brain.think();
+        try {
+            System.out.println("Loading English words...");
+            Symspell.getInstance().loadDict();
+        } catch (IOException | SpellCheckException e) {
+            e.printStackTrace();
+        }
+
+        if (TEST_SUITE) {
+            ArrayList<String> questions = new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
+                    "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
+                    "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
+                    "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!"));
+//            ArrayList<String> answers   = (ArrayList<String>) Arrays.asList("sup1", "sup2", "sup3");
+//
+            for (String question : questions){
+                System.out.println("**********************************");
+                System.out.println("Question: " + question);
+                String filteredQuestion = brain.filterLine(question);
+                System.out.println("Filtered: " + filteredQuestion);
+                DigestedInput di = NLP.getInstance().process(filteredQuestion);
+
+                if ( di.getInputType().contains(InputType.EXIT)) {
+                    System.out.println("!Exit executed!");
+                    continue;
+                }
+
+                DBR response = brain.computeResponse(di);
+                System.out.println("Response: " + (response.isError() ? "is an error." : (response.isImage() ? "is an image" : response.getResponseText())) + "\n");
+
+            }
+
+        } else {
+            brain.think();
+        }
+
     }
 
+    private String filterLine(String line) {
+        //Eliminem caràcters que no siguin ascii
+        line = line.replaceAll("[^\\p{ASCII}]", "");
+
+        line = line.replaceAll("[ñÑ]","n");
+        line = line.replaceAll("[çÇ]","c");
+
+        //Eliminem simbols ascii que no son d'interes.
+        line = line.replaceAll("[^a-zA-Z\\d\\s:,.]","");
+
+        // Eliminem espais i salts de linia multiples.
+        line = line.trim().replaceAll("( )+"," ");
+        line = line.replaceAll("(\n)+","\n");
+        return line;
+    }
     public Finestra getWindow() {
         return f;
     }

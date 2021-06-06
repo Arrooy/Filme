@@ -5,6 +5,7 @@ import NLP.AhoCorasick.AhoCorasick;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -150,7 +151,11 @@ public class Keywords {
         return whoExpressions;
     }
 
-    public String getGenericName(String s) {
-        return realNames.get(s);
+    public ArrayList<String> getGenericName(ArrayList<String> s) {
+        ArrayList<String> res = new ArrayList<>();
+        for(String k : s){
+            res.add(realNames.get(k));
+        }
+        return res;
     }
 }

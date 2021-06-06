@@ -12,8 +12,8 @@ public class DefaultFallback <T extends MovieBasic> implements Fallback<T> {
     }
 
     @Override
-    public String noResult(String queryUsed) {
-        return defaultBehaviour.getRandom();
+    public DBR noResult(String queryUsed) {
+        return new DBR(defaultBehaviour.getRandom(), true);
     }
 
     @Override

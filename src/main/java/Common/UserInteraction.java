@@ -55,8 +55,11 @@ public class UserInteraction implements KeyListener {
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
 
+        line = line.replaceAll("[ñÑ]","n");
+        line = line.replaceAll("[çÇ]","c");
+
         //Eliminem simbols ascii que no son d'interes.
-        line = line.replaceAll("/[$-/:-?{-~!\"^_`\\[\\]]/","");
+        line = line.replaceAll("[^a-zA-Z\\d\\s:,.]","");
 
         // Eliminem espais i salts de linia multiples.
         line = line.trim().replaceAll("( )+"," ");

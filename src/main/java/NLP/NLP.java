@@ -2,19 +2,17 @@ package NLP;
 
 import Common.DigestedInput;
 import Common.InputType;
+import Corrector.Symspell;
 import NLP.AhoCorasick.ACNodeType;
 import NLP.AhoCorasick.ACResult;
 import NLP.AhoCorasick.AhoCorasick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
-//TODO: Adria->  He modificat el contains x containsAsWord. Aquesta nova funció només fa
-// match si es troba la producció com a paraula. Evita aixi -> time = "time" i "im"
-
-
-//TODO: PROblema-> no es controla plurals!"
 public class NLP {
+
     private ArrayList<ACResult> currentSentence;
 
     public NLP() {
@@ -22,65 +20,80 @@ public class NLP {
     }
 
     private static NLP singleton;
+
     public static NLP getInstance() {
         if (singleton == null) singleton = new NLP();
         return singleton;
     }
 
     public DigestedInput process(String input) {
-        if (input.endsWith("?")) input = input.substring(0, input.length()-1);
 
-        // TODO: posar aquí codi de spellchecking i merdes
+        System.out.println("Processing " + input);
+
+        // Primera pasada del input. S'eliminen els noms propis.
         currentSentence = AhoCorasick.getInstance().analyzeString(input);
-        AhoCorasick.processResults(currentSentence);
+        AhoCorasick.getInstance().processResults(input, currentSentence);
 
-        for (ACResult r: currentSentence) System.out.println(r);
-
-        String action = Keywords.getInstance().getGenericName(getAction());
-        String object = Keywords.getInstance().getGenericName(getObject());
-        String movieName = getMovieName();
+        ArrayList<String> movieNames = getMovieName();
         ArrayList<String> peopleNames = getPersonNames();
-        if(movieName != null) movieName = movieName.trim();
 
-        InputType inputType = InputType.BASE;
+        // Elimina els noms propis.
+        for (String mn : movieNames)
+            input = input.replaceAll(mn,"");
 
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.EXIT)) inputType = inputType.add(InputType.EXIT);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.AFFIRMATION)) inputType = inputType.add(InputType.AFFIRMATIVE);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.NEGATION)) inputType = inputType.add(InputType.NEGATIVE);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.HELLO)) inputType = inputType.add(InputType.HELLO);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.HELP)) inputType = inputType.add(InputType.HELP);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.TIME)) inputType = inputType.add(InputType.TIME);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.HOW)) inputType = inputType.add(InputType.HOW);
-        if(AhoCorasick.existsType(currentSentence, ACNodeType.WHO)) inputType = inputType.add(InputType.WHO);
+        for (String pn : peopleNames)
+            input = input.replaceAll(pn, "");
 
-        System.out.println("Detected object: " + object);
-        System.out.println("Detected action: " + action);
-        System.out.println("Detected movie name: " + movieName);
+        // Eliminem dobles spaces del input (apareixen al borrar noms propis)
+        input = input.replaceAll("\\s+", " ");
+
+        input = Symspell.getInstance().spellCheck(input);
+        System.out.println("Spell check result: " + input);
+
+        //Segona passada amb input sense noms propis + corregit.
+        currentSentence = AhoCorasick.getInstance().analyzeString(input);
+        AhoCorasick.getInstance().processResults(input, currentSentence);
+
+        System.out.println("\nRaw detections: ");
+        for (ACResult r : currentSentence) System.out.println(r);
+        System.out.println("");
+
+        ArrayList<String> actions = Keywords.getInstance().getGenericName(getAction());
+        ArrayList<String> objects = Keywords.getInstance().getGenericName(getObject());
+
+        ArrayList<InputType> inputTypes = new ArrayList<>();
+
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.EXIT)) inputTypes.add(InputType.EXIT);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.AFFIRMATION)) inputTypes.add(InputType.AFFIRMATIVE);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.NEGATION)) inputTypes.add(InputType.NEGATIVE);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.HELLO)) inputTypes.add(InputType.HELLO);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.HELP)) inputTypes.add(InputType.HELP);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.TIME)) inputTypes.add(InputType.TIME);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.HOW)) inputTypes.add(InputType.HOW);
+        if (AhoCorasick.existsType(currentSentence, ACNodeType.WHO)) inputTypes.add(InputType.WHO);
+
+        System.out.println("Detected object: " + Arrays.toString(objects.toArray()));
+        System.out.println("Detected action: " + Arrays.toString(actions.toArray()));
+        System.out.println("Detected movie name: " + Arrays.toString(movieNames.toArray()));
         System.out.println("Detected people: " + Arrays.toString(peopleNames.toArray()));
+        System.out.println("Input flags are: " + Arrays.toString(inputTypes.toArray()));
 
-        return new DigestedInput(object, action, movieName, inputType);
+        return new DigestedInput(objects, actions, movieNames, inputTypes);
     }
 
-    private String getObject() {
-        return AhoCorasick.getLongestFromType(currentSentence, ACNodeType.OBJECT);
+    private ArrayList<String> getObject() {
+        return AhoCorasick.getAllFromType(currentSentence, ACNodeType.OBJECT);
     }
 
-    private String getAction() {
-        return AhoCorasick.getLongestFromType(currentSentence, ACNodeType.ACTION);
+    private ArrayList<String> getAction() {
+        return AhoCorasick.getAllFromType(currentSentence, ACNodeType.ACTION);
     }
 
-    private String getMovieName() {
-        return AhoCorasick.getLongestFromType(currentSentence, ACNodeType.MOVIE);
+    private ArrayList<String> getMovieName() {
+        return AhoCorasick.getAllFromType(currentSentence, ACNodeType.MOVIE);
     }
 
     private ArrayList<String> getPersonNames() {
         return AhoCorasick.getAllFromType(currentSentence, ACNodeType.PERSON);
     }
-
-//    private boolean containsAsWord(String source,String subItem){
-//        String pattern = "\\b"+subItem+"\\b";
-//        Pattern p=Pattern.compile(pattern);
-//        Matcher m=p.matcher(source);
-//        return m.find();
-//    }
 }
