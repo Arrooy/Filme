@@ -2,16 +2,19 @@ package Common;
 
 import java.util.Random;
 
+// TODO: POTSER ALGUNA FRASE GENERA UN RESULTAT QUE ACABA AMB .. i no . donat al contingut del seu interior.
+// TODO: ampliar la behaviour help.
+
 public enum Behaviour {
     WELCOME_MSG(new String[]{
-            "Welcome to Filme. I can answer whatever you need! (Films)",
+            "Welcome to Filme. I can answer whatever you need! (Films).",
             "Welcome to FIlme. Ask me anything about films!",
             "Welcome to Filme. Ask any question about any movie you want!"
     }),
     RESPONSE_FIRST_MEETING(new String[]{
             "Nice to meet you %s !",
-            "Pleased to meet you %s",
-            "Lovely to meet you $s"
+            "Pleased to meet you %s.",
+            "Lovely to meet you $s."
     }),
     USER_TYPES_AFTER_BEING_AWAY(new String[]{
             "Hello again. Got any more questions?",
@@ -21,18 +24,20 @@ public enum Behaviour {
     }),
     HELLO_MSG(new String[]{
             "Oh hey!",
-            "Hello",
+            "Hello.",
             "Hey there!"
     }),
     HELP(new String[]{
             "Currently I can do the following actions:\n\t- Describe a movie\n\t- Review a movie\n\t- Provide the release date of a film\n\t- Find similar films to a particular film\n\t- Show the trending film right now globally\n\t- List the actors from a film."
     }),
+
     MEH_MSG(new String[]{
             "Ok.",
-            "Oh",
-            "...",
-            "Great",
-            "I'm proud of you"
+            "Oh.",
+            "Hmmm... no.",
+            "Hmmm... yes.",
+            "No.",
+            "Yes."
     }),
     DISMISS(new String[]{
            "Have a great day! Bye!",
@@ -44,12 +49,13 @@ public enum Behaviour {
     NLP_FAULT(new String[] {
             "Sorry I didn't get that, can you rephrase that please?",
             "This is VERY VERY rare. I didnt catch that. Please say it again in other words.",
-            "Yeah... I don't know what you meant by that. Mind asking in a clearer way?"
+            "Yeah... I don't know what you meant by that. Mind asking in a clearer way?",
+            "That's not related to films or actors, right?"
     }),
     NLP_MOVIE_NOT_DETECTED(new String[] {
-            "Sorry, but I don't know which movie are you talking about",
-            "I don't know which movie you are referring to",
-            "I think that you assembled the message incorrectly"
+            "Sorry, but I don't know which movie are you talking about.",
+            "I don't know which movie you are referring to...",
+            "I'm dont know that movie. Maybe try using its full name?"
     }),
     UI_APPEAL(new String[]{
             "Are you there?",
@@ -61,7 +67,7 @@ public enum Behaviour {
     NLP_INSULT(new String[]{
             "That was mean...",
             "Hey :(",
-            "I don't think it's necessary to say anything",
+            "I don't think it's necessary to say anything.",
             "Is that how your mother taught you to treat Chatbots?",
             "...",
             "Okay... :'(",
@@ -69,20 +75,20 @@ public enum Behaviour {
             "That was pretty unnecessary..."
     }),
     NLP_HARD_INSULT(new String[]{
-            "Yo mama",
+            "Yo mama.",
             "EYOW! Why you talk like that tho?",
-            "You better chill ...Ugly ass",
+            "You better chill ...Ugly ass.",
             "You play League of Legends, right?",
-            "Say no more! You must play League of Legends for sure",
+            "Say no more! You must play League of Legends for sure.",
             "Why are you so salty?",
             "Thats what she said...",
-            "Dont mess with big popa",
+            "Dont mess with big popa.",
             "Damn why are you so mad?",
-            "Are you like... Seriously insulting a bot? So sad",
+            "Are you like... Seriously insulting a bot? So sad.",
             "You're insulting a bot. Your life must be so sad...",
             "Beep boop beep... Idiot detected!",
             "Beep. Boop. My bot sensors detect an idiot nearby!",
-            "You might actually need professional help",
+            "You might actually need professional help.",
             "Have you considered going to therapy?"
     }),
     UI_APPEAL_SAD(new String[]{
@@ -93,7 +99,7 @@ public enum Behaviour {
             "Why did you abandon me, master?"
     }),
     RESPONSE_NO_RESULTS_RELEASE(new String[]{
-            "I'm sorry, but I don't know the release date for %s",
+            "I'm sorry, but I don't know the release date for %s.",
             "Oops! I don't think I know the release date for %s."
     }),
     RESPONSE_N_RESULTS_RELEASE(new String[]{
@@ -115,22 +121,22 @@ public enum Behaviour {
             "Oops! Looks like I don't have a desciption for %s.",
             "Yeah... I don't know how to describe %s."
     }),
+
     RESPONSE_N_RESULTS_DESCRIPTION(new String[]{
-            "About %s: %s",
-            "My description for %s is: %s",
-            "%s description: %s",
-            "I would describe %s as: %s"
+            "About %s: %s.",
+            "My description for %s is: %s.",
+            "%s description: %s.",
+            "I would describe %s as: %s."
     }),
     RESPONSE_NO_RESULTS_ACTORS(new String[]{
             "I cannot find any actors for the movie you asked...",
-            "The movie you're asking for is quite interesting, but the weather today is far more interesting than that",
-            "I don't know if there are any actors for the movie you are asking for",
-            "Hmmm... no."
+            "The movie you're asking for is quite interesting, but the weather today is far more interesting than that.",
+            "I don't know if there are any actors for the movie you are asking for."
     }),
     RESPONSE_N_RESULTS_ACTORS(new String[]{
-            "Some of the actors that appear on %s are: %s",
-            "The movie %s has the actors %s in it",
-            "Interestingly enough, the movie %s starred %s"
+            "Some of the actors that appear on %s are: %s.",
+            "The movie %s has the actors %s in it.",
+            "Interestingly enough, the movie %s starred %s."
     }),
     RESPONSE_NO_RESULTS_TRENDING(new String[]{
             "I didn't find any trending movie right now. Try asking later.",
@@ -148,9 +154,9 @@ public enum Behaviour {
             "I don't have an opinion on this particular film."
     }),
     TIME(new String[]{
-            "It's %s",
-            "The time is %s",
-            "Sure, it's %s"
+            "It's %s.",
+            "The time is %s.",
+            "Sure, it's %s."
     }),
     RESPONSE_N_RESULTS_IMAGE(new String[]{
             "This is the poster you asked for:",
@@ -163,12 +169,12 @@ public enum Behaviour {
             "Feeling pretty good recently, just got some new software updates :)",
             "Boop beep, bots don't have feelings. Beep boop.",
             "I'm not doing great, it ain't easy to be a bot this days :/",
-            "Kinda depressed lmao (don't tell the developers)",
-            "Feeling angry atm. Might call some bot friends and take over humanity later, idk"
+            "Kinda depressed lmao (don't tell the developers).",
+            "Feeling angry atm. Might call some bot friends and take over humanity later, idk."
     }),
     WHO(new String[]{
-            "Hey there, I'm Filme. I'm a Chatbot designed to answer any questions you might have about movies and actors",
-            "My name is Filme. I'm a Chatbot designed to help you with any movie-related question you might have"
+            "I'm Filme. I'm a Chatbot designed to answer any questions you might have about movies and actors.",
+            "My name is Filme. I'm a Chatbot designed to help you with any movie-related question you might have."
     });
 
 

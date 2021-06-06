@@ -4,8 +4,6 @@ import Corrector.Symspell;
 import NLP.AhoCorasick.ACLoader;
 import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
-import com.omertron.themoviedbapi.MovieDbException;
-import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import io.github.mightguy.spellcheck.symspell.exception.SpellCheckException;
 
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class Brain {
     }
 
     // Donat un digested input -> genera una resposta (DBR)
-    private ArrayList<DBR> computeResponse(DigestedInput di)  {
+    private ArrayList<DBR> computeResponse(DigestedInput di) {
         ArrayList<DBR> response = new ArrayList<>();
 
 
@@ -53,7 +51,16 @@ public class Brain {
         } else {
             ArrayList<InputType> inputType = di.getInputType();
 
-            if (inputType.contains(InputType.HELP)) {
+            // Casos concrets per afegeix cooerencia a les preguntes
+            if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.WHO))) {
+                response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.WHO.getRandom()));
+
+            }
+            if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.HOW))) {
+                response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.HOW.getRandom()));
+
+                // Casos base amb respostes directes.
+            } else if (inputType.contains(InputType.HELP)) {
                 response.add(new DBR(Behaviour.HELP.getRandom()));
 
             } else if (inputType.contains(InputType.HELLO)) {
@@ -74,29 +81,10 @@ public class Brain {
             }
         }
 
-        // Fallbck per si no es detecta res de res.
+        // Fallback per si no es detecta res de res.
         if (response.isEmpty()) response.add(new DBR(Behaviour.NLP_FAULT.getRandom()));
 
         return response;
-    }
-
-
-    private class GenericHelper {
-        private final String content;
-        private final Fallback<MovieInfo> fallback;
-
-        public GenericHelper(String content, Fallback<MovieInfo> fallback) {
-            this.content = content;
-            this.fallback = fallback;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public Fallback<MovieInfo> getFallback() {
-            return fallback;
-        }
     }
 
     private ArrayList<DBR> genericMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
@@ -228,7 +216,11 @@ public class Brain {
         }
 
         if (TEST_SUITE) {
-            ArrayList<String> questions = new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
+            ArrayList<String> questions =
+
+//                    new ArrayList<>(Arrays.asList("What are your thoughts on Cars amigo?", ""));
+
+                    new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
                     "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
                     "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
                     "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!"));
@@ -247,8 +239,8 @@ public class Brain {
 
                 ArrayList<DBR> dbresponse = brain.computeResponse(di);
                 int i = 0;
-                for(DBR response : dbresponse){
-                    System.out.println("Response" + i + ": " + (response.isError() ? "is an error." : (response.isImage() ? "is an image" : response.getResponseText())) + "\n");
+                for (DBR response : dbresponse) {
+                    System.out.println("Response" + i + ": " + (response.isError() ? "is an error. " + response.getResponseText() : (response.isImage() ? "is an image" : response.getResponseText())) + "\n");
                     i++;
                 }
             }

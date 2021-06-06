@@ -2,7 +2,7 @@ Objects:movie
 Synonyms:movie--film--motion picture
 
 Actions:popular--think--describe--released--actor--similar--you're useless--fuck--my name is--show--age
-Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received
+Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest
 Synonyms:show--display--image--illustration--thumbnail--poster--picture--photo--snapshot--pic
 Synonyms:describe--about--description--explain--report--recount--chronicle--portray--know
 Synonyms:actor--acted--cast--appeared on a cinema--appear--participates--performer--player--movie star--film star--actress--protagonist

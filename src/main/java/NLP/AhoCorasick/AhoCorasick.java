@@ -1,5 +1,7 @@
 package NLP.AhoCorasick;
 
+import io.github.mightguy.spellcheck.symspell.common.WeightedDamerauLevenshteinDistance;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -150,6 +152,7 @@ public class AhoCorasick {
     }
 
     public void processResults(String input, ArrayList<ACResult> values) {
+        input = input.toLowerCase(Locale.ROOT);
         for (int i = values.size() - 1; i >= 0; i--) {
             ACResult r = values.get(i);
 
@@ -168,15 +171,37 @@ public class AhoCorasick {
                 continue;
             }
 
-            // Eliminaciío de matches que no son paraules.
             String[] words = input.split("\\P{L}+");
             String[] resultWords = r.getValue().split("\\P{L}+");
+            boolean remove = false;
+
+            // Si estem parlant d'una sola paraula:
+            if(resultWords.length == 1){
+                // Eliminaciío de matches que tinguin una distancia major a 1.
+                WeightedDamerauLevenshteinDistance damerauLevenshteinDistance =
+                        new WeightedDamerauLevenshteinDistance(1,1,1,1,
+                                null);
+
+                remove = true;
+                for (String source : words){
+                    if(damerauLevenshteinDistance.getDistance(source,resultWords[0]) <= 1){
+                        remove = false;
+                        break;
+                    }
+                }
+
+           }else {
+                remove = !Arrays.asList(words).containsAll(Arrays.asList(resultWords));
+            }
+
+//
+//            System.out.println("Words is " + Arrays.toString(words));
+//            System.out.println("resultWords is " + Arrays.toString(resultWords));
 
 
-            boolean isAWord = Arrays.asList(words).containsAll(Arrays.asList(resultWords));
 
-//            System.out.println("Checked that " + r.getValue() + (isAWord ? " is a word." : " not a word"));
-            if (!isAWord) values.remove(i);
+//            System.out.println("Checked that " + r.getValue() + (!remove ? " is a word." : " not a word"));
+            if (remove) values.remove(i);
         }
     }
 

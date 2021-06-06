@@ -1,20 +1,28 @@
-**********************************
-Question: What is you opinion on Cars?
-Filtered: What is you opinion on Cars
-Processing What is you opinion on Cars
-Spell check result: what is opinion on cars
+*********************************
+Question: Give me similar movies to Cars!
+Filtered: Give me similar movies to Cars
+Processing Give me similar movies to Cars
 
-Raw detections: 
-Action: opinion
+Raw detections:
+Movie: me
+Action: similar
+Object: movie
 Movie: cars
 
-Detected object: []
-Detected action: [think]
-Detected movie name: []
-Detected people: [you]
+Spell check result: give similar movies to cars
+
+Raw detections:
+Action: similar
+Object: movie
+Movie: cars
+
+Detected object: [movie]
+Detected action: [similar]
+Detected movie name: [me, cars]
+Detected people: []
 Input flags are: []
-Response0: I think that you assembled the message incorrectly
+Response0: Here are movies related to me: Memories of Murder, 10 to Midnight, Gone Baby Gone, 22 Bullets, The Bone Collector and Jack Reacher.
+
+Response1: Sure. Some movies similar to cars include Ferdinand, Cars 2, Mr. Peabody & Sherman, Turbo, Tarzan and Cars 3.
 
 **********************************
-
-

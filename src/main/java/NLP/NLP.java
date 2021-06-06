@@ -9,6 +9,7 @@ import NLP.AhoCorasick.AhoCorasick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class NLP {
 
@@ -32,6 +33,10 @@ public class NLP {
         // Primera pasada del input. S'eliminen els noms propis.
         currentSentence = AhoCorasick.getInstance().analyzeString(input);
         AhoCorasick.getInstance().processResults(input, currentSentence);
+
+        System.out.println("\nRaw detections: ");
+        for (ACResult r : currentSentence) System.out.println(r);
+        System.out.println("");
 
         ArrayList<String> movieNames = getMovieName();
         ArrayList<String> peopleNames = getPersonNames();
