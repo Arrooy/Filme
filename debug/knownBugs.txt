@@ -1,0 +1,20 @@
+**********************************
+Question: What is you opinion on Cars?
+Filtered: What is you opinion on Cars
+Processing What is you opinion on Cars
+Spell check result: what is opinion on cars
+
+Raw detections: 
+Action: opinion
+Movie: cars
+
+Detected object: []
+Detected action: [think]
+Detected movie name: []
+Detected people: [you]
+Input flags are: []
+Response0: I think that you assembled the message incorrectly
+
+**********************************
+
+

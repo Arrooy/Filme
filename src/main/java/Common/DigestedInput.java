@@ -1,7 +1,6 @@
 package Common;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class DigestedInput {
 
@@ -22,19 +21,15 @@ public class DigestedInput {
         return inputType;
     }
 
-    //TODO: MODIFICAR EL GET 0.
-    public String getObject() {
-        if(object.size() == 0)return "";
-        return object.get(0);
+    public ArrayList<String> getObject() {
+        return object;
     }
 
-    public String getAction() {
-        if(action.size() == 0)return "";
-        return action.get(0);
+    public ArrayList<String> getAction() {
+        return action;
     }
 
-    public String getMovieName() {
-        if(movieName.size() == 0)return "";
-        return movieName.get(0);
+    public ArrayList<String> getMovieName() {
+        return movieName;
     }
 }

@@ -3,6 +3,7 @@ package Common;
 public class DBR{
     private final boolean isImage;
     private final boolean isError;
+
     private final String responseText;
     private final String imgUrl;
 

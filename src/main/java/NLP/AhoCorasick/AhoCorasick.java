@@ -3,8 +3,6 @@ package NLP.AhoCorasick;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Classe que implementa l'algoritme d'Aho-Corasick. Aquest està basat en l'estructura
@@ -22,6 +20,7 @@ public class AhoCorasick {
 
     // Accés singleton a la instància de la classe
     private static AhoCorasick singleton;
+
     public static AhoCorasick getInstance() {
         if (singleton == null) singleton = new AhoCorasick();
         return singleton;
@@ -38,6 +37,7 @@ public class AhoCorasick {
      * on N és la mida de la cadena a inserir. El que realitza consisteix en fer servir
      * els caràcters de la cadena per anar seguint el Trie, i, si no existeix un node determinat
      * el crea. Finalment marca el node equivalent a l'últim caràcter com a node que conté un valor.
+     *
      * @param value Nou valor a inserir a l'estructura
      */
     public void insert(String value) {
@@ -56,6 +56,7 @@ public class AhoCorasick {
 
     /**
      * Busca un node en el Trie equivalent al valor indicat.
+     *
      * @param value Valor del node a buscar
      * @return Node que representa a value
      */
@@ -72,6 +73,7 @@ public class AhoCorasick {
 
     /**
      * Getter del root
+     *
      * @return root
      */
     public ACNode getRoot() {
@@ -81,6 +83,7 @@ public class AhoCorasick {
     /**
      * Funció que a partir d'una cadena d'entrada determina quina és la llista de totes les
      * coincidències trobades a partir del seu diccionari.
+     *
      * @param value Cadena a analitzar
      * @return Llista de paraules del diccionari que s'ha trobat a la cadena d'entrada
      */
@@ -89,13 +92,13 @@ public class AhoCorasick {
         ArrayList<ACNode> resultsRaw = new ArrayList<>();
         ACNode current = root;
 
-        for (char c: value.toCharArray()) {
+        for (char c : value.toCharArray()) {
             ACNode next = current.getChildren(c);
 
             if (next != null) {
                 current = next;
                 if (current.getValue() == c && current.getType() != null) resultsRaw.add(current);
-                for (ACNode n: current.getDictLinks()) if (n.getValue() == c) resultsRaw.add(n);
+                for (ACNode n : current.getDictLinks()) if (n.getValue() == c) resultsRaw.add(n);
 
             } else {
                 while (!current.isRoot()) {
@@ -110,7 +113,7 @@ public class AhoCorasick {
         }
 
         ArrayList<ACResult> results = new ArrayList<>();
-        for (ACNode n: resultsRaw) {
+        for (ACNode n : resultsRaw) {
             results.add(new ACResult(n.getType(), n.getFullValue()));
         }
         return results;
@@ -127,7 +130,7 @@ public class AhoCorasick {
     public static String getLongestFromType(ArrayList<ACResult> values, ACNodeType type) {
         String longestName = null;
         int longestLength = -1;
-        for (ACResult r: values) {
+        for (ACResult r : values) {
             if (r.getType() == type && longestLength <= r.getValue().length()) {
                 longestLength = r.getValue().length();
                 longestName = r.getValue();
@@ -138,8 +141,7 @@ public class AhoCorasick {
 
     public static ArrayList<String> getAllFromType(ArrayList<ACResult> values, ACNodeType type) {
         ArrayList<String> results = new ArrayList<>();
-        for (ACResult r: values) {
-            System.out.println("Getting from type " + type + " val is " + r);
+        for (ACResult r : values) {
             if (r.getType().getType() == type.getType()) {
                 results.add(r.getValue());
             }
@@ -148,12 +150,12 @@ public class AhoCorasick {
     }
 
     public void processResults(String input, ArrayList<ACResult> values) {
-        for (int i = values.size()-1; i >= 0; i--) {
+        for (int i = values.size() - 1; i >= 0; i--) {
             ACResult r = values.get(i);
 
             // Eliminació de substrings.
             boolean isSubstring = false;
-            for (ACResult c: values) {
+            for (ACResult c : values) {
                 if (r != c && c.getValue().contains(r.getValue())) {
                     isSubstring = true;
                     break;
@@ -173,16 +175,15 @@ public class AhoCorasick {
 
             boolean isAWord = Arrays.asList(words).containsAll(Arrays.asList(resultWords));
 
-
 //            System.out.println("Checked that " + r.getValue() + (isAWord ? " is a word." : " not a word"));
-            if(!isAWord) values.remove(i);
+            if (!isAWord) values.remove(i);
         }
     }
 
     public static boolean existsType(ArrayList<ACResult> values, ACNodeType type) {
         boolean ok = false;
-        for (ACResult r: values)
-            if (r.getType() == type) {
+        for (ACResult r : values)
+            if (r.getType().getType() == type.getType()) {
                 ok = true;
                 break;
             }

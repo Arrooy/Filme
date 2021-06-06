@@ -5,13 +5,14 @@ import NLP.AhoCorasick.ACLoader;
 import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
 import com.omertron.themoviedbapi.MovieDbException;
+import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import io.github.mightguy.spellcheck.symspell.exception.SpellCheckException;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.function.Function;
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
@@ -30,99 +31,133 @@ public class Brain {
     }
 
     // Donat un digested input -> genera una resposta (DBR)
-    private DBR computeResponse(DigestedInput di) {
-        DBR response = new DBR(Behaviour.NLP_FAULT.getRandom());
+    private ArrayList<DBR> computeResponse(DigestedInput di)  {
+        ArrayList<DBR> response = new ArrayList<>();
 
-        String action = di.getAction();
 
-        try {
-            if (action != null) {
-                switch (action) {
-                    case "describe" -> response = computeDescribe(di);
-                    case "popular" -> response = computeTrending(di);
-                    case "actor" -> response = computeActor(di);
-                    case "think" -> response = computeReview(di);
-                    case "released" -> response = computeYear(di);
-                    case "similar" -> response = computeSimilar(di);
-                    case "you're useless" -> response = new DBR(Behaviour.NLP_INSULT.getRandom());
-                    case "fuck" -> response = new DBR(Behaviour.NLP_HARD_INSULT.getRandom());
-                    case "my name is" -> response = updateUserName(di);
-                    case "show" -> response = computeShowImage(di);
-                }
+        String action = di.getAction().isEmpty() ? "" : di.getAction().get(0);
 
-            } else {
-                ArrayList<InputType> inputType = di.getInputType();
-
-                if (inputType.contains(InputType.HELP)) {
-                    response = new DBR(Behaviour.HELP.getRandom());
-                } else if (inputType.contains(InputType.HELLO)) {
-                    response = new DBR(Behaviour.HELLO_MSG.getRandom());
-                } else if (inputType.contains(InputType.AFFIRMATIVE) || inputType.contains(InputType.NEGATIVE)) {
-                    response = new DBR(Behaviour.MEH_MSG.getRandom());
-                } else if (inputType.contains(InputType.TIME)) {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                    response = new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now())));
-                } else if (inputType.contains(InputType.HOW)) {
-                    response = new DBR(Behaviour.HOW.getRandom());
-                } else if (inputType.contains(InputType.WHO)) {
-                    response = new DBR(Behaviour.WHO.getRandom());
-                }
+        if (!action.equals("")) {
+            switch (action) {
+                case "describe" -> response.addAll(computeDescribe(di));
+                case "popular" -> response.addAll(computeTrending(di));
+                case "actor" -> response.addAll(computeActor(di));
+                case "think" -> response.addAll(computeReview(di));
+                case "released" -> response.addAll(computeYear(di));
+                case "similar" -> response.addAll(computeSimilar(di));
+                case "you're useless" -> response.add(new DBR(Behaviour.NLP_INSULT.getRandom()));
+                case "fuck" -> response.add(new DBR(Behaviour.NLP_HARD_INSULT.getRandom()));
+                case "my name is" -> response.addAll(updateUserName(di));
+                case "show" -> response.addAll(computeShowImage(di));
             }
-        } catch (MovieDbException e) {
-            e.printStackTrace();
+        } else {
+            ArrayList<InputType> inputType = di.getInputType();
+
+            if (inputType.contains(InputType.HELP)) {
+                response.add(new DBR(Behaviour.HELP.getRandom()));
+
+            } else if (inputType.contains(InputType.HELLO)) {
+                response.add(new DBR(Behaviour.HELLO_MSG.getRandom()));
+
+            } else if (inputType.contains(InputType.AFFIRMATIVE) || inputType.contains(InputType.NEGATIVE)) {
+                response.add(new DBR(Behaviour.MEH_MSG.getRandom()));
+
+            } else if (inputType.contains(InputType.TIME)) {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                response.add(new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()))));
+
+            } else if (inputType.contains(InputType.HOW)) {
+                response.add(new DBR(Behaviour.HOW.getRandom()));
+
+            } else if (inputType.contains(InputType.WHO)) {
+                response.add(new DBR(Behaviour.WHO.getRandom()));
+            }
         }
+
+        // Fallbck per si no es detecta res de res.
+        if (response.isEmpty()) response.add(new DBR(Behaviour.NLP_FAULT.getRandom()));
+
         return response;
     }
 
-    private DBR computeShowImage(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
 
-        return DB.getInstance().getFilmImage(di.getMovieName(), new DefaultFallback<>(Behaviour.NLP_MOVIE_NOT_DETECTED));
+    private class GenericHelper {
+        private final String content;
+        private final Fallback<MovieInfo> fallback;
+
+        public GenericHelper(String content, Fallback<MovieInfo> fallback) {
+            this.content = content;
+            this.fallback = fallback;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public Fallback<MovieInfo> getFallback() {
+            return fallback;
+        }
     }
 
-    private DBR updateUserName(DigestedInput di) {
-        ui.setUserName(di.getMovieName());
-        return new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName()));
+    private ArrayList<DBR> genericMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
+                                                  Function<GenericHelper, DBR> DBQuery) {
+        ArrayList<DBR> res = new ArrayList<>();
+
+        if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
+            res.add(new DBR(errorBehaviour.getRandom()));
+            return res;
+        }
+
+
+        for (String movie : extractArray.apply(di)) {
+            DBR result = DBQuery.apply(new GenericHelper(movie, new DefaultFallback<>(errorQuery)));
+            if (result != null) res.add(result);
+        }
+
+        return res;
     }
 
-    private DBR computeYear(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
-
-        return DB.getInstance().getFilmDate(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_NO_RESULTS_RELEASE));
+    private ArrayList<DBR> computeShowImage(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.NLP_MOVIE_NOT_DETECTED,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback()));
     }
 
-    private DBR computeReview(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
-
-        return DB.getInstance().getMovieReview(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_REVIEW_NOT_FOUND));
+    private ArrayList<DBR> computeYear(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_RELEASE,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDate(x.getContent(), x.getFallback()));
     }
 
-    private DBR computeSimilar(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
-
-        return DB.getInstance().getSimilarMovie(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_NO_RESULTS_SIMILAR));
+    private ArrayList<DBR> computeReview(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_REVIEW_NOT_FOUND,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getMovieReview(x.getContent(), x.getFallback()));
     }
 
-    private DBR computeActor(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
-
-        return DB.getInstance().getFilmActors(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_NO_RESULTS_ACTORS));
+    private ArrayList<DBR> computeSimilar(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_SIMILAR,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getSimilarMovie(x.getContent(), x.getFallback()));
     }
 
-    private DBR computeTrending(DigestedInput di) throws MovieDbException {
-        return DB.getInstance().getTrendingMovie();
+    private ArrayList<DBR> computeActor(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_ACTORS,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmActors(x.getContent(), x.getFallback()));
     }
 
-    private DBR computeDescribe(DigestedInput di) throws MovieDbException {
-        if (di.getMovieName() == null || di.getMovieName().isBlank())
-            return new DBR(Behaviour.NLP_MOVIE_NOT_DETECTED.getRandom());
+    private ArrayList<DBR> computeTrending(DigestedInput di) {
+        ArrayList<DBR> res = new ArrayList<>();
+        res.add(DB.getInstance().getTrendingMovie());
+        return res;
+    }
 
-        return DB.getInstance().getFilmDescription(di.getMovieName(), new DefaultFallback<>(Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION));
+    private ArrayList<DBR> computeDescribe(DigestedInput di) {
+        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDescription(x.getContent(), x.getFallback()));
+    }
+
+    private ArrayList<DBR> updateUserName(DigestedInput di) {
+        ArrayList<DBR> res = new ArrayList<>();
+        ui.setUserName(di.getMovieName().get(0));
+        res.add(new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName().get(0))));
+        return res;
     }
 
     public void think() {
@@ -137,12 +172,14 @@ public class Brain {
                 String input = ui.getInput();
                 DigestedInput di = NLP.getInstance().process(input);
 
-                if ( di.getInputType().contains(InputType.EXIT)) {
+                if (di.getInputType().contains(InputType.EXIT)) {
                     f.addToChat("Filme", Behaviour.DISMISS.getRandom());
                     break;
                 }
 
-                DBR response = computeResponse(di);
+                ArrayList<DBR> dbresponse = computeResponse(di);
+                DBR response = dbresponse.get(0);
+
                 ui.updateTimeToRead(response.getResponseText());
 
                 if (response.isImage() && !response.isError()) {
@@ -173,7 +210,8 @@ public class Brain {
         } while (true);
         f.disableTextbox();
     }
-//
+
+    //
     public static void main(String[] args) {
 
         ACLoader.loadData();
@@ -194,47 +232,49 @@ public class Brain {
                     "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
                     "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
                     "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!"));
-//            ArrayList<String> answers   = (ArrayList<String>) Arrays.asList("sup1", "sup2", "sup3");
-//
-            for (String question : questions){
+
+            for (String question : questions) {
                 System.out.println("**********************************");
                 System.out.println("Question: " + question);
                 String filteredQuestion = brain.filterLine(question);
                 System.out.println("Filtered: " + filteredQuestion);
                 DigestedInput di = NLP.getInstance().process(filteredQuestion);
 
-                if ( di.getInputType().contains(InputType.EXIT)) {
+                if (di.getInputType().contains(InputType.EXIT)) {
                     System.out.println("!Exit executed!");
                     continue;
                 }
 
-                DBR response = brain.computeResponse(di);
-                System.out.println("Response: " + (response.isError() ? "is an error." : (response.isImage() ? "is an image" : response.getResponseText())) + "\n");
-
+                ArrayList<DBR> dbresponse = brain.computeResponse(di);
+                int i = 0;
+                for(DBR response : dbresponse){
+                    System.out.println("Response" + i + ": " + (response.isError() ? "is an error." : (response.isImage() ? "is an image" : response.getResponseText())) + "\n");
+                    i++;
+                }
             }
-
         } else {
             brain.think();
         }
-
     }
 
     private String filterLine(String line) {
         //Eliminem caràcters que no siguin ascii
         line = line.replaceAll("[^\\p{ASCII}]", "");
 
-        line = line.replaceAll("[ñÑ]","n");
-        line = line.replaceAll("[çÇ]","c");
+        line = line.replaceAll("[ñÑ]", "n");
+        line = line.replaceAll("[çÇ]", "c");
 
         //Eliminem simbols ascii que no son d'interes.
-        line = line.replaceAll("[^a-zA-Z\\d\\s:,.]","");
+        line = line.replaceAll("[^a-zA-Z\\d\\s:,.]", "");
 
         // Eliminem espais i salts de linia multiples.
-        line = line.trim().replaceAll("( )+"," ");
-        line = line.replaceAll("(\n)+","\n");
+        line = line.trim().replaceAll("( )+", " ");
+        line = line.replaceAll("(\n)+", "\n");
         return line;
     }
+
     public Finestra getWindow() {
         return f;
     }
+
 }
