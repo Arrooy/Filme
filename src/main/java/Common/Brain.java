@@ -280,6 +280,7 @@ public class Brain {
                     }
                     fullText.append(response.getResponseText());
                 }
+
                 if (DEBUG)
                     System.out.println("Text resopnded: " + fullText);
 
