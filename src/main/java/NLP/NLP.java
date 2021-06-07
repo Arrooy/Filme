@@ -82,7 +82,7 @@ public class NLP {
         System.out.println("Detected people: " + Arrays.toString(peopleNames.toArray()));
         System.out.println("Input flags are: " + Arrays.toString(inputTypes.toArray()));
 
-        return new DigestedInput(objects, actions, movieNames, inputTypes);
+        return new DigestedInput(objects, actions, movieNames, peopleNames, inputTypes);
     }
 
     private ArrayList<String> getObject() {

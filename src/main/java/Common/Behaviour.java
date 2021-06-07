@@ -57,6 +57,11 @@ public enum Behaviour {
             "I don't know which movie you are referring to...",
             "I'm dont know that movie. Maybe try using its full name?"
     }),
+    NLP_ACTOR_NOT_DETECTED(new String[] {
+            "Sorry, but I don't know which performer are you talking about.",
+            "I don't know which movie star you are referring to...",
+            "I'm dont know that person. Maybe try using its full name?"
+    }),
     UI_APPEAL(new String[]{
             "Are you there?",
             "Hello? Do you need anything?",
@@ -133,14 +138,50 @@ public enum Behaviour {
             "The movie you're asking for is quite interesting, but the weather today is far more interesting than that.",
             "I don't know if there are any actors for the movie you are asking for."
     }),
+    RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER(new String[]{
+            "I cannot find any film with both artists.",
+            "I dont know any film starring those performers."
+    }),
+    RESPONSE_NOT_RESULTS_ACTOR_FILMS(new String[]{
+            "I cannot find any film for that particular performer.",
+            "I dont know any film from that movie star."
+    }),
+    RESPONSE_N_RESULTS_ACTOR_FILMS_TOGETHER(new String[]{
+            "%sThe performers mentioned appear simultaneously in %s.",
+            "%sThese films cast all the previous artists: %s.",
+            "%sThey have performed in %s together."
+
+    }),
+    RESPONSE_N_RESULTS_ACTOR_FILMS(new String[]{
+            "Some films that %s appear are: %s",
+            "%s appears in %s.",
+            "%s is popular for %s.",
+            "%s has performed in %s."
+
+    }),
     RESPONSE_N_RESULTS_ACTORS(new String[]{
             "Some of the actors that appear on %s are: %s.",
             "The movie %s has the actors %s in it.",
             "Interestingly enough, the movie %s starred %s."
     }),
-    RESPONSE_NO_RESULTS_TRENDING(new String[]{
+    RESPONSE_NO_RESULTS_TRENDING_MOVIE(new String[]{
             "I didn't find any trending movie right now. Try asking later.",
             "Can't find any trending film at the moment."
+    }),
+    RESPONSE_NO_RESULTS_TRENDING_ACTOR(new String[]{
+            "I didn't find any trending performer right now. Try asking later.",
+            "Can't find any trending film star at the moment."
+    }),
+    RESPONSE_NO_RESULTS_TRENDING_GENRE(new String[]{
+            "I didn't find any trending genre right now. Try asking later.",
+            "Can't find any trending genre at the moment."
+    }),
+    // Doble %s necessari per a reduir codi. El primer %s s'ignora.
+    RESPONSE_N_RESULTS_TRENDING_GENRE(new String[]{
+            "%sThese genres are hot right now %s.",
+            "I've %sheard %s are trending right now.",
+            "%s%s are blowing up rn.",
+            "%s%s are pretty popular genres at the moment."
     }),
     RESPONSE_N_RESULTS_TRENDING(new String[]{
             "Sure. %s it's whats hot right now.",
@@ -162,7 +203,33 @@ public enum Behaviour {
             "This is the poster you asked for:",
             "Look at this photograph:",
             "Take a look...",
-            "No problem. Here you have it:"
+            "Here you have it:"
+    }),
+    RESPONSE_NOT_RESULTS_IMAGE(new String[]{
+            "I can't find any fotos of that.",
+            "Sadly I don't have any foto right now."
+    }),
+    RESPONSE_N_RESULTS_AGE(new String[]{
+            "%s was born on %s",
+            "%s birthday is %s",
+            "%s is amazing since %s",
+            "The great %s was born on %s",
+
+    }),
+    RESPONSE_NOT_RESULTS_AGE(new String[]{
+            "I cant find any information about the performer age.",
+            "Looks like I dont know the birthdate of that performer.",
+            "I dont really know its age..."
+    }),
+    RESPONSE_NOT_RESULTS_MOVIE_GENRE(new String[]{
+            "Is that really a genre?",
+            "I cant find a single film with that genre.",
+            "No films matched that genre. How sad...",
+            "Looks like There are no films with that genre."
+    }),
+    RESPONSE_N_RESULTS_MOVIE_GENRE(new String[]{
+            "The movie %s has the following genres: %s.",
+            "%s genres are: %s.",
     }),
     HOW(new String[]{
             "I'm doing good, thanks for asking :)",

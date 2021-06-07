@@ -1,9 +1,8 @@
 package Common;
 
-import com.omertron.themoviedbapi.model.movie.MovieBasic;
 import com.omertron.themoviedbapi.results.ResultList;
 
-public class DefaultFallback <T extends MovieBasic> implements Fallback<T> {
+public class DefaultFallback <T> implements Fallback<T> {
 
     private final Behaviour defaultBehaviour;
 

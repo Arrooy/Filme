@@ -1,18 +1,21 @@
-Objects:movie
+Objects:movie--actor--genre--together
 Synonyms:movie--film--motion picture
+Synonyms:actor--actress--performer--player--movie star--film star--protagonist
+Synonyms:genre--kind--category--brand--class
+Synonyms:together--side by side--altogether--in conjunction--simultaneously--same time--at once--appeared with--appear with
 
-Actions:popular--think--describe--released--actor--similar--you're useless--fuck--my name is--show--age
-Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest
-Synonyms:show--display--image--illustration--thumbnail--poster--picture--photo--snapshot--pic
+Actions:popular--think--describe--released--acted--similar--you're useless--fuck--my name is--image--age
+Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest--famous
+Synonyms:image--illustration--thumbnail--poster--picture--photo--snapshot--pic
 Synonyms:describe--about--description--explain--report--recount--chronicle--portray--know
-Synonyms:actor--acted--cast--appeared on a cinema--appear--participates--performer--player--movie star--film star--actress--protagonist
+Synonyms:acted--cast--appeared on a cinema--appear--participates--performers--players--movie stars--film stars--actress--protagonists--actors
 Synonyms:think--thought--opinion--review--reflect--have to say--analyse--analyze--use your loaf--apprise
 Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--silly--twat--fool
 Synonyms:fuck--fucker--fuck you--fuck off--fuck your mom--fucking idiot--fucking bot--fucking robot--cunt--idiot--dickhead--asshole--bitch--bastard--son of a bitch--wanker--stupid--stupid bot--motherfucker--dumb ass motherfucker
 Synonyms:my name is--i'm--i am--im
 Synonyms:released--aired--filmed--on cinemas--appeared on a cinema--appeared--release year--release--came out--come out--published--on the big screen
 Synonyms:similar--related--alike--resemblant--like--based
-Synonyms:age--how old is
+Synonyms:age--how old is--birthdate--natal day--name day--born--birthday
 
 Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when -- did
 

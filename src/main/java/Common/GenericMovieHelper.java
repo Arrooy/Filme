@@ -2,11 +2,11 @@ package Common;
 
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
 
-public class GenericHelper {
+public class GenericMovieHelper {
     private final String content;
     private final Fallback<MovieInfo> fallback;
 
-    public GenericHelper(String content, Fallback<MovieInfo> fallback) {
+    public GenericMovieHelper(String content, Fallback<MovieInfo> fallback) {
         this.content = content;
         this.fallback = fallback;
     }

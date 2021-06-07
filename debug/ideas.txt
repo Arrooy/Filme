@@ -1,5 +1,24 @@
 TODO:
 
+FER ALTERNATIVE!
+
+
+"What are the trending actors?"
+"What are the trending movies?"
+
+
+
+
+When Vin diesel died?
+Vin diesel deathday.
+
+What is the biography of vin Diesel?
+
+
+Where was vinDiesel born?  place_of_birth
+
+
+
 Multiples actors + nom pelicula -> yes, no
 Multiples actors -> yes, no i quina pelicula han aparescut.
 
@@ -44,16 +63,6 @@ Can i watch x on y?
 Is Cars stored in Netflix?
 Netflix has Cars?
 Netflix has the film Cars?
-
-
-https://developers.themoviedb.org/3/people/get-popular-people
-Get popular people right now
-Popular actor
-Give me all the new popular actors
-Most famus actors
-
-
-
 
 
 

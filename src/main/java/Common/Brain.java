@@ -4,13 +4,18 @@ import Corrector.Symspell;
 import NLP.AhoCorasick.ACLoader;
 import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
+import com.omertron.themoviedbapi.model.person.PersonFind;
 import io.github.mightguy.spellcheck.symspell.exception.SpellCheckException;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Function;
+
+//TODO: Image de actor.
+//TODO: Image Genere.
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
@@ -28,56 +33,87 @@ public class Brain {
         vibrateNextTime = false;
     }
 
+    // Per si en un futur s'implanta preferencia d'accions.
+    private String getPriorityAction(DigestedInput di){
+        return di.getAction().get(0);
+    }
+
     // Donat un digested input -> genera una resposta (DBR)
     private ArrayList<DBR> computeResponse(DigestedInput di) {
+
         ArrayList<DBR> response = new ArrayList<>();
+        boolean responseNotFound = true;
+
+        String action = di.getAction().isEmpty() ? "" : getPriorityAction(di);
+
+        // Genre no es una acció, pero té comportaments associats quan es troba sense accio.
+        // Si no hi ha accio, pero apareix genre ->  mirar genre duna peliucla.
+        if (di.getAction().isEmpty() && di.getObject().contains("genre")) {
+            response.addAll(computeFilmGenre(di));
+            responseNotFound = false;
+        }
+
+        // Proporcionar les pelicules d'un actor en concret.
+        else if (di.getAction().isEmpty() && di.getObject().contains("movie") && !di.getPeople().isEmpty()) {
+            response.addAll(computeFilmsFromActor(di));
+            responseNotFound = false;
+        }
+
+        // La action acted no es correcte. Realment l'usuari vol saber quines pelis han participat els actors.
+        // Si es troba together a object, es farà cerca de les pelicules conjnutes.
+        else if(action.equals("acted") && di.getMovieName().isEmpty() && !di.getPeople().isEmpty()){
+            response.addAll(computeFilmsFromActor(di));
+            responseNotFound = false;
+        }
 
 
-        String action = di.getAction().isEmpty() ? "" : di.getAction().get(0);
 
-        if (!action.equals("")) {
-            switch (action) {
-                case "describe" -> response.addAll(computeDescribe(di));
-                case "popular" -> response.addAll(computeTrending(di));
-                case "actor" -> response.addAll(computeActor(di));
-                case "think" -> response.addAll(computeReview(di));
-                case "released" -> response.addAll(computeYear(di));
-                case "similar" -> response.addAll(computeSimilar(di));
-                case "you're useless" -> response.add(new DBR(Behaviour.NLP_INSULT.getRandom()));
-                case "fuck" -> response.add(new DBR(Behaviour.NLP_HARD_INSULT.getRandom()));
-                case "my name is" -> response.addAll(updateUserName(di));
-                case "show" -> response.addAll(computeShowImage(di));
-            }
-        } else {
-            ArrayList<InputType> inputType = di.getInputType();
+        if (responseNotFound) {
+            if (!action.equals("")) {
+                switch (action) {
+                    case "describe" -> response.addAll(computeDescribe(di));
+                    case "popular" -> response.addAll(computeTrending(di));
+                    case "acted" -> response.addAll(computeActor(di));
+                    case "think" -> response.addAll(computeReview(di));
+                    case "released" -> response.addAll(computeYear(di));
+                    case "similar" -> response.addAll(computeSimilar(di));
+                    case "you're useless" -> response.add(new DBR(Behaviour.NLP_INSULT.getRandom()));
+                    case "fuck" -> response.add(new DBR(Behaviour.NLP_HARD_INSULT.getRandom()));
+                    case "my name is" -> response.addAll(updateUserName(di));
+                    case "image" -> response.addAll(computeShowImage(di));
+                    case "age" -> response.addAll(computeActorAge(di));
+                }
+            } else {
+                ArrayList<InputType> inputType = di.getInputType();
 
-            // Casos concrets per afegeix cooerencia a les preguntes
-            if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.WHO))) {
-                response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.WHO.getRandom()));
+                // Casos concrets per afegeix cooerencia a les preguntes
+                if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.WHO))) {
+                    response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.WHO.getRandom()));
 
-            }
-            if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.HOW))) {
-                response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.HOW.getRandom()));
+                }
+                if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.HOW))) {
+                    response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.HOW.getRandom()));
 
-                // Casos base amb respostes directes.
-            } else if (inputType.contains(InputType.HELP)) {
-                response.add(new DBR(Behaviour.HELP.getRandom()));
+                    // Casos base amb respostes directes.
+                } else if (inputType.contains(InputType.HELP)) {
+                    response.add(new DBR(Behaviour.HELP.getRandom()));
 
-            } else if (inputType.contains(InputType.HELLO)) {
-                response.add(new DBR(Behaviour.HELLO_MSG.getRandom()));
+                } else if (inputType.contains(InputType.HELLO)) {
+                    response.add(new DBR(Behaviour.HELLO_MSG.getRandom()));
 
-            } else if (inputType.contains(InputType.AFFIRMATIVE) || inputType.contains(InputType.NEGATIVE)) {
-                response.add(new DBR(Behaviour.MEH_MSG.getRandom()));
+                } else if (inputType.contains(InputType.AFFIRMATIVE) || inputType.contains(InputType.NEGATIVE)) {
+                    response.add(new DBR(Behaviour.MEH_MSG.getRandom()));
 
-            } else if (inputType.contains(InputType.TIME)) {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                response.add(new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()))));
+                } else if (inputType.contains(InputType.TIME)) {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    response.add(new DBR(Behaviour.TIME.getRandom().formatted(dtf.format(java.time.LocalDateTime.now()))));
 
-            } else if (inputType.contains(InputType.HOW)) {
-                response.add(new DBR(Behaviour.HOW.getRandom()));
+                } else if (inputType.contains(InputType.HOW)) {
+                    response.add(new DBR(Behaviour.HOW.getRandom()));
 
-            } else if (inputType.contains(InputType.WHO)) {
-                response.add(new DBR(Behaviour.WHO.getRandom()));
+                } else if (inputType.contains(InputType.WHO)) {
+                    response.add(new DBR(Behaviour.WHO.getRandom()));
+                }
             }
         }
 
@@ -86,9 +122,9 @@ public class Brain {
 
         return response;
     }
-
-    private ArrayList<DBR> genericMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
-                                                  Function<GenericHelper, DBR> DBQuery) {
+    // TODO: Es pot juntar es dos generic Multiple compute?
+    private ArrayList<DBR> genericPesonMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
+                                                       Function<GenericPeopleHelper, DBR> DBQuery) {
         ArrayList<DBR> res = new ArrayList<>();
 
         if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
@@ -96,48 +132,111 @@ public class Brain {
             return res;
         }
 
-
         for (String movie : extractArray.apply(di)) {
-            DBR result = DBQuery.apply(new GenericHelper(movie, new DefaultFallback<>(errorQuery)));
+            DBR result = DBQuery.apply(new GenericPeopleHelper(movie, new DefaultFallback<PersonFind>(errorQuery)));
             if (result != null) res.add(result);
         }
 
         return res;
     }
 
+    private ArrayList<DBR> genericMovieMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery,
+                                                       Function<DigestedInput, ArrayList<String>> extractArray,
+                                                       Function<GenericMovieHelper, DBR> DBQuery) {
+        ArrayList<DBR> res = new ArrayList<>();
+
+        if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
+            res.add(new DBR(errorBehaviour.getRandom(), true));
+            return res;
+        }
+
+        for (String movie : extractArray.apply(di)) {
+            DBR result = DBQuery.apply(new GenericMovieHelper(movie, new DefaultFallback<>(errorQuery)));
+            if (result != null) res.add(result);
+        }
+
+        return res;
+    }
+
+
+    private ArrayList<DBR> computeFilmsFromActor(DigestedInput di) {
+        if(di.getObject().contains("together")){
+            ArrayList<DBR> res = new ArrayList<>();
+            res.add(DB.getInstance().getActorFilmsTogether(di.getPeople(), new DefaultFallback<>(Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER)));
+            return res;
+        }else {
+            return genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS,
+                    (DigestedInput::getPeople), x -> DB.getInstance().getActorFilms(x.getContent(), x.getFallback()));
+        }
+    }
+
+    private ArrayList<DBR> computeActorAge(DigestedInput di) {
+        return genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_AGE,
+                (DigestedInput::getPeople), x -> DB.getInstance().getActorAge(x.getContent(), x.getFallback()));
+    }
+
+
+    private ArrayList<DBR> computeFilmGenre(DigestedInput di) {
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_MOVIE_GENRE,
+                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmGenre(x.getContent(), x.getFallback()));
+    }
+
     private ArrayList<DBR> computeShowImage(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.NLP_MOVIE_NOT_DETECTED,
-                (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback()));
+        ArrayList<DBR> res = new ArrayList<>();
+        if (!di.getPeople().isEmpty()) {
+            res.addAll(genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+                    (DigestedInput::getPeople), x -> DB.getInstance().getActorImage(x.getContent(), x.getFallback())));
+
+            // Ens interessa forçar l'error.
+            res.addAll(genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+                    (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback())));
+            return res;
+        } else {
+            return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+                    (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback()));
+        }
     }
 
     private ArrayList<DBR> computeYear(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_RELEASE,
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_RELEASE,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDate(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeReview(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_REVIEW_NOT_FOUND,
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_REVIEW_NOT_FOUND,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getMovieReview(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeSimilar(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_SIMILAR,
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_SIMILAR,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getSimilarMovie(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeActor(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_ACTORS,
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_ACTORS,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmActors(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeTrending(DigestedInput di) {
         ArrayList<DBR> res = new ArrayList<>();
-        res.add(DB.getInstance().getTrendingMovie());
+
+        for (String obj : di.getObject()) {
+            DBR dbRes = null;
+            if (obj.equalsIgnoreCase("movie"))
+                dbRes = DB.getInstance().getTrendingMovie();
+            else if (obj.equalsIgnoreCase("actor"))
+                dbRes = DB.getInstance().getTrendingActor();
+            else if (obj.equalsIgnoreCase("genre"))
+                dbRes = DB.getInstance().getTrendingGenre();
+
+            if (dbRes != null) res.add(dbRes);
+
+        }
         return res;
     }
 
     private ArrayList<DBR> computeDescribe(DigestedInput di) {
-        return genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION,
+        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDescription(x.getContent(), x.getFallback()));
     }
 
@@ -218,12 +317,22 @@ public class Brain {
         if (TEST_SUITE) {
             ArrayList<String> questions =
 
-//                    new ArrayList<>(Arrays.asList("What are your thoughts on Cars amigo?", ""));
+                    new ArrayList<>(Arrays.asList("Actors from Inception","What film does Leonardo DiCaprio appear with Ken Watanabe?",
+                            "What film does Leonardo DiCaprio appear with Ken Watanabe together?"));
 
-                    new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
-                    "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
-                    "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
-                    "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!"));
+
+//                            "What are the best films from tom cruise and vin diesel?", "What are the best films from tom cruise and vin diesel together?",
+//                            "What are the best films from tom cruise and vin diesel at the same time?", "What film appear vin diesel and tom cruise together?"));
+//
+//                    new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
+//                    "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
+//                    "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
+//                    "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!",
+//                    "What is the birthdate of tom cruise?","What are the best actors from Narnia?","How old is vin diesel?","What is the trending film now?",
+//            "Givbe me the performers from Inception","What are the best actors from Inception?","Whats the most popular film?", "Whats the most poular actor?", "Give me the most popular film and actor", "Want some similar films to inception please",
+//            "What is the inception genre?", "What are the most popular genres?",
+//            "How old is vin diesel?", "Give me an image of vin diesel, ppelase!", "Give me an image of Cars.", "Give me the best films from vin diesel"
+//                    ));
 
             for (String question : questions) {
                 System.out.println("**********************************");

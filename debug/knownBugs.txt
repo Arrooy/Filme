@@ -26,3 +26,26 @@ Response0: Here are movies related to me: Memories of Murder, 10 to Midnight, Go
 Response1: Sure. Some movies similar to cars include Ferdinand, Cars 2, Mr. Peabody & Sherman, Turbo, Tarzan and Cars 3.
 
 **********************************
+
+
+**********************************
+Question: What are the best actors from Inception?
+Filtered: What are the best actors from Inception
+Processing What are the best actors from Inception
+
+Raw detections:
+Movie: inception
+
+Spell check result: what are tue best actors from inception
+
+Raw detections:
+Movie: inception
+
+Detected object: []
+Detected action: []
+Detected movie name: [inception]
+Detected people: []
+Input flags are: []
+Response0: Sorry I didn't get that, can you rephrase that please?
+
+**********************************
