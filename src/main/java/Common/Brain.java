@@ -140,7 +140,7 @@ public class Brain {
     }
 
     private ArrayList<DBR> computeFilmsFromActor(DigestedInput di) {
-        if (di.getObject().contains("together")) {
+        if ((di.getObject().contains("together")) && (di.getPeople().size() > 1)) {
             ArrayList<DBR> res = new ArrayList<>();
             res.add(DB.getInstance().getActorFilmsTogether(di.getPeople(), new DefaultFallback<>(Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER)));
             return res;
@@ -222,8 +222,12 @@ public class Brain {
 
     private ArrayList<DBR> updateUserName(DigestedInput di) {
         ArrayList<DBR> res = new ArrayList<>();
-        ui.setUserName(di.getMovieName().get(0));
-        res.add(new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName().get(0))));
+        if (di.getMovieName().size() != 0) {
+            ui.setUserName(di.getMovieName().get(0));
+            res.add(new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName().get(0))));
+        } else {
+            res.add(new DBR(Behaviour.RESPONSE_N_NAME.getRandom()));
+        }
         return res;
     }
 
@@ -325,7 +329,8 @@ public class Brain {
                             "How old is vin diesel?", "Give me an image of vin diesel, ppelase!", "Give me an image of Cars.", "Give me the best films from vin diesel",
                             "Where does Lewis Tan appear with Josh Lawson?",
                             "Where does Lewis Tan and Josh Lawson appear together?",
-                            "Where does Lewis Tan appear with Josh Lawson together?"
+                            "Where does Lewis Tan appear with Josh Lawson together?",
+                            "In wichmpvie Edward Norton amd Brad Pitt apppear togehter"
                     ));
 
             for (String question : questions) {

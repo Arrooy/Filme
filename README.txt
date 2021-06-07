@@ -54,5 +54,7 @@ La llista de funcionalitats que ofereix Filme dins el domini és:
         Ex: Name the actors in X? What actors does X have?
     - Demanar pel·lícules similars a una en específic
         Ex: Can I get movies similar to X? What's similar to X?
+    - Donats dos actors, trobar en quina pel·lícula aparèixen junts
+        Ex: In which movie do Edward Norton and Brad Pitt appear together?
 
 /////////////////////////////////////////////////////////////////////////

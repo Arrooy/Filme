@@ -14,7 +14,7 @@ public enum Behaviour {
     RESPONSE_FIRST_MEETING(new String[]{
             "Nice to meet you %s !",
             "Pleased to meet you %s.",
-            "Lovely to meet you $s."
+            "Lovely to meet you %s."
     }),
     USER_TYPES_AFTER_BEING_AWAY(new String[]{
             "Hello again. Got any more questions?",
@@ -55,12 +55,12 @@ public enum Behaviour {
     NLP_MOVIE_NOT_DETECTED(new String[] {
             "Sorry, but I don't know which movie are you talking about.",
             "I don't know which movie you are referring to...",
-            "I'm dont know that movie. Maybe try using its full name?"
+            "I don't know that movie. Maybe try using its full name?"
     }),
     NLP_ACTOR_NOT_DETECTED(new String[] {
             "Sorry, but I don't know which performer are you talking about.",
             "I don't know which movie star you are referring to...",
-            "I'm dont know that person. Maybe try using its full name?"
+            "I don't know that person. Maybe try using its full name?"
     }),
     UI_APPEAL(new String[]{
             "Are you there?",
@@ -242,6 +242,9 @@ public enum Behaviour {
     WHO(new String[]{
             "I'm Filme. I'm a Chatbot designed to answer any questions you might have about movies and actors.",
             "My name is Filme. I'm a Chatbot designed to help you with any movie-related question you might have."
+    }),
+    RESPONSE_N_NAME(new String[]{
+            "Cool name bro, but don't you have a more Hollywood-like name? ;)"
     });
 
 

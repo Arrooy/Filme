@@ -2,7 +2,7 @@ Objects:movie--actor--genre--together
 Synonyms:movie--film--motion picture
 Synonyms:actor--actress--performer--player--movie star--film star--protagonist
 Synonyms:genre--kind--category--brand--class
-Synonyms:together--side by side--altogether--in conjunction--simultaneously--same time--at once--appeared with--appear with
+Synonyms:together--side by side--altogether--and--in conjunction--simultaneously--same time--at once--appeared with--appear with
 
 Actions:popular--think--describe--released--acted--similar--you're useless--fuck--my name is--image--age
 Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest--famous--best
@@ -19,12 +19,12 @@ Synonyms:age--how old is--birthdate--natal day--name day--born--birthday
 
 Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when -- did
 
-Affirmations:yes--sure--okay--ok--affirmative--approval--cool--epic--nice--good--waw--wow
+Affirmations:yes--sure--okay--ok--affirmative--approval--cool--epic--thank--thank u--thank you--thanks--nice--good--waw--wow
 Negations:no--nah--nope--negative--not--deny
 
 Hello:hello--hello!--hi--hi!--good morning--good evening--good night--hey--hey!--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
-Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
+Exit:bye--i'm done--shut up--see you--see you later--see you around--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
 Help:help--help me--help me please--help me pls--please help me--what are you capable of--what can you do--able to--what can you say
 Time:time--hour--time is it--time right now--what time is it--tell the time
 How:how are you--how you doin--how ya doin-- r u doin--poppin--what's up--whats up--wassup--how's everything--how's it goin--how is it going--is everything good--things going
-Who:who are you--what is filme--who is filme--filme
+Who:who are you--what is filme--who is filme
