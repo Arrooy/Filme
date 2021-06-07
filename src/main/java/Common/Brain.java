@@ -16,8 +16,8 @@ import java.util.function.Function;
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
-    public static final long APPEAL_TIME = 20 * 1000;
-    public static final int TEXT_SIZE = 32;
+    public static final long APPEAL_TIME = 20 * 2000;
+    public static final int TEXT_SIZE = 20;
 
     private static final boolean TEST_SUITE = false;
     private static final boolean DEBUG = false;

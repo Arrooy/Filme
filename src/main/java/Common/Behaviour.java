@@ -28,7 +28,7 @@ public enum Behaviour {
             "Hey there!"
     }),
     HELP(new String[]{
-            "Currently I can do the following actions:\n\t- Describe a movie\n\t- Review a movie\n\t- Provide the release date of a film\n\t- Find similar films to a particular film\n\t- Show the trending film right now globally\n\t- List the actors from a film."
+            "Currently I can do the following actions:\n\t- Describe a movie\n\t- Review a movie\n\t- Provide the release date of a film\n\t- Find similar films to a particular film\n\t- Show the trending film, genre or actor right now globally\n\t- List the actors from a film.\n\t- The Genre of a film\n\t- Image of a film or an actor.\n\t- Birthday of an actor\n\t- Films where many actors appeared."
     }),
 
     MEH_MSG(new String[]{
