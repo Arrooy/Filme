@@ -4,6 +4,7 @@ import Corrector.Symspell;
 import NLP.AhoCorasick.ACLoader;
 import NLP.AhoCorasick.AhoCorasick;
 import NLP.NLP;
+import com.omertron.themoviedbapi.model.movie.MovieInfo;
 import com.omertron.themoviedbapi.model.person.PersonFind;
 import io.github.mightguy.spellcheck.symspell.exception.SpellCheckException;
 
@@ -16,11 +17,10 @@ import java.util.function.Function;
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
-    public static final int TEXT_SIZE = 16;
+    public static final int TEXT_SIZE = 32;
 
     private static final boolean TEST_SUITE = false;
     private static final boolean DEBUG = false;
-
 
     private final UserInteraction ui;
     private Finestra f;
@@ -121,9 +121,9 @@ public class Brain {
         return response;
     }
 
-    // TODO: Es pot juntar es dos generic Multiple compute?
-    private ArrayList<DBR> genericPesonMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
-                                                       Function<GenericPeopleHelper, DBR> DBQuery) {
+
+    private <T> ArrayList<DBR> genericMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
+                                                       Function<GenericHelper<T>, DBR> DBQuery) {
         ArrayList<DBR> res = new ArrayList<>();
 
         if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
@@ -132,31 +132,12 @@ public class Brain {
         }
 
         for (String movie : extractArray.apply(di)) {
-            DBR result = DBQuery.apply(new GenericPeopleHelper(movie, new DefaultFallback<PersonFind>(errorQuery)));
+            DBR result = DBQuery.apply(new GenericHelper<T>(movie, new DefaultFallback<T>(errorQuery)));
             if (result != null) res.add(result);
         }
 
         return res;
     }
-
-    private ArrayList<DBR> genericMovieMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery,
-                                                       Function<DigestedInput, ArrayList<String>> extractArray,
-                                                       Function<GenericMovieHelper, DBR> DBQuery) {
-        ArrayList<DBR> res = new ArrayList<>();
-
-        if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
-            res.add(new DBR(errorBehaviour.getRandom(), true));
-            return res;
-        }
-
-        for (String movie : extractArray.apply(di)) {
-            DBR result = DBQuery.apply(new GenericMovieHelper(movie, new DefaultFallback<>(errorQuery)));
-            if (result != null) res.add(result);
-        }
-
-        return res;
-    }
-
 
     private ArrayList<DBR> computeFilmsFromActor(DigestedInput di) {
         if (di.getObject().contains("together")) {
@@ -164,55 +145,55 @@ public class Brain {
             res.add(DB.getInstance().getActorFilmsTogether(di.getPeople(), new DefaultFallback<>(Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER)));
             return res;
         } else {
-            return genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS,
+            return this.<PersonFind>genericMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS,
                     (DigestedInput::getPeople), x -> DB.getInstance().getActorFilms(x.getContent(), x.getFallback()));
         }
     }
 
     private ArrayList<DBR> computeActorAge(DigestedInput di) {
-        return genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_AGE,
+        return this.<PersonFind>genericMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_AGE,
                 (DigestedInput::getPeople), x -> DB.getInstance().getActorAge(x.getContent(), x.getFallback()));
     }
 
 
     private ArrayList<DBR> computeFilmGenre(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_MOVIE_GENRE,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_MOVIE_GENRE,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmGenre(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeShowImage(DigestedInput di) {
         ArrayList<DBR> res = new ArrayList<>();
         if (!di.getPeople().isEmpty()) {
-            res.addAll(genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+            res.addAll(this.<PersonFind>genericMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
                     (DigestedInput::getPeople), x -> DB.getInstance().getActorImage(x.getContent(), x.getFallback())));
 
             // Ens interessa forçar l'error.
-            res.addAll(genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+            res.addAll(this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
                     (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback())));
             return res;
         } else {
-            return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
+            return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
                     (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback()));
         }
     }
 
     private ArrayList<DBR> computeYear(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_RELEASE,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_RELEASE,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDate(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeReview(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_REVIEW_NOT_FOUND,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_REVIEW_NOT_FOUND,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getMovieReview(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeSimilar(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_SIMILAR,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_SIMILAR,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getSimilarMovie(x.getContent(), x.getFallback()));
     }
 
     private ArrayList<DBR> computeActor(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_ACTORS,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_ACTORS,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmActors(x.getContent(), x.getFallback()));
     }
 
@@ -235,7 +216,7 @@ public class Brain {
     }
 
     private ArrayList<DBR> computeDescribe(DigestedInput di) {
-        return genericMovieMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION,
+        return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NO_RESULTS_DESCRIPTION,
                 (DigestedInput::getMovieName), x -> DB.getInstance().getFilmDescription(x.getContent(), x.getFallback()));
     }
 

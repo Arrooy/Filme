@@ -2,8 +2,8 @@ package Common;
 
 import java.util.Random;
 
-// TODO: POTSER ALGUNA FRASE GENERA UN RESULTAT QUE ACABA AMB .. i no . donat al contingut del seu interior.
 // TODO: ampliar la behaviour help.
+// TODO: Corregir frases angles.
 
 public enum Behaviour {
     WELCOME_MSG(new String[]{
@@ -18,7 +18,7 @@ public enum Behaviour {
     }),
     USER_TYPES_AFTER_BEING_AWAY(new String[]{
             "Hello again. Got any more questions?",
-            "Oh! Thank god you're typing again!",
+            "Oh! Thanks god you're typing again!",
             "Yay! You're back! Tell me lots of things! Ask ask ask!",
             "I was crying until I noticed you're typing :) Ask me anything!"
     }),

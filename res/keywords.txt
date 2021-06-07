@@ -5,7 +5,7 @@ Synonyms:genre--kind--category--brand--class
 Synonyms:together--side by side--altogether--in conjunction--simultaneously--same time--at once--appeared with--appear with
 
 Actions:popular--think--describe--released--acted--similar--you're useless--fuck--my name is--image--age
-Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest--famous
+Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest--famous--best
 Synonyms:image--illustration--thumbnail--poster--picture--photo--snapshot--pic
 Synonyms:describe--about--description--explain--report--recount--chronicle--portray--know
 Synonyms:acted--cast--appeared on a cinema--appear--participates--performers--players--movie stars--film stars--actress--protagonists--actors
@@ -14,13 +14,13 @@ Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastar
 Synonyms:fuck--fucker--fuck you--fuck off--fuck your mom--fucking idiot--fucking bot--fucking robot--cunt--idiot--dickhead--asshole--bitch--bastard--son of a bitch--wanker--stupid--stupid bot--motherfucker--dumb ass motherfucker
 Synonyms:my name is--i'm--i am--im
 Synonyms:released--aired--filmed--on cinemas--appeared on a cinema--appeared--release year--release--came out--come out--published--on the big screen
-Synonyms:similar--related--alike--resemblant--like--based
+Synonyms:similar--related--alike--resembling--like--based
 Synonyms:age--how old is--birthdate--natal day--name day--born--birthday
 
 Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when -- did
 
 Affirmations:yes--sure--okay--ok--affirmative--approval--cool--epic--nice--good--waw--wow
-Negations:no--nah--nope--negative--not--deny--nanai
+Negations:no--nah--nope--negative--not--deny
 
 Hello:hello--hello!--hi--hi!--good morning--good evening--good night--hey--hey!--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
 Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
