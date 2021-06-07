@@ -49,3 +49,29 @@ Input flags are: []
 Response0: Sorry I didn't get that, can you rephrase that please?
 
 **********************************
+
+**********************************
+Question: Give me an image of vin diesel, ppelase!
+Filtered: Give me an image of vin diesel, ppelase
+Processing Give me an image of vin diesel, ppelase
+
+Raw detections:
+Action: image
+Person: vin diesel
+
+Spell check result: give me an image of a opel see
+
+Raw detections:
+Action: image
+
+Detected object: []
+Detected action: [image]
+Detected movie name: []
+Detected people: [vin diesel]
+Input flags are: []
+Response0: is an image
+
+Response1: is an error. I'm dont know that movie. Maybe try using its full name?
+
+**********************************
+

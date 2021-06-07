@@ -11,18 +11,16 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.function.Function;
-
-//TODO: Image de actor.
-//TODO: Image Genere.
 
 public class Brain {
     // Si pasen 10 segons i no hi ha resposta, appeal!
     public static final long APPEAL_TIME = 20 * 1000;
     public static final int TEXT_SIZE = 16;
 
-    private static final boolean TEST_SUITE = true;
+    private static final boolean TEST_SUITE = false;
+    private static final boolean DEBUG = false;
+
 
     private final UserInteraction ui;
     private Finestra f;
@@ -34,7 +32,7 @@ public class Brain {
     }
 
     // Per si en un futur s'implanta preferencia d'accions.
-    private String getPriorityAction(DigestedInput di){
+    private String getPriorityAction(DigestedInput di) {
         return di.getAction().get(0);
     }
 
@@ -61,12 +59,13 @@ public class Brain {
 
         // La action acted no es correcte. Realment l'usuari vol saber quines pelis han participat els actors.
         // Si es troba together a object, es farà cerca de les pelicules conjnutes.
-        else if(action.equals("acted") && di.getMovieName().isEmpty() && !di.getPeople().isEmpty()){
+        else if (action.equals("acted") && di.getMovieName().isEmpty() && !di.getPeople().isEmpty()) {
+            response.addAll(computeFilmsFromActor(di));
+            responseNotFound = false;
+        } else if (di.getAction().isEmpty() && di.getMovieName().isEmpty() && !di.getPeople().isEmpty() && di.getObject().contains("together")) {
             response.addAll(computeFilmsFromActor(di));
             responseNotFound = false;
         }
-
-
 
         if (responseNotFound) {
             if (!action.equals("")) {
@@ -90,8 +89,7 @@ public class Brain {
                 if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.WHO))) {
                     response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.WHO.getRandom()));
 
-                }
-                if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.HOW))) {
+                } else if (inputType.containsAll(Arrays.asList(InputType.HELLO, InputType.HOW))) {
                     response.add(new DBR(Behaviour.HELLO_MSG.getRandom() + " " + Behaviour.HOW.getRandom()));
 
                     // Casos base amb respostes directes.
@@ -122,6 +120,7 @@ public class Brain {
 
         return response;
     }
+
     // TODO: Es pot juntar es dos generic Multiple compute?
     private ArrayList<DBR> genericPesonMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
                                                        Function<GenericPeopleHelper, DBR> DBQuery) {
@@ -160,11 +159,11 @@ public class Brain {
 
 
     private ArrayList<DBR> computeFilmsFromActor(DigestedInput di) {
-        if(di.getObject().contains("together")){
+        if (di.getObject().contains("together")) {
             ArrayList<DBR> res = new ArrayList<>();
             res.add(DB.getInstance().getActorFilmsTogether(di.getPeople(), new DefaultFallback<>(Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER)));
             return res;
-        }else {
+        } else {
             return genericPesonMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_ACTOR_FILMS,
                     (DigestedInput::getPeople), x -> DB.getInstance().getActorFilms(x.getContent(), x.getFallback()));
         }
@@ -257,6 +256,11 @@ public class Brain {
         do {
             if (ui.hasInput()) {
                 String input = ui.getInput();
+                if (DEBUG) {
+                    System.out.println("**********************************");
+                    System.out.println("Question: " + input);
+                }
+
                 DigestedInput di = NLP.getInstance().process(input);
 
                 if (di.getInputType().contains(InputType.EXIT)) {
@@ -265,15 +269,21 @@ public class Brain {
                 }
 
                 ArrayList<DBR> dbresponse = computeResponse(di);
-                DBR response = dbresponse.get(0);
+                StringBuilder fullText = new StringBuilder();
 
-                ui.updateTimeToRead(response.getResponseText());
+                for (DBR response : dbresponse) {
+                    if (response.isImage() && !response.isError()) {
+                        f.addImageToChat("Filme", response.getResponseText(), response.getImgUrl());
+                    } else {
 
-                if (response.isImage() && !response.isError()) {
-                    f.addImageToChat("Filme", response.getResponseText(), response.getImgUrl());
-                } else {
-                    f.addToChat("Filme", response.getResponseText());
+                        f.addToChat("Filme", response.getResponseText());
+                    }
+                    fullText.append(response.getResponseText());
                 }
+                if (DEBUG)
+                    System.out.println("Text resopnded: " + fullText);
+
+                ui.updateTimeToRead(fullText.toString());
             } else {
 
                 if (ui.timeSinceLastInteraction() > APPEAL_TIME) {
@@ -317,22 +327,24 @@ public class Brain {
         if (TEST_SUITE) {
             ArrayList<String> questions =
 
-                    new ArrayList<>(Arrays.asList("Actors from Inception","What film does Leonardo DiCaprio appear with Ken Watanabe?",
-                            "What film does Leonardo DiCaprio appear with Ken Watanabe together?"));
+//                    new ArrayList<>(Arrays.asList());
 
 
 //                            "What are the best films from tom cruise and vin diesel?", "What are the best films from tom cruise and vin diesel together?",
 //                            "What are the best films from tom cruise and vin diesel at the same time?", "What film appear vin diesel and tom cruise together?"));
 //
-//                    new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
-//                    "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
-//                    "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
-//                    "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!",
-//                    "What is the birthdate of tom cruise?","What are the best actors from Narnia?","How old is vin diesel?","What is the trending film now?",
-//            "Givbe me the performers from Inception","What are the best actors from Inception?","Whats the most popular film?", "Whats the most poular actor?", "Give me the most popular film and actor", "Want some similar films to inception please",
-//            "What is the inception genre?", "What are the most popular genres?",
-//            "How old is vin diesel?", "Give me an image of vin diesel, ppelase!", "Give me an image of Cars.", "Give me the best films from vin diesel"
-//                    ));
+                    new ArrayList<>(Arrays.asList("How are you?", "What do you know about cars?",
+                            "What is you opinion on Cars?", "Yes or no?", "Hello", "Hello, who are you?", "Can you help me?",
+                            "What time is it?", "What's the hottest movie atm?", "What are your thoughts on Cars?",
+                            "Describe Cars", "When did Cars come out?", "Name the actors from Cars", "Give me similar movies to Cars!",
+                            "What is the birthdate of tom cruise?", "What are the best actors from Narnia?", "How old is vin diesel?", "What is the trending film now?",
+                            "Givbe me the performers from Inception", "What are the best actors from Inception?", "Whats the most popular film?", "Whats the most poular actor?", "Give me the most popular film and actor", "Want some similar films to inception please",
+                            "What is the inception genre?", "What are the most popular genres?",
+                            "How old is vin diesel?", "Give me an image of vin diesel, ppelase!", "Give me an image of Cars.", "Give me the best films from vin diesel",
+                            "Where does Lewis Tan appear with Josh Lawson?",
+                            "Where does Lewis Tan and Josh Lawson appear together?",
+                            "Where does Lewis Tan appear with Josh Lawson together?"
+                    ));
 
             for (String question : questions) {
                 System.out.println("**********************************");

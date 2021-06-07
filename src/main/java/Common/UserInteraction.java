@@ -101,6 +101,8 @@ public class UserInteraction implements KeyListener {
             default:
         }
     }
+
+
     public void updateTimeToRead(String textToRead){
         if(textToRead == null || textToRead.isEmpty())return;
 

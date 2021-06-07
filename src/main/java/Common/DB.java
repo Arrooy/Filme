@@ -21,6 +21,7 @@ import com.omertron.themoviedbapi.results.ResultList;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -274,13 +275,14 @@ public class DB {
     public DBR getActorImage(String actorName, Fallback<PersonFind> fallback) {
         int id;
         try {
-            id = getActorId(actorName,fallback);
+            id = getActorId(actorName, fallback);
         } catch (Exception e) {
             return fallback.noResult(actorName);
         }
+
         try {
             ResultList<Artwork> images = dbApi.getPersonImages(id);
-            if(images.getTotalResults() == 0)
+            if (images.getTotalResults() == 0)
                 return fallback.noResult(actorName);
 
             String path = images.getResults().get(0).getFilePath();
@@ -298,18 +300,18 @@ public class DB {
         try {
 
             int id;
-            try{
-                id = getActorId(actorName,fallback);
-            }catch (Exception e){
+            try {
+                id = getActorId(actorName, fallback);
+            } catch (Exception e) {
                 return fallback.noResult(actorName);
             }
 
             System.out.println("Looking for credits for actor id " + id);
             PersonCreditList<CreditMovieBasic> info = dbApi.getPersonMovieCredits(id, "en-US");
-            if(info.getCast() == null || info.getCast().size() == 0)
+            if (info.getCast() == null || info.getCast().size() == 0)
                 return fallback.noResult(actorName);
 
-            return new DBR(listToString(actorName, info.getCast(), Behaviour.RESPONSE_N_RESULTS_ACTOR_FILMS,6, CreditMovieBasic::getTitle));
+            return new DBR(listToString(actorName, info.getCast(), Behaviour.RESPONSE_N_RESULTS_ACTOR_FILMS, 6, CreditMovieBasic::getTitle));
 
         } catch (MovieDbException e) {
             e.printStackTrace();
@@ -321,9 +323,9 @@ public class DB {
         try {
 
             int id;
-            try{
-                id = getActorId(actorName,fallback);
-            }catch (Exception e){
+            try {
+                id = getActorId(actorName, fallback);
+            } catch (Exception e) {
                 return fallback.noResult(actorName);
             }
 
@@ -338,15 +340,26 @@ public class DB {
     }
 
 
-    public DBR getActorFilmsTogether(ArrayList<String> people, DefaultFallback<Object> fallback) {
+    public DBR getActorFilmsTogether(ArrayList<String> people, DefaultFallback<PersonFind> fallback) {
+
+        ArrayList<Integer> ids = new ArrayList<>();
+
+        try {
+            for (String p : people) {
+                ids.add(getActorId(p, fallback));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Discover dis = new Discover();
         WithBuilder wb = null;
-        for(String p : people){
+
+        for (int id : ids) {
             if (wb == null)
-                 wb = new WithBuilder(URLEncoder.encode(p, StandardCharsets.US_ASCII));
+                wb = new WithBuilder(id);
             else
-                wb.and(URLEncoder.encode(p, StandardCharsets.US_ASCII));
+                wb.and(id);
         }
 
         dis.withPeople(wb);
@@ -355,11 +368,12 @@ public class DB {
         ResultList<MovieBasic> res;
         try {
             res = dbApi.getDiscoverMovies(dis);
-            if(res == null || res.getTotalResults() == 0){
+
+            if (res == null || res.getTotalResults() == 0) {
                 return fallback.noResult("");
             }
 
-            return new DBR(listToString("",res.getResults(),Behaviour.RESPONSE_N_RESULTS_ACTOR_FILMS_TOGETHER,8, MovieBasic::getTitle));
+            return new DBR(listToString("", res.getResults(), Behaviour.RESPONSE_N_RESULTS_ACTOR_FILMS_TOGETHER, 8, MovieBasic::getTitle));
         } catch (MovieDbException e) {
             e.printStackTrace();
         }
@@ -384,7 +398,7 @@ public class DB {
         if (res.getTotalResults() == 0) {
             throw new Exception("");
         }
-        return res.getTotalResults() == 1 ? res.getId() : fallback.tooManyResults(actorName, res).getId();
+        return res.getTotalResults() == 1 ? res.getResults().get(0).getId() : fallback.tooManyResults(actorName, res).getId();
     }
 
     private int getFilmId(String filmName, Fallback<MovieInfo> fallback) throws Exception {

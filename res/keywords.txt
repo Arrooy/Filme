@@ -19,8 +19,8 @@ Synonyms:age--how old is--birthdate--natal day--name day--born--birthday
 
 Precedents: from -- of -- on -- is -- to -- in -- at -- for -- the -- was -- when -- did
 
-Affirmations:yes--sure--okay--ok--affirmative--approval--cool--epic
-Negations:no--nah--nope--negative--not--deny
+Affirmations:yes--sure--okay--ok--affirmative--approval--cool--epic--nice--good--waw--wow
+Negations:no--nah--nope--negative--not--deny--nanai
 
 Hello:hello--hello!--hi--hi!--good morning--good evening--good night--hey--hey!--hiya--salutations--greetings--hi there--hello there--howdy--eyow--salute
 Exit:bye--i'm done--shut up--leave me alone--quit--log out--log me out--close--exit--i'm out--see ya--good bye
