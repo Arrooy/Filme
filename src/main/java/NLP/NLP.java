@@ -28,7 +28,7 @@ public class NLP {
     }
 
     public DigestedInput process(String input) {
-
+        String originalInput = input;
         System.out.println("Processing " + input);
 
         // Primera pasada del input. S'eliminen els noms propis.
@@ -91,6 +91,9 @@ public class NLP {
 
         peopleNames = cPeopleNames;
         movieNames = cMovieNames;
+
+        if(actions.contains("my name is") && peopleNames.isEmpty())
+            peopleNames.add(originalInput.replaceAll("^.*?(\\w+)\\W*$", "$1"));
 
         System.out.println("Detected object: " + Arrays.toString(objects.toArray()));
         System.out.println("Detected action: " + Arrays.toString(actions.toArray()));

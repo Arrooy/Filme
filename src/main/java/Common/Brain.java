@@ -224,9 +224,9 @@ public class Brain {
 
     private ArrayList<DBR> updateUserName(DigestedInput di) {
         ArrayList<DBR> res = new ArrayList<>();
-        if (di.getMovieName().size() != 0) {
-            ui.setUserName(di.getMovieName().get(0));
-            res.add(new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getMovieName().get(0))));
+        if (di.getPeople().size() != 0) {
+            ui.setUserName(di.getPeople().get(0));
+            res.add(new DBR(Behaviour.RESPONSE_FIRST_MEETING.getRandom().formatted(di.getPeople().get(0))));
         } else {
             res.add(new DBR(Behaviour.RESPONSE_N_NAME.getRandom()));
         }
