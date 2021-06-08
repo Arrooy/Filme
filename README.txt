@@ -42,19 +42,29 @@ com: I'm X, My name is X ...
 Tot i així, la idea principal del Chatbot és centrar-se en un domini ben
 acotat, que en el nostre cas són els actors i les pel·lícules.
 La llista de funcionalitats que ofereix Filme dins el domini és:
-    - Llistar la película més popular actualment
-        Ex: What's the hottest movie atm? What's a popular movie?
-    - Oferir una opinió sobre una pel·lícula
-        Ex: What are your thoughts on X? Got an opinion on X?
-    - Descriure una pel·lícula
-        Ex: Describe X. What do you know about X?
-    - Demanar quan va sortir una pel·lícula
-        Ex: When did X come out? When did X release?
-    - Demanar els actors d'una pel·lícula
-        Ex: Name the actors in X? What actors does X have?
-    - Demanar pel·lícules similars a una en específic
-        Ex: Can I get movies similar to X? What's similar to X?
-    - Donats dos actors, trobar en quina pel·lícula aparèixen junts
-        Ex: In which movie do Edward Norton and Brad Pitt appear together?
+                    - Retornar la película, l'actor o el génere més popular actualment
+                        Ex: What's the hottest movie atm? What's a popular genre?
+                    - Oferir una opinió sobre una pel·lícula
+                        Ex: What are your thoughts on X? Got an opinion on X?
+                    - Descriure una pel·lícula
+                        Ex: Describe X. What do you know about X?
+                    - Demanar quan va sortir una pel·lícula
+                        Ex: When did X come out? When did X release?
+                    - Llistar els actors d'una pel·lícula
+                        Ex: Name the actors in X? What actors does X have?
+                    - Demanar pel·lícules similars a una en específic
+                        Ex: Can I get movies similar to X? What's similar to X?
+                    - Donats dos o més actors, trobar en quina pel·lícula aparèixen junts
+                        Ex: In which movie do X and Y appear together?
+                    - Demanar el génere d'una pel·lícula
+                        Ex: What kind of movie is of X.
+                    - Mostrar una imatge d'una pel·lícula o un actor
+                        Ex: Show me a photo of X.
+                    - Mostrar les pel·lícules que ha fet un actor
+                        Ex: What movies does X have?
+                    - Demanar la data de naixement d'un actor
+                        Ex: When was X born?
+
+
 
 /////////////////////////////////////////////////////////////////////////
