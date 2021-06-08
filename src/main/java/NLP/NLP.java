@@ -10,7 +10,6 @@ import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class NLP {
 
@@ -49,15 +48,17 @@ public class NLP {
         for (String pn : peopleNames)
             input = input.replaceAll(pn, "");
 
-        // Eliminem dobles spaces del input (apareixen al borrar noms propis)
-        input = input.replaceAll("\\s+", " ");
+        if (input.length() != 0) {
+            // Eliminem dobles spaces del input (apareixen al borrar noms propis)
+            input = input.replaceAll("\\s+", " ");
 
-        input = Symspell.getInstance().spellCheck(input);
-        System.out.println("Spell check result: " + input);
+            input = Symspell.getInstance().spellCheck(input);
+            System.out.println("Spell check result: " + input);
 
-        //Segona passada amb input sense noms propis + corregit.
-        currentSentence = AhoCorasick.getInstance().analyzeString(input);
-        AhoCorasick.getInstance().processResults(input, currentSentence);
+            //Segona passada amb input sense noms propis + corregit.
+            currentSentence = AhoCorasick.getInstance().analyzeString(input);
+            AhoCorasick.getInstance().processResults(input, currentSentence);
+        }
 
         System.out.println("\nRaw detections: ");
         for (ACResult r : currentSentence) System.out.println(r);
@@ -80,6 +81,7 @@ public class NLP {
 
         ArrayList<String> cMovieNames = new ArrayList<String>();
         ArrayList<String> cPeopleNames = new ArrayList<String>();
+
         // Capitalització dels noms propis. El corrector elimina les majuscules...
         for (String mn : movieNames) {
             cMovieNames.add(WordUtils.capitalizeFully(mn));
@@ -92,7 +94,7 @@ public class NLP {
         peopleNames = cPeopleNames;
         movieNames = cMovieNames;
 
-        if(actions.contains("my name is") && peopleNames.isEmpty())
+        if (actions.contains("my name is") && peopleNames.isEmpty())
             peopleNames.add(originalInput.replaceAll("^.*?(\\w+)\\W*$", "$1"));
 
         System.out.println("Detected object: " + Arrays.toString(objects.toArray()));
