@@ -10,6 +10,7 @@ import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class NLP {
 
@@ -76,16 +77,20 @@ public class NLP {
         if (AhoCorasick.existsType(currentSentence, ACNodeType.HOW)) inputTypes.add(InputType.HOW);
         if (AhoCorasick.existsType(currentSentence, ACNodeType.WHO)) inputTypes.add(InputType.WHO);
 
+
+        ArrayList<String> cMovieNames = new ArrayList<String>();
+        ArrayList<String> cPeopleNames = new ArrayList<String>();
         // Capitalització dels noms propis. El corrector elimina les majuscules...
         for (String mn : movieNames) {
-            movieNames.remove(mn);
-            movieNames.add(WordUtils.capitalizeFully(mn));
+            cMovieNames.add(WordUtils.capitalizeFully(mn));
         }
 
         for (String pn : peopleNames) {
-            peopleNames.remove(pn);
-            peopleNames.add(WordUtils.capitalizeFully(pn));
+            cPeopleNames.add(WordUtils.capitalizeFully(pn));
         }
+
+        peopleNames = cPeopleNames;
+        movieNames = cMovieNames;
 
         System.out.println("Detected object: " + Arrays.toString(objects.toArray()));
         System.out.println("Detected action: " + Arrays.toString(actions.toArray()));
