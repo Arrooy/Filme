@@ -2,13 +2,13 @@ Objects:movie--actor--genre--together
 Synonyms:movie--film--motion picture
 Synonyms:actor--actress--performer--player--movie star--film star--protagonist
 Synonyms:genre--kind--category--brand--class
-Synonyms:together--side by side--altogether--and--in conjunction--simultaneously--same time--at once--appeared with--appear with
+Synonyms:together--side by side--altogether--and--in conjunction--simultaneously--same time--at once--appeared with--appear with--both
 
 Actions:popular--think--describe--released--acted--similar--you're useless--fuck--my name is--image--age
 Synonyms:popular--trendy--trending--hot--vogue--in demand--favourite--well-received--hottest--famous--best
 Synonyms:image--illustration--thumbnail--poster--picture--photo--snapshot--pic
 Synonyms:describe--about--description--explain--report--recount--chronicle--portray--know
-Synonyms:acted--cast--appeared on a cinema--appear--participates--performers--players--movie stars--film stars--actress--protagonists--actors
+Synonyms:acted--cast--appeared on a cinema--appear--participates--performers--players--movie stars--film stars--actress--protagonists--actors--featuring--shows
 Synonyms:think--thought--opinion--review--reflect--have to say--analyse--analyze--use your loaf--apprise
 Synonyms:you're useless--useless--ridiculous--goofy--nonsensical--absurd--bastard--silly--twat--fool
 Synonyms:fuck--fucker--fuck you--fuck off--fuck your mom--fucking idiot--fucking bot--fucking robot--cunt--idiot--dickhead--asshole--bitch--bastard--son of a bitch--wanker--stupid--stupid bot--motherfucker--dumb ass motherfucker

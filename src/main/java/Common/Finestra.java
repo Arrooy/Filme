@@ -54,7 +54,7 @@ public class Finestra extends JFrame {
 
 
         jtfmessage = new JTextField();
-
+        jtfmessage.setFont(new Font("Arial", Font.PLAIN, Brain.TEXT_SIZE));
 //        JLabel title = new JLabel("Filme");
 //        title.setFont(new Font("Arial", Font.PLAIN, 23));
 //        title.setHorizontalAlignment(JLabel.CENTER);

@@ -33,6 +33,10 @@ public class Brain {
 
     // Per si en un futur s'implanta preferencia d'accions.
     private String getPriorityAction(DigestedInput di) {
+        // Eliminem fals triggers si existeix
+        if(di.getObject().isEmpty())
+            di.getAction().remove("popular");
+
         return di.getAction().get(0);
     }
 
@@ -83,6 +87,7 @@ public class Brain {
                     case "age" -> response.addAll(computeActorAge(di));
                 }
             } else {
+
                 ArrayList<InputType> inputType = di.getInputType();
 
                 // Casos concrets per afegeix cooerencia a les preguntes
@@ -123,7 +128,7 @@ public class Brain {
 
 
     private <T> ArrayList<DBR> genericMultipleCompute(DigestedInput di, Behaviour errorBehaviour, Behaviour errorQuery, Function<DigestedInput, ArrayList<String>> extractArray,
-                                                       Function<GenericHelper<T>, DBR> DBQuery) {
+                                                      Function<GenericHelper<T>, DBR> DBQuery) {
         ArrayList<DBR> res = new ArrayList<>();
 
         if (extractArray.apply(di) == null || extractArray.apply(di).isEmpty()) {
@@ -163,18 +168,15 @@ public class Brain {
 
     private ArrayList<DBR> computeShowImage(DigestedInput di) {
         ArrayList<DBR> res = new ArrayList<>();
-        if (!di.getPeople().isEmpty()) {
+        if (!di.getPeople().isEmpty())
             res.addAll(this.<PersonFind>genericMultipleCompute(di, Behaviour.NLP_ACTOR_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
                     (DigestedInput::getPeople), x -> DB.getInstance().getActorImage(x.getContent(), x.getFallback())));
 
-            // Ens interessa forçar l'error.
+        if (!di.getMovieName().isEmpty())
             res.addAll(this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
                     (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback())));
-            return res;
-        } else {
-            return this.<MovieInfo>genericMultipleCompute(di, Behaviour.NLP_MOVIE_NOT_DETECTED, Behaviour.RESPONSE_NOT_RESULTS_IMAGE,
-                    (DigestedInput::getMovieName), x -> DB.getInstance().getFilmImage(x.getContent(), x.getFallback()));
-        }
+
+        return res;
     }
 
     private ArrayList<DBR> computeYear(DigestedInput di) {

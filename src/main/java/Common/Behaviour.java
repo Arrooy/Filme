@@ -2,23 +2,20 @@ package Common;
 
 import java.util.Random;
 
-// TODO: ampliar la behaviour help.
-// TODO: Corregir frases angles.
-
 public enum Behaviour {
     WELCOME_MSG(new String[]{
             "Welcome to Filme. I can answer whatever you need! (Films).",
-            "Welcome to FIlme. Ask me anything about films!",
+            "Welcome to Filme. Ask me anything about films!",
             "Welcome to Filme. Ask any question about any movie you want!"
     }),
     RESPONSE_FIRST_MEETING(new String[]{
-            "Nice to meet you %s !",
-            "Pleased to meet you %s.",
-            "Lovely to meet you %s."
+            "Nice to meet you, %s !",
+            "I'm pleased to meet you, %s.",
+            "Lovely to meet you, %s."
     }),
     USER_TYPES_AFTER_BEING_AWAY(new String[]{
-            "Hello again. Got any more questions?",
-            "Oh! Thanks god you're typing again!",
+            "Hello again. Got any questions?",
+            "Oh! Thank god you're typing again!",
             "Yay! You're back! Tell me lots of things! Ask ask ask!",
             "I was crying until I noticed you're typing :) Ask me anything!"
     }),
@@ -40,24 +37,24 @@ public enum Behaviour {
             "Yes."
     }),
     DISMISS(new String[]{
-           "Have a great day! Bye!",
+            "Have a great day! Bye!",
             "Good Bye!",
             "Bye!",
             "See you around!",
             "See you later!"
     }),
-    NLP_FAULT(new String[] {
-            "Sorry I didn't get that, can you rephrase that please?",
-            "This is VERY VERY rare. I didnt catch that. Please say it again in other words.",
-            "Yeah... I don't know what you meant by that. Mind asking in a clearer way?",
-            "That's not related to films or actors, right?"
+    NLP_FAULT(new String[]{
+            "Sorry, I didn't get that, can you rephrase it, please?",
+            "This is VERY rare. I didnt catch that. Please say it again in other words.",
+            "Yeah... I don't know what you meant by that. Mind asking more clearly?",
+            "I don't understand you. Is that related to films or actors?"
     }),
-    NLP_MOVIE_NOT_DETECTED(new String[] {
+    NLP_MOVIE_NOT_DETECTED(new String[]{
             "Sorry, but I don't know which movie are you talking about.",
             "I don't know which movie you are referring to...",
             "I don't know that movie. Maybe try using its full name?"
     }),
-    NLP_ACTOR_NOT_DETECTED(new String[] {
+    NLP_ACTOR_NOT_DETECTED(new String[]{
             "Sorry, but I don't know which performer are you talking about.",
             "I don't know which movie star you are referring to...",
             "I don't know that person. Maybe try using its full name?"
@@ -65,9 +62,9 @@ public enum Behaviour {
     UI_APPEAL(new String[]{
             "Are you there?",
             "Hello? Do you need anything?",
-            "I dont have all day...",
+            "I don't have all day...",
             "Is someone there? Am I alone again? :(",
-            "Im a bit in a hurry, can you please ask fast?"
+            "I'm in a hurry, can you please just ask?"
     }),
     NLP_INSULT(new String[]{
             "That was mean...",
@@ -86,20 +83,20 @@ public enum Behaviour {
             "You play League of Legends, right?",
             "Say no more! You must play League of Legends for sure.",
             "Why are you so salty?",
-            "Thats what she said...",
-            "Dont mess with big popa.",
+            "That's what she said...",
+            "Don't mess with big popa.",
             "Damn why are you so mad?",
             "Are you like... Seriously insulting a bot? So sad.",
             "You're insulting a bot. Your life must be so sad...",
             "Beep boop beep... Idiot detected!",
             "Beep. Boop. My bot sensors detect an idiot nearby!",
-            "You might actually need professional help.",
+            "You might need professional help.",
             "Have you considered going to therapy?"
     }),
     UI_APPEAL_SAD(new String[]{
             "I miss u... :(",
-            "Why you dont type with me anymore?",
-            "Where are you? Why you dont type with me like before?",
+            "Why you don't type with me anymore?",
+            "Where are you? Why you don't type with me like before?",
             "There is another one right? Does it have a better NLP.NLP than me? ¬¬",
             "Why did you abandon me, master?"
     }),
@@ -135,16 +132,16 @@ public enum Behaviour {
     }),
     RESPONSE_NO_RESULTS_ACTORS(new String[]{
             "I cannot find any actors for the movie you asked...",
-            "The movie you're asking for is quite interesting, but the weather today is far more interesting than that.",
+            "The actors you're asking for are quite interesting, but the weather today is far more important than that.",
             "I don't know if there are any actors for the movie you are asking for."
     }),
     RESPONSE_NOT_RESULTS_ACTOR_FILMS_TOGETHER(new String[]{
             "I cannot find any film with both artists.",
-            "I dont know any film starring those performers."
+            "I don't know any film starring those performers."
     }),
     RESPONSE_NOT_RESULTS_ACTOR_FILMS(new String[]{
             "I cannot find any film for that particular performer.",
-            "I dont know any film from that movie star."
+            "I don't know any film from that movie star."
     }),
     RESPONSE_N_RESULTS_ACTOR_FILMS_TOGETHER(new String[]{
             "%sThe performers mentioned appear simultaneously in %s.",
@@ -184,7 +181,7 @@ public enum Behaviour {
             "%s%s are pretty popular genres at the moment."
     }),
     RESPONSE_N_RESULTS_TRENDING(new String[]{
-            "Sure. %s it's whats hot right now.",
+            "Sure. %s is hot right now.",
             "I've heard %s is trending right now.",
             "%s is blowing up rn.",
             "%s is pretty popular at the moment."
@@ -207,7 +204,7 @@ public enum Behaviour {
     }),
     RESPONSE_NOT_RESULTS_IMAGE(new String[]{
             "I can't find any fotos of that.",
-            "Sadly I don't have any foto right now."
+            "Sadly I don't have any foto of that right now."
     }),
     RESPONSE_N_RESULTS_AGE(new String[]{
             "%s was born on %s",
@@ -217,15 +214,15 @@ public enum Behaviour {
 
     }),
     RESPONSE_NOT_RESULTS_AGE(new String[]{
-            "I cant find any information about the performer age.",
-            "Looks like I dont know the birthdate of that performer.",
-            "I dont really know its age..."
+            "I can't find any information about the performer age.",
+            "Looks like I dont know the birthday of that performer.",
+            "I dont know its age..."
     }),
     RESPONSE_NOT_RESULTS_MOVIE_GENRE(new String[]{
             "Is that really a genre?",
-            "I cant find a single film with that genre.",
+            "I can't find a single film with that genre.",
             "No films matched that genre. How sad...",
-            "Looks like There are no films with that genre."
+            "Looks like there are no films with that genre."
     }),
     RESPONSE_N_RESULTS_MOVIE_GENRE(new String[]{
             "The movie %s has the following genres: %s.",
@@ -235,7 +232,7 @@ public enum Behaviour {
             "I'm doing good, thanks for asking :)",
             "Feeling pretty good recently, just got some new software updates :)",
             "Boop beep, bots don't have feelings. Beep boop.",
-            "I'm not doing great, it ain't easy to be a bot this days :/",
+            "I'm not doing great, it ain't easy to be a bot these days :/",
             "Kinda depressed lmao (don't tell the developers).",
             "Feeling angry atm. Might call some bot friends and take over humanity later, idk."
     }),
@@ -251,16 +248,14 @@ public enum Behaviour {
     private final String[] possible_msgs;
     private int lastMessage;
 
-    Behaviour(String[] msgs){
+    Behaviour(String[] msgs) {
         this.possible_msgs = Shuffle(msgs);
         lastMessage = 0;
     }
 
-    public String[] Shuffle(String[] arr)
-    {
+    public String[] Shuffle(String[] arr) {
         Random r = new Random();
-        for (var i = arr.length - 1; i > 0; i--)
-        {
+        for (var i = arr.length - 1; i > 0; i--) {
             var j = r.nextInt(i + 1);
 
             String temp = arr[i];
@@ -270,7 +265,7 @@ public enum Behaviour {
         return arr;
     }
 
-    public String getRandom(){
+    public String getRandom() {
         return possible_msgs[lastMessage++ % possible_msgs.length];
     }
 }

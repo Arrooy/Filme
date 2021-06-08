@@ -25,8 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-// TODO: posar els noms propis en majuscula!
-
 public class DB {
 
     private static final int NUMBER_OF_SIMILAR_MOVIES = 5;

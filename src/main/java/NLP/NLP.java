@@ -6,10 +6,10 @@ import Corrector.Symspell;
 import NLP.AhoCorasick.ACNodeType;
 import NLP.AhoCorasick.ACResult;
 import NLP.AhoCorasick.AhoCorasick;
+import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class NLP {
 
@@ -43,7 +43,7 @@ public class NLP {
 
         // Elimina els noms propis.
         for (String mn : movieNames)
-            input = input.replaceAll(mn,"");
+            input = input.replaceAll(mn, "");
 
         for (String pn : peopleNames)
             input = input.replaceAll(pn, "");
@@ -75,6 +75,17 @@ public class NLP {
         if (AhoCorasick.existsType(currentSentence, ACNodeType.TIME)) inputTypes.add(InputType.TIME);
         if (AhoCorasick.existsType(currentSentence, ACNodeType.HOW)) inputTypes.add(InputType.HOW);
         if (AhoCorasick.existsType(currentSentence, ACNodeType.WHO)) inputTypes.add(InputType.WHO);
+
+        // Capitalització dels noms propis. El corrector elimina les majuscules...
+        for (String mn : movieNames) {
+            movieNames.remove(mn);
+            movieNames.add(WordUtils.capitalizeFully(mn));
+        }
+
+        for (String pn : peopleNames) {
+            peopleNames.remove(pn);
+            peopleNames.add(WordUtils.capitalizeFully(pn));
+        }
 
         System.out.println("Detected object: " + Arrays.toString(objects.toArray()));
         System.out.println("Detected action: " + Arrays.toString(actions.toArray()));
